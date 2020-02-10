@@ -35,8 +35,10 @@
 *.ide
 *.lock
 
+/.vs
+/packages/*
+/TestForm/*
 /RevitGLTF/.vs/*
 /RevitGLTF/obj/*
 /RevitGLTF/packages/*
 /RevitGLTF/bin/*
-/TestForm/*
