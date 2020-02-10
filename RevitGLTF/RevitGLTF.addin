@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Text>Command RevitGLTF</Text>
+    <Description>Some description for RevitGLTF</Description>
+    <Assembly>RevitGLTF/RevitGLTF.dll</Assembly>
+    <FullClassName>RevitGLTF.Command</FullClassName>
+    <ClientId>df78167a-03ff-46d7-beb0-4d6fd882c94d</ClientId>
+    <VendorId>com.typepad.thebuildingcoder</VendorId>
+    <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
+  </AddIn>
+  <!--<AddIn Type="Application">
+    <Name>Application RevitGLTF</Name>
+    <Assembly>RevitGLTF/RevitGLTF.dll</Assembly>
+    <FullClassName>RevitGLTF.App</FullClassName>
+    <ClientId>940dea01-e231-45f4-acd8-12514807fb48</ClientId>
+    <VendorId>com.typepad.thebuildingcoder</VendorId>
+    <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
+  </AddIn>-->
+</RevitAddIns>

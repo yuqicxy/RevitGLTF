@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>af8ed8e5-a184-4353-90d6-8c78e69d99f3</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Utilities</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArrayExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AssetPathUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ColorExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GLTFPipelineUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ILoggingProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JsonTextWriterBounded.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JsonTextWriterOptimized.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MathUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PathUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextureUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TreeViewExtension.cs" />
+  </ItemGroup>
+</Project>
