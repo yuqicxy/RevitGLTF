@@ -110,7 +110,7 @@ namespace RevitGLTF
         private static Color GetColorPropertyValue(Asset in_asset,string in_propertyName,Color in_defaultValue)
         {
             AssetProperty byName = ((AssetProperties)in_asset).FindByName(in_propertyName);
-            if (byName != null)
+            if (byName as AssetPropertyDoubleArray4d != null)
             {
                 Color valueAsColor = (byName as AssetPropertyDoubleArray4d).GetValueAsColor();
                 if (valueAsColor.IsValid)
@@ -151,6 +151,7 @@ namespace RevitGLTF
                                 }
                                 if (!Path.IsPathRooted(str))
                                 {
+                                    //外部纹理路径中查找纹理
                                     //foreach (string extraTexturePath in (IEnumerable<string>)this.ExtraTexturePaths)
                                     //{
                                     //    string path = Path.Combine(extraTexturePath, str);
@@ -211,123 +212,264 @@ namespace RevitGLTF
             return 0.0f;
         }
 
+        private static BabylonTexture CreateUnifiedBitmapTexture(Asset asset, Material material, String propertyName)
+        {
+            BabylonTexture texture = null;
+            string texturePath = GetTexturePropertyPath(asset, Autodesk.Revit.DB.Visual.Stone.StoneColor);
+            if (!string.IsNullOrEmpty(texturePath) && File.Exists(texturePath))
+            {
+                float uOffset = GetTexturePropertyDistance(asset, propertyName, UnifiedBitmap.TextureRealWorldOffsetX, 0.0f);
+                float vOffset = GetTexturePropertyDistance(asset, propertyName, UnifiedBitmap.TextureRealWorldOffsetY, 0.0f);
+                float uScale = 1f / GetTexturePropertyDistance(asset, propertyName, UnifiedBitmap.TextureRealWorldScaleX, 1f);
+                float vScale = 1f / GetTexturePropertyDistance(asset, propertyName, UnifiedBitmap.TextureRealWorldScaleY, 1f);
+                float angle = GetTexturePropertyAngle(asset, propertyName, UnifiedBitmap.TextureWAngle);
+
+                texture = new BabylonTexture(material.Id.ToString() + "diffuseMap");
+                texture.name = Path.GetFileNameWithoutExtension(texturePath);
+                texture.originalPath = texturePath;
+                texture.uOffset = uOffset;
+                texture.vOffset = vOffset;
+                texture.uScale = uScale;
+                texture.vScale = vScale;
+                texture.uAng = angle;
+            }
+            return texture;
+        }
+
         private static BabylonMaterial CreateGenericMaterial(Asset asset,Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Generic start export");
 
-            Color defaultColor = material.Color.IsValid ? material.Color: new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
-            
-            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
-            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset,
-                Generic.GenericDiffuse, defaultColor));
-            string diffuseTexturePath = GetTexturePropertyPath(asset, Autodesk.Revit.DB.Visual.Generic.GenericDiffuse);
-            if(!string.IsNullOrEmpty(diffuseTexturePath) && File.Exists(diffuseTexturePath))
-            {
-                float imageFade  = GetFloatPropertyValue(asset,            Generic.GenericDiffuseImageFade, 0.0f);
-                float uOffset    = GetTexturePropertyDistance(asset,       Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldOffsetX, 0.0f);
-                float vOffset    = GetTexturePropertyDistance(asset,       Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldOffsetY, 0.0f);
-                float uScale     = 1f / GetTexturePropertyDistance(asset,  Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldScaleX, 1f);
-                float vScale     = 1f / GetTexturePropertyDistance(asset,  Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldScaleY, 1f);
-                float angle      = GetTexturePropertyAngle(asset,          Generic.GenericDiffuse, UnifiedBitmap.TextureWAngle);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
 
-                BabylonTexture texture  = new BabylonTexture(material.Id.ToString() + "diffuseMap");
-                texture.name = Path.GetFileNameWithoutExtension(diffuseTexturePath);
-                texture.originalPath    = diffuseTexturePath;
-                texture.uOffset         = uOffset;
-                texture.vOffset         = vOffset;
-                texture.uScale          = uScale;
-                texture.vScale          = vScale;
-                texture.uAng            = angle;
-                
-                babylonMaterial.diffuseTexture = texture;
-            }
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Generic.GenericDiffuse, defaultColor));
+
+            var GenericDiffuseTexture = CreateUnifiedBitmapTexture(asset, material, Generic.GenericDiffuse);
+            if (GenericDiffuseTexture != null)
+                babylonMaterial.diffuseTexture = GenericDiffuseTexture;
+
+            //BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+            //babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset,
+            //    Generic.GenericDiffuse, defaultColor));
+            //string diffuseTexturePath = GetTexturePropertyPath(asset, Autodesk.Revit.DB.Visual.Generic.GenericDiffuse);
+            //if(!string.IsNullOrEmpty(diffuseTexturePath) && File.Exists(diffuseTexturePath))
+            //{
+            //    float uOffset    = GetTexturePropertyDistance(asset,       Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldOffsetX, 0.0f);
+            //    float vOffset    = GetTexturePropertyDistance(asset,       Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldOffsetY, 0.0f);
+            //    float uScale     = 1f / GetTexturePropertyDistance(asset,  Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldScaleX, 1f);
+            //    float vScale     = 1f / GetTexturePropertyDistance(asset,  Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldScaleY, 1f);
+            //    float angle      = GetTexturePropertyAngle(asset,          Generic.GenericDiffuse, UnifiedBitmap.TextureWAngle);
+            //
+            //    BabylonTexture texture  = new BabylonTexture(material.Id.ToString() + "diffuseMap");
+            //    texture.name = Path.GetFileNameWithoutExtension(diffuseTexturePath);
+            //    texture.originalPath    = diffuseTexturePath;
+            //    texture.uOffset         = uOffset;
+            //    texture.vOffset         = vOffset;
+            //    texture.uScale          = uScale;
+            //    texture.vScale          = vScale;
+            //    texture.uAng            = angle;
+            //    
+            //    babylonMaterial.diffuseTexture = texture;
+            //}
 
             return babylonMaterial;
         }
 
-        private static BabylonMaterial CreateCeramicMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreateCeramicMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Ceramic start export");
-            return null;
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Ceramic.CeramicColor, defaultColor));
+
+            var CeramicColorTexture = CreateUnifiedBitmapTexture(asset, material, Ceramic.CeramicColor);
+            if (CeramicColorTexture != null)
+                babylonMaterial.diffuseTexture = CeramicColorTexture;
+
+            return babylonMaterial;
         }
 
-        private static BabylonMaterial CreateConcreteMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreateConcreteMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Concrete start export");
-            return null;
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Concrete.ConcreteColor, defaultColor));
+
+            var ConcreteColorTexture = CreateUnifiedBitmapTexture(asset, material, Concrete.ConcreteColor);
+            if (ConcreteColorTexture != null)
+                babylonMaterial.diffuseTexture = ConcreteColorTexture;
+
+            return babylonMaterial;
         }
 
-        private static BabylonMaterial CreateGlazingMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreateGlazingMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Glazing start export");
-            return null;
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Glazing.GlazingTransmittanceMap, defaultColor));
+
+            var GlazingTransmittanceMapTexture = CreateUnifiedBitmapTexture(asset, material, Glazing.GlazingTransmittanceMap);
+            if (GlazingTransmittanceMapTexture != null)
+                babylonMaterial.diffuseTexture = GlazingTransmittanceMapTexture;
+
+            return babylonMaterial;
         }
 
-        private static BabylonMaterial CreateHardwoodMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreateHardwoodMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Hardwood start export");
-            return null;
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Glazing.GlazingTransmittanceMap, defaultColor));
+            var GlazingTransmittanceMapTexture = CreateUnifiedBitmapTexture(asset, material, Glazing.GlazingTransmittanceMap);
+            if (GlazingTransmittanceMapTexture != null)
+                babylonMaterial.diffuseTexture = GlazingTransmittanceMapTexture;
+
+            return babylonMaterial;
         }
 
-        private static BabylonMaterial CreateMansoryCMUMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreateMansoryCMUMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material MansoryCMU start export");
-            return null;
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, MasonryCMU.MasonryCMUColor, defaultColor));
+            var MasonryCMUColorTexture = CreateUnifiedBitmapTexture(asset, material, MasonryCMU.MasonryCMUColor);
+            if (MasonryCMUColorTexture != null)
+                babylonMaterial.diffuseTexture = MasonryCMUColorTexture;
+
+            return babylonMaterial;
         }
 
-        private static BabylonMaterial CreateMetalMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreateMetalMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Metal start export");
-            return null;
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Metal.MetalColor, defaultColor));
+            var MetalColorTexture = CreateUnifiedBitmapTexture(asset, material, Metal.MetalColor);
+            if (MetalColorTexture != null)
+                babylonMaterial.diffuseTexture = MetalColorTexture;
+
+            return babylonMaterial;
         }
 
-        private static BabylonMaterial CreateMetallicPaintMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreateMetallicPaintMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material MetallicPaint start export");
-            return null;
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, MetallicPaint.MetallicpaintBaseColor, defaultColor));
+            var MetallicpaintBaseColorTexture = CreateUnifiedBitmapTexture(asset, material, MetallicPaint.MetallicpaintBaseColor);
+            if (MetallicpaintBaseColorTexture != null)
+                babylonMaterial.diffuseTexture = MetallicpaintBaseColorTexture;
+
+            return babylonMaterial;
         }
 
-        private static BabylonMaterial CreateMirrorMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreateMirrorMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Mirror start export");
-            return null;
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Mirror.MirrorTintcolor, defaultColor));
+            var MirrorTintcolorTexture = CreateUnifiedBitmapTexture(asset, material, Mirror.MirrorTintcolor);
+            if (MirrorTintcolorTexture != null)
+                babylonMaterial.diffuseTexture = MirrorTintcolorTexture;
+
+            return babylonMaterial;
         }
 
-        private static BabylonMaterial CreatePlasticVinylMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreatePlasticVinylMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material PlasticVinyl start export");
-            return null;
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, PlasticVinyl.PlasticvinylColor, defaultColor));
+            var PlasticvinylColorTexture = CreateUnifiedBitmapTexture(asset, material, PlasticVinyl.PlasticvinylColor);
+            if (PlasticvinylColorTexture != null)
+                babylonMaterial.diffuseTexture = PlasticvinylColorTexture;
+
+            return babylonMaterial;
         }
         
-        private static BabylonMaterial CreateSolidGlassMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreateSolidGlassMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material SolidGlass start export");
-            return null;
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, SolidGlass.SolidglassTransmittanceCustomColor, defaultColor));
+            var SolidglassTransmittanceCustomColorTexture = CreateUnifiedBitmapTexture(asset, material, SolidGlass.SolidglassTransmittanceCustomColor);
+            if (SolidglassTransmittanceCustomColorTexture != null)
+                babylonMaterial.diffuseTexture = SolidglassTransmittanceCustomColorTexture;
+
+            return babylonMaterial;
         }
 
-        private static BabylonMaterial CreateWallPaintMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreateWallPaintMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material WallPaint start export");
-            return null;
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, WallPaint.WallpaintColor, defaultColor));
+            var WallpaintColorTexture = CreateUnifiedBitmapTexture(asset, material, WallPaint.WallpaintColor);
+            if (WallpaintColorTexture != null)
+                babylonMaterial.diffuseTexture = WallpaintColorTexture;
+
+            return babylonMaterial;
         }
         
-        private static BabylonMaterial CreateWaterMaterial(Asset asset, Material materialID)
+        private static BabylonMaterial CreateWaterMaterial(Asset asset, Material material)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Water start export");
-            return null;
+
+            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
+
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Water.WaterTintColor, defaultColor));
+            var WaterTintColorTexture = CreateUnifiedBitmapTexture(asset, material, Water.WaterTintColor);
+            if (WaterTintColorTexture != null)
+                babylonMaterial.diffuseTexture = WaterTintColorTexture;
+
+            return babylonMaterial;
         }
 
         private static BabylonMaterial CreateStoneMaterial(Asset asset, Material material)
@@ -335,32 +477,35 @@ namespace RevitGLTF
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Stone start export");
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue/255, byte.MaxValue/255, byte.MaxValue/255);
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
-            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset,
-                Generic.GenericDiffuse, defaultColor));
-            string diffuseTexturePath = GetTexturePropertyPath(asset, Autodesk.Revit.DB.Visual.Generic.GenericDiffuse);
-            if (!string.IsNullOrEmpty(diffuseTexturePath) && File.Exists(diffuseTexturePath))
-            {
-                float imageFade = GetFloatPropertyValue(asset, Generic.GenericDiffuseImageFade, 0.0f);
-                float uOffset = GetTexturePropertyDistance(asset, Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldOffsetX, 0.0f);
-                float vOffset = GetTexturePropertyDistance(asset, Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldOffsetY, 0.0f);
-                float uScale = 1f / GetTexturePropertyDistance(asset, Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldScaleX, 1f);
-                float vScale = 1f / GetTexturePropertyDistance(asset, Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldScaleY, 1f);
-                float angle = GetTexturePropertyAngle(asset, Generic.GenericDiffuse, UnifiedBitmap.TextureWAngle);
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset,Stone.StoneColor, defaultColor));
 
-                BabylonTexture texture = new BabylonTexture(material.Id.ToString() + "diffuseMap");
-                texture.name = Path.GetFileNameWithoutExtension(diffuseTexturePath);
-                texture.originalPath = diffuseTexturePath;
-                texture.uOffset = uOffset;
-                texture.vOffset = vOffset;
-                texture.uScale = uScale;
-                texture.vScale = vScale;
-                texture.uAng = angle;
+            var StoneColorTexture = CreateUnifiedBitmapTexture(asset, material, Stone.StoneColor);
+            if(StoneColorTexture!=null)
+                babylonMaterial.diffuseTexture = StoneColorTexture;
 
-                babylonMaterial.diffuseTexture = texture;
-            }
+            //string diffuseTexturePath = GetTexturePropertyPath(asset, Autodesk.Revit.DB.Visual.Stone.StoneColor);
+            //if (!string.IsNullOrEmpty(diffuseTexturePath) && File.Exists(diffuseTexturePath))
+            //{
+            //    float uOffset = GetTexturePropertyDistance(asset, Stone.StoneColor, UnifiedBitmap.TextureRealWorldOffsetX, 0.0f);
+            //    float vOffset = GetTexturePropertyDistance(asset, Stone.StoneColor, UnifiedBitmap.TextureRealWorldOffsetY, 0.0f);
+            //    float uScale = 1f / GetTexturePropertyDistance(asset, Stone.StoneColor, UnifiedBitmap.TextureRealWorldScaleX, 1f);
+            //    float vScale = 1f / GetTexturePropertyDistance(asset, Stone.StoneColor, UnifiedBitmap.TextureRealWorldScaleY, 1f);
+            //    float angle = GetTexturePropertyAngle(asset, Stone.StoneColor, UnifiedBitmap.TextureWAngle);
+
+            //    BabylonTexture texture = new BabylonTexture(material.Id.ToString() + "diffuseMap");
+            //    texture.name = Path.GetFileNameWithoutExtension(diffuseTexturePath);
+            //    texture.originalPath = diffuseTexturePath;
+            //    texture.uOffset = uOffset;
+            //    texture.vOffset = vOffset;
+            //    texture.uScale = uScale;
+            //    texture.vScale = vScale;
+            //    texture.uAng = angle;
+
+            //    babylonMaterial.diffuseTexture = texture;
+            //}
 
             return babylonMaterial;
         }
