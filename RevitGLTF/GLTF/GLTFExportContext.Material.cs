@@ -215,7 +215,7 @@ namespace RevitGLTF
         private static BabylonTexture CreateUnifiedBitmapTexture(Asset asset, Material material, String propertyName)
         {
             BabylonTexture texture = null;
-            string texturePath = GetTexturePropertyPath(asset, Autodesk.Revit.DB.Visual.Stone.StoneColor);
+            string texturePath = GetTexturePropertyPath(asset,propertyName);
             if (!string.IsNullOrEmpty(texturePath) && File.Exists(texturePath))
             {
                 float uOffset = GetTexturePropertyDistance(asset, propertyName, UnifiedBitmap.TextureRealWorldOffsetX, 0.0f);
@@ -270,7 +270,6 @@ namespace RevitGLTF
             //    texture.uScale          = uScale;
             //    texture.vScale          = vScale;
             //    texture.uAng            = angle;
-            //    
             //    babylonMaterial.diffuseTexture = texture;
             //}
 
@@ -535,7 +534,10 @@ namespace RevitGLTF
             {
                 var revitMaterial = mRevitDocument.GetElement(node.MaterialId) as Material;
                 var material = MaterialFactory.CreateMaterial(asset, revitMaterial);
-                
+
+                if (material == null)
+                    return;
+
                 mScene.MaterialsList.Add(material);
 
                 //mCurrentMaterialIndex = mScene.MaterialsList.Count - 1;
