@@ -36,7 +36,9 @@ namespace RevitGLTF
         private BabylonScene mScene = null;
 
         private ExportConfig mConfig = null;
-        
+
+        BabylonMultiMaterial mCurrentMutiMaterial;
+
         public GLTFExportContext(ExportConfig config,Document document)
         {
             mConfig = config;
@@ -148,6 +150,9 @@ namespace RevitGLTF
                 name = elementId.ToString()
             };
 
+            mCurrentMutiMaterial = new BabylonMultiMaterial();
+            mCurrentMutiMaterial.id = elementId.ToString();
+
             GLTFUtil.ExportTransform(mCurrentMesh, mTransformationStack.Peek());
 
             var id = elementId.IntegerValue;
@@ -178,7 +183,6 @@ namespace RevitGLTF
                 elementId.IntegerValue, e.Category.Name, e.Name);
             log.Info(name);
 
-
             if (mIndices.Count() > 0 && mVertices.Count > 0)
             {
                 if(mCurrentMesh.subMeshes == null)
@@ -205,12 +209,17 @@ namespace RevitGLTF
                     RaiseWarning("All the vertices share the same position. Is the mesh invisible? The result may not be as expected.", 2);
                 }
                 mCurrentMesh.uvs = mVertices.SelectMany(v => v.UV).ToArray();
+
+                mScene.MultiMaterialsList.Add(mCurrentMutiMaterial);
+                mCurrentMesh.materialId = elementId.ToString();
+
                 mScene.MeshesList.Add(mCurrentMesh);
             }
 
             mVertices = null;
             mIndices = null;
             mCurrentMesh = null;
+            mCurrentMutiMaterial = null;
 
             //GLTFExporter gltfExporter = new GLTFExporter();
             //ExportParameters para = new ExportParameters();

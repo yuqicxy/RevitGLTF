@@ -21,8 +21,7 @@ namespace RevitGLTF
             string name = node.NodeName + "\tid:" + node.GetSymbolId().ToString() + "\ttype:" + node.GetType().ToString();
             log.Info("InstanceStart\t" + name);
 
-            this.mTransformationStack.Push(
-                this.mTransformationStack.Peek().Multiply(node.GetTransform()));
+            this.mTransformationStack.Push(this.mTransformationStack.Peek().Multiply(node.GetTransform()));
 
             if (mInstanceDictionary.ContainsKey(node.GetSymbolId()))
             {
@@ -66,7 +65,7 @@ namespace RevitGLTF
         }
 
         public RenderNodeAction OnFaceBegin(FaceNode node)
-        {            
+        {
             string name = node.NodeName + "\tid:" + node.ToString();
             log.Info("FaceNode\t" + name + "\tstart");
 

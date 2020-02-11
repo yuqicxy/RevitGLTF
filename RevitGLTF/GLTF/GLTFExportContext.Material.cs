@@ -6,6 +6,7 @@ using BabylonExport.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace RevitGLTF
 {
@@ -221,7 +222,7 @@ namespace RevitGLTF
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset,
                 Generic.GenericDiffuse, defaultColor));
             string diffuseTexturePath = GetTexturePropertyPath(asset, Autodesk.Revit.DB.Visual.Generic.GenericDiffuse);
-            if(!string.IsNullOrEmpty(diffuseTexturePath))
+            if(!string.IsNullOrEmpty(diffuseTexturePath) && File.Exists(diffuseTexturePath))
             {
                 float imageFade  = GetFloatPropertyValue(asset,            Generic.GenericDiffuseImageFade, 0.0f);
                 float uOffset    = GetTexturePropertyDistance(asset,       Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldOffsetX, 0.0f);
@@ -231,6 +232,7 @@ namespace RevitGLTF
                 float angle      = GetTexturePropertyAngle(asset,          Generic.GenericDiffuse, UnifiedBitmap.TextureWAngle);
 
                 BabylonTexture texture  = new BabylonTexture(material.Id.ToString() + "diffuseMap");
+                texture.name = Path.GetFileNameWithoutExtension(diffuseTexturePath);
                 texture.originalPath    = diffuseTexturePath;
                 texture.uOffset         = uOffset;
                 texture.vOffset         = vOffset;
@@ -339,7 +341,7 @@ namespace RevitGLTF
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset,
                 Generic.GenericDiffuse, defaultColor));
             string diffuseTexturePath = GetTexturePropertyPath(asset, Autodesk.Revit.DB.Visual.Generic.GenericDiffuse);
-            if (!string.IsNullOrEmpty(diffuseTexturePath))
+            if (!string.IsNullOrEmpty(diffuseTexturePath) && File.Exists(diffuseTexturePath))
             {
                 float imageFade = GetFloatPropertyValue(asset, Generic.GenericDiffuseImageFade, 0.0f);
                 float uOffset = GetTexturePropertyDistance(asset, Generic.GenericDiffuse, UnifiedBitmap.TextureRealWorldOffsetX, 0.0f);
@@ -349,6 +351,7 @@ namespace RevitGLTF
                 float angle = GetTexturePropertyAngle(asset, Generic.GenericDiffuse, UnifiedBitmap.TextureWAngle);
 
                 BabylonTexture texture = new BabylonTexture(material.Id.ToString() + "diffuseMap");
+                texture.name = Path.GetFileNameWithoutExtension(diffuseTexturePath);
                 texture.originalPath = diffuseTexturePath;
                 texture.uOffset = uOffset;
                 texture.vOffset = vOffset;
@@ -365,7 +368,7 @@ namespace RevitGLTF
 
     public partial class GLTFExportContext : IModelExportContext
     {
-        private int mCurrentMaterialIndex;
+        private int mCurrentMaterialIndex = -1;
         
         private Dictionary<ElementId, int> mMaterialTable = new Dictionary<ElementId, int>();
         public void OnMaterial(MaterialNode node)
@@ -389,13 +392,56 @@ namespace RevitGLTF
                 var material = MaterialFactory.CreateMaterial(asset, revitMaterial);
                 
                 mScene.MaterialsList.Add(material);
-                mCurrentMaterialIndex = mScene.MaterialsList.Count - 1;
-                
-                mMaterialTable.Add(node.MaterialId, mCurrentMaterialIndex);
+
+                //mCurrentMaterialIndex = mScene.MaterialsList.Count - 1;
+                //mMaterialTable.Add(node.MaterialId, mCurrentMaterialIndex);
+                mMaterialTable.Add(node.MaterialId, -1);
+                if (mCurrentMutiMaterial.materials == null)
+                {
+                    List<String> materials = new List<String>();
+                    materials.Add(node.MaterialId.ToString());
+                    mCurrentMaterialIndex = materials.Count() - 1;
+                    mCurrentMutiMaterial.materials = materials.ToArray();
+                }
+                else 
+                {
+                    var materials = mCurrentMutiMaterial.materials.ToList();
+                    if (!materials.Contains(node.MaterialId.ToString()))
+                    {
+                        materials.Add(node.MaterialId.ToString());
+                        mCurrentMaterialIndex = materials.Count() - 1;
+                        mCurrentMutiMaterial.materials = materials.ToArray();
+                    }
+                    else 
+                    {
+                        mCurrentMaterialIndex = materials.FindIndex(_str => _str == node.MaterialId.ToString());
+                    }
+                }
             }
             else
             {
-                mCurrentMaterialIndex = mMaterialTable[node.MaterialId];
+                //mCurrentMaterialIndex = mMaterialTable[node.MaterialId];
+                if (mCurrentMutiMaterial.materials == null)
+                {
+                    List<String> materials = new List<String>();
+                    materials.Add(node.MaterialId.ToString());
+                    mCurrentMaterialIndex = materials.Count() - 1;
+                    mCurrentMutiMaterial.materials = materials.ToArray();
+                }
+                else
+                {
+                    var materials = mCurrentMutiMaterial.materials.ToList();
+                    if (!materials.Contains(node.MaterialId.ToString()))
+                    {
+                        materials.Add(node.MaterialId.ToString());
+                        mCurrentMaterialIndex = materials.Count() - 1;
+                        mCurrentMutiMaterial.materials = materials.ToArray();
+                    }
+                    else 
+                    {
+                        mCurrentMaterialIndex = materials.FindIndex(_str => _str == node.MaterialId.ToString());
+                    }
+                }
             }
         }
     }
