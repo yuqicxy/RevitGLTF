@@ -19,6 +19,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Utilities", "Shared\Utiliti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevitGLTF2020", "RevitGLTF\RevitGLTF2020.csproj", "{CD654A82-7DD2-4972-B07A-DE4888AA8498}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialAssetViewer", "MaterialAssetViewer\MaterialAssetViewer.csproj", "{94C392BF-40E8-4632-B282-C835C411F51E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\GltfExport.Entities\GltfExport.Entities.projitems*{2b248fe6-acca-426b-9fe8-c47ecc0673a0}*SharedItemsImports = 13
@@ -46,6 +48,14 @@ Global
 		{CD654A82-7DD2-4972-B07A-DE4888AA8498}.Release|Any CPU.ActiveCfg = Release|x64
 		{CD654A82-7DD2-4972-B07A-DE4888AA8498}.Release|x64.ActiveCfg = Release|x64
 		{CD654A82-7DD2-4972-B07A-DE4888AA8498}.Release|x64.Build.0 = Release|x64
+		{94C392BF-40E8-4632-B282-C835C411F51E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94C392BF-40E8-4632-B282-C835C411F51E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94C392BF-40E8-4632-B282-C835C411F51E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{94C392BF-40E8-4632-B282-C835C411F51E}.Debug|x64.Build.0 = Debug|Any CPU
+		{94C392BF-40E8-4632-B282-C835C411F51E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94C392BF-40E8-4632-B282-C835C411F51E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94C392BF-40E8-4632-B282-C835C411F51E}.Release|x64.ActiveCfg = Release|Any CPU
+		{94C392BF-40E8-4632-B282-C835C411F51E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +67,7 @@ Global
 		{2B248FE6-ACCA-426B-9FE8-C47ECC0673A0} = {2ED57392-50E5-46D8-8A77-543E0BE3B83A}
 		{AF8ED8E5-A184-4353-90D6-8C78E69D99F3} = {2ED57392-50E5-46D8-8A77-543E0BE3B83A}
 		{CD654A82-7DD2-4972-B07A-DE4888AA8498} = {33915B34-2C79-46FB-ADB6-43702F41B286}
+		{94C392BF-40E8-4632-B282-C835C411F51E} = {33915B34-2C79-46FB-ADB6-43702F41B286}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5C8DB1F-010F-4043-8EA2-111DA485583E}

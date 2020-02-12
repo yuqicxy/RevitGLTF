@@ -13,8 +13,6 @@ using Autodesk.Revit.DB;
 
 namespace RevitGLTF
 {
-
-
     /// <summary>
     /// Export whole rvt file to a gltf/glb File
     /// </summary>
@@ -120,7 +118,6 @@ namespace RevitGLTF
             }
             mScene.MeshesList.Add(rootNode);
 
-
             mScene.Prepare(false, false);
 
             try 
@@ -158,13 +155,15 @@ namespace RevitGLTF
 
             var id = elementId.IntegerValue;
 
-            //List<int> table = new List<int> {21366, 19573, 19674, 19735, 19782, 19912, 19861, 34423 };
-           /* Stone Type Material =>>*/ //List<int> table = new List<int> {20621,11856, 19020 ,19099,19036,19177,19218};
+           /*Wood Type Material*/ 
+            List<int> table = new List<int> {21366, 19573, 19674, 19735, 19782, 19912, 19861, 34424 };
+           /* Stone Type Material*/ 
+           //List<int> table = new List<int> {20621,11856, 19020 ,19099,19036,19177,19218};
 
-            //if (!table.Contains(id))
-            //{
-            //   return RenderNodeAction.Skip;
-            //}
+            if (!table.Contains(id))
+            {
+               return RenderNodeAction.Skip;
+            }
 
             Element e = mRevitDocument.GetElement(elementId);
 

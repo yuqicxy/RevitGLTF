@@ -88,7 +88,7 @@ namespace RevitGLTF
         private static bool GetBooleanPropertyValue(Asset in_asset,string in_propertyName,bool in_defaultValue)
         {
             AssetProperty byName = ((AssetProperties)in_asset).FindByName(in_propertyName);
-            return byName == null ? in_defaultValue : (byName as AssetPropertyBoolean).Value;
+            return (byName == null || (byName as AssetPropertyBoolean ==null)) ? in_defaultValue : (byName as AssetPropertyBoolean).Value;
         }
 
         private static int GetIntegerPropertyValue(Asset in_asset,string in_propertyName,int in_defaultValue)
@@ -241,7 +241,7 @@ namespace RevitGLTF
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Generic start export");
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Generic.GenericDiffuse, defaultColor));
@@ -281,7 +281,7 @@ namespace RevitGLTF
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Ceramic start export");
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Ceramic.CeramicColor, defaultColor));
@@ -298,7 +298,7 @@ namespace RevitGLTF
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Concrete start export");
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Concrete.ConcreteColor, defaultColor));
@@ -315,7 +315,7 @@ namespace RevitGLTF
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Glazing start export");
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Glazing.GlazingTransmittanceMap, defaultColor));
@@ -334,11 +334,22 @@ namespace RevitGLTF
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
-            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Glazing.GlazingTransmittanceMap, defaultColor));
-            var GlazingTransmittanceMapTexture = CreateUnifiedBitmapTexture(asset, material, Glazing.GlazingTransmittanceMap);
-            if (GlazingTransmittanceMapTexture != null)
-                babylonMaterial.diffuseTexture = GlazingTransmittanceMapTexture;
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
+            babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Hardwood.HardwoodColor, defaultColor));
+            var HardwoodColorTexture = CreateUnifiedBitmapTexture(asset, material, Hardwood.HardwoodColor);
+            if (HardwoodColorTexture != null)
+                babylonMaterial.diffuseTexture = HardwoodColorTexture;
+
+            //int tintEnable = GetIntegerPropertyValue(asset, Hardwood.HardwoodTintEnabled, 0);
+            //if(tintEnable > 0)
+            //{
+            //    babylonMaterial.ambient = GLTFUtil.ToArray(GetColorPropertyValue(asset, Hardwood.HardwoodTintColor,defaultColor));
+            //}
+            bool tintToggle = GetBooleanPropertyValue(asset, Hardwood.CommonTintToggle, false);
+            if(tintToggle)
+            {
+                babylonMaterial.ambient = GLTFUtil.ToArray(GetColorPropertyValue(asset, Hardwood.CommonTintColor, defaultColor));
+            }
 
             return babylonMaterial;
         }
@@ -350,7 +361,7 @@ namespace RevitGLTF
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, MasonryCMU.MasonryCMUColor, defaultColor));
             var MasonryCMUColorTexture = CreateUnifiedBitmapTexture(asset, material, MasonryCMU.MasonryCMUColor);
             if (MasonryCMUColorTexture != null)
@@ -366,7 +377,7 @@ namespace RevitGLTF
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Metal.MetalColor, defaultColor));
             var MetalColorTexture = CreateUnifiedBitmapTexture(asset, material, Metal.MetalColor);
             if (MetalColorTexture != null)
@@ -382,7 +393,7 @@ namespace RevitGLTF
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, MetallicPaint.MetallicpaintBaseColor, defaultColor));
             var MetallicpaintBaseColorTexture = CreateUnifiedBitmapTexture(asset, material, MetallicPaint.MetallicpaintBaseColor);
             if (MetallicpaintBaseColorTexture != null)
@@ -398,7 +409,7 @@ namespace RevitGLTF
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Mirror.MirrorTintcolor, defaultColor));
             var MirrorTintcolorTexture = CreateUnifiedBitmapTexture(asset, material, Mirror.MirrorTintcolor);
             if (MirrorTintcolorTexture != null)
@@ -414,7 +425,7 @@ namespace RevitGLTF
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, PlasticVinyl.PlasticvinylColor, defaultColor));
             var PlasticvinylColorTexture = CreateUnifiedBitmapTexture(asset, material, PlasticVinyl.PlasticvinylColor);
             if (PlasticvinylColorTexture != null)
@@ -430,7 +441,7 @@ namespace RevitGLTF
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, SolidGlass.SolidglassTransmittanceCustomColor, defaultColor));
             var SolidglassTransmittanceCustomColorTexture = CreateUnifiedBitmapTexture(asset, material, SolidGlass.SolidglassTransmittanceCustomColor);
             if (SolidglassTransmittanceCustomColorTexture != null)
@@ -446,7 +457,7 @@ namespace RevitGLTF
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, WallPaint.WallpaintColor, defaultColor));
             var WallpaintColorTexture = CreateUnifiedBitmapTexture(asset, material, WallPaint.WallpaintColor);
             if (WallpaintColorTexture != null)
@@ -462,7 +473,7 @@ namespace RevitGLTF
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue / 255, byte.MaxValue / 255, byte.MaxValue / 255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset, Water.WaterTintColor, defaultColor));
             var WaterTintColorTexture = CreateUnifiedBitmapTexture(asset, material, Water.WaterTintColor);
             if (WaterTintColorTexture != null)
@@ -476,7 +487,7 @@ namespace RevitGLTF
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info("Material Stone start export");
 
-            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue/255, byte.MaxValue/255, byte.MaxValue/255);
+            Color defaultColor = material.Color.IsValid ? material.Color : new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
 
             BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
             babylonMaterial.diffuse = GLTFUtil.ToArray(GetColorPropertyValue(asset,Stone.StoneColor, defaultColor));

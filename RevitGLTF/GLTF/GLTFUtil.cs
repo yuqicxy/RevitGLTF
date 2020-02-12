@@ -66,7 +66,7 @@ namespace RevitGLTF
         
         public static float[] ToArray(Color color)
         {
-            return new float[] { color.Red, color.Green, color.Blue };
+            return new float[] { color.Red/255.0f, color.Green/255.0f, color.Blue/255.0f };
         }
 
         public static float[] ToArray(Transform matrix)

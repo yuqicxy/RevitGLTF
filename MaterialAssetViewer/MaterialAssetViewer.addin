@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Text>Command GetSelectElementID</Text>
+    <Description>Some description for GetSelectElementID</Description>
+    <Assembly>MaterialAssetViewer/MaterialAssetViewer.dll</Assembly>
+    <FullClassName>MaterialAssetViewer.GetSelectElementID</FullClassName>
+    <ClientId>34961841-CF42-41F0-B369-BED53C2EC8EE</ClientId>
+    <VendorId>com.typepad.thebuildingcoder</VendorId>
+    <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
+  </AddIn>
+  <AddIn Type="Command">
+    <Text>Command MaterialAssetViewer</Text>
+    <Description>Some description for MaterialAssetViewer</Description>
+    <Assembly>MaterialAssetViewer/MaterialAssetViewer.dll</Assembly>
+    <FullClassName>MaterialAssetViewer.MaterialAssetViewer</FullClassName>
+    <ClientId>292512E9-9F0F-4D0A-A140-2039D623598A</ClientId>
+    <VendorId>com.typepad.thebuildingcoder</VendorId>
+    <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
+  </AddIn>
+</RevitAddIns>

@@ -42,3 +42,5 @@
 /RevitGLTF/obj/*
 /RevitGLTF/packages/*
 /RevitGLTF/bin/*
+/MaterialAssetViewer/bin/*
+/MaterialAssetViewer/obj/*
