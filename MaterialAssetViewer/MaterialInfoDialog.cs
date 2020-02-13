@@ -39,9 +39,13 @@ namespace MaterialAssetViewer
                 if (appearanceAssetElement == null)
                     continue;
 
+                outString += "material Name:" + appearanceAssetElement.Name + "\n";
+
                 Asset asset = appearanceAssetElement.GetRenderingAsset();
 
                 outString += asset.Stringify();
+
+                outString += "\n";
             }
             return outString;
         }

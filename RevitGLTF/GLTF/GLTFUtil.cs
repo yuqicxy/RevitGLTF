@@ -16,44 +16,6 @@ namespace RevitGLTF
     {
         public const float Epsilon = 0.00001f;
 
-        //public static Matrix4x4 ToFloatArray(Transform matrix)
-        //{
-        //    XYZ basis0 = matrix.get_Basis(0);
-        //    XYZ basis1 = matrix.get_Basis(1);
-        //    XYZ basis2 = matrix.get_Basis(2);
-        //    XYZ origin = matrix.Origin;
-
-        //    Matrix4x4 array;
-        //    array.M11 = (float)basis0.X;
-        //    array.M21 = (float)basis0.Y;
-        //    array.M31 = (float)basis0.Z;
-        //    array.M41 = 0.0f;
-        //    array.M12= (float)basis1.X;
-        //    array.M22= (float)basis1.Y;
-        //    array.M32= (float)basis1.Z;
-        //    array.M42= 0.0f;
-        //    array.M13= (float)basis2.X;
-        //    array.M23= (float)basis2.Y;
-        //    array.M33 = (float)basis2.Z;
-        //    array.M43 = 0.0f;
-        //    array.M14 = (float)origin.X;
-        //    array.M24 = (float)origin.Y;
-        //    array.M34 = (float)origin.Z;
-        //    array.M44 = 0.0f;
-
-        //    return array;
-        //}
-
-        //public static Vector3 ToVector3(XYZ vec)
-        //{
-        //    return new Vector3((float)vec.X, (float)vec.Y, (float)vec.Z);
-        //}
-
-        //public static Vector2 ToVector2(UV uv)
-        //{
-        //    return new Vector2((float)uv.U, (float)uv.V);
-        //}
-
         public static float[] ToArray(XYZ point)
         {
             return new float[] { (float)point.X, (float)point.Y, (float)point.Z };
@@ -62,12 +24,7 @@ namespace RevitGLTF
         public static float[] ToArray(UV point)
         {
             return new float[] { (float)point.U, (float)point.V };
-        }
-        
-        public static float[] ToArray(Color color)
-        {
-            return new float[] { color.Red/255.0f, color.Green/255.0f, color.Blue/255.0f };
-        }
+        }      
 
         public static float[] ToArray(Transform matrix)
         {
@@ -75,10 +32,6 @@ namespace RevitGLTF
             XYZ basis1 = matrix.get_Basis(1);
             XYZ basis2 = matrix.get_Basis(2);
             XYZ origin = matrix.Origin;
-            //return new float[] {(float)basis0.X, (float)basis1.X,(float)basis2.X, (float)origin.X,
-            //                    (float)basis0.Y, (float)basis1.Y,(float)basis2.Y, (float)origin.Y,
-            //                    (float)basis0.Z, (float)basis1.Z,(float)basis2.Z, (float)origin.Z,
-            //                    0.0f    , 0.0f    ,    0.0f, 1.0f};
 
             return new float[] { (float)basis0.X,(float)basis0.Y,(float)basis0.Z,0.0f,
                           (float)basis1.X,(float)basis1.Y,(float)basis1.Z,0.0f,

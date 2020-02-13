@@ -241,9 +241,12 @@ namespace MaterialAssetViewer
         //AssetPropertyType.Double4:
         public static String Stringify(this AssetPropertyDoubleArray4d asset) 
         {
-            var str = String.Format("name:{0} Type:{1} Value:{2}\n",
+            var str = String.Format("name:{0} Type:{1} Value:{2} {3} {4} {5}\n",
                 asset.Name, asset.Type.ToString(),
-                asset.GetValueAsColor().ToString());
+                asset.GetValueAsDoubles()[0],
+                asset.GetValueAsDoubles()[1],
+                asset.GetValueAsDoubles()[2],
+                asset.GetValueAsDoubles()[3]);
 
             var pro = asset as AssetProperty;
             str += pro.Stringify();
@@ -254,10 +257,14 @@ namespace MaterialAssetViewer
         //AssetPropertyType.Double44:
         public static String Stringify(this AssetPropertyDoubleMatrix44 asset) 
         {
-            var str = String.Format("name:{0} Type:{1} Value:{2}\n",
-                asset.Name, asset.Type.ToString(),
-                asset.Value.ToString());
-
+            var str = String.Format("name:{0} Type:{1} Value:",
+                asset.Name, asset.Type.ToString());
+            for(int i =0;i< 16;++i)
+            {
+                str += asset.Value.get_Item(i).ToString();
+            }
+            str += "\n";
+         
             var pro = asset as AssetProperty;
             str += pro.Stringify();
 
