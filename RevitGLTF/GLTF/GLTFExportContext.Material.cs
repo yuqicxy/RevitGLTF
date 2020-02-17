@@ -511,13 +511,29 @@ namespace RevitGLTF
         private int mCurrentMaterialIndex = -1;
         
         private Dictionary<ElementId, int> mMaterialTable = new Dictionary<ElementId, int>();
+
+        private int mCurrentMaterialID = -1;
         public void OnMaterial(MaterialNode node)
         {
             string name = node.NodeName + "\tid:" + node.MaterialId.ToString() + "\tmaterial:" + node.ToString();
             log.Info("MaterialNode\t" + name);
 
+            CreateMaterial(node);
+
+            if(mCurrentMaterialID != node.MaterialId.IntegerValue)
+            {
+                mCurrentMaterialID = node.MaterialId.IntegerValue;
+                if (mCurrentSubMesh != null)
+                    OnSubmeshEnd();
+                OnSubmeshStart(mCurrentMaterialID);
+                mCurrentMaterialID = node.MaterialId.IntegerValue;
+            }
+        }
+
+        public void CreateMaterial(MaterialNode node)
+        {
             Asset asset = null;
-            if(node.HasOverriddenAppearance)
+            if (node.HasOverriddenAppearance)
             {
                 asset = node.GetAppearanceOverride();
             }
@@ -529,16 +545,19 @@ namespace RevitGLTF
             if (!mMaterialTable.ContainsKey(node.MaterialId))
             {
                 var revitMaterial = mRevitDocument.GetElement(node.MaterialId) as Material;
-                try 
+                try
                 {
                     var material = MaterialFactory.CreateMaterial(asset, revitMaterial);
 
                     if (material == null)
-                        return;
+                    {
+                        material = new BabylonStandardMaterial(node.MaterialId.ToString());
+                        material.name = node.NodeName;
+                    }
 
                     mScene.MaterialsList.Add(material);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     log.Error(e.Message);
                     log.Error(e.StackTrace);
@@ -555,7 +574,7 @@ namespace RevitGLTF
                     mCurrentMaterialIndex = materials.Count() - 1;
                     mCurrentMutiMaterial.materials = materials.ToArray();
                 }
-                else 
+                else
                 {
                     var materials = mCurrentMutiMaterial.materials.ToList();
                     if (!materials.Contains(node.MaterialId.ToString()))
@@ -564,7 +583,7 @@ namespace RevitGLTF
                         mCurrentMaterialIndex = materials.Count() - 1;
                         mCurrentMutiMaterial.materials = materials.ToArray();
                     }
-                    else 
+                    else
                     {
                         mCurrentMaterialIndex = materials.FindIndex(_str => _str == node.MaterialId.ToString());
                     }
@@ -589,7 +608,7 @@ namespace RevitGLTF
                         mCurrentMaterialIndex = materials.Count() - 1;
                         mCurrentMutiMaterial.materials = materials.ToArray();
                     }
-                    else 
+                    else
                     {
                         mCurrentMaterialIndex = materials.FindIndex(_str => _str == node.MaterialId.ToString());
                     }
