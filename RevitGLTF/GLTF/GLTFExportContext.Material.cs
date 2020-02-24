@@ -307,6 +307,9 @@ namespace RevitGLTF
             if (GlazingTransmittanceMapTexture != null)
                 babylonMaterial.diffuseTexture = GlazingTransmittanceMapTexture;
 
+            babylonMaterial.alpha = 0.5f;
+            babylonMaterial.transparencyMode = (int)BabylonPBRMetallicRoughnessMaterial.TransparencyMode.ALPHABLEND;
+
             return babylonMaterial;
         }
 
@@ -366,12 +369,14 @@ namespace RevitGLTF
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
             List<float> defaultVal = new List<float> { defaultColor.Red / 255.0f, defaultColor.Green / 255.0f, defaultColor.Blue / 255.0f };
-            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
-            babylonMaterial.diffuse = GetColorPropertyValue(asset, Metal.MetalColor, defaultVal).ToArray();
+            BabylonPBRMetallicRoughnessMaterial babylonMaterial = new BabylonPBRMetallicRoughnessMaterial(material.Id.ToString());
+            babylonMaterial.baseColor = GetColorPropertyValue(asset, Metal.MetalColor, defaultVal).ToArray();
 
             var MetalColorTexture = CreateUnifiedBitmapTexture(asset, material, Metal.MetalColor);
             if (MetalColorTexture != null)
-                babylonMaterial.diffuseTexture = MetalColorTexture;
+                babylonMaterial.baseTexture = MetalColorTexture;
+
+            babylonMaterial.metallic = 1.0f;
 
             return babylonMaterial;
         }
@@ -564,8 +569,6 @@ namespace RevitGLTF
                     return;
                 }
 
-                //mCurrentMaterialIndex = mScene.MaterialsList.Count - 1;
-                //mMaterialTable.Add(node.MaterialId, mCurrentMaterialIndex);
                 mMaterialTable.Add(node.MaterialId, -1);
                 if (mCurrentMutiMaterial.materials == null)
                 {
@@ -591,7 +594,6 @@ namespace RevitGLTF
             }
             else
             {
-                //mCurrentMaterialIndex = mMaterialTable[node.MaterialId];
                 if (mCurrentMutiMaterial.materials == null)
                 {
                     List<String> materials = new List<String>();

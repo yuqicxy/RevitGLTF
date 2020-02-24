@@ -93,6 +93,8 @@ namespace RevitGLTF
         {
             GLTFExporter gltfExporter = new GLTFExporter();
             ExportParameters para = new ExportParameters();
+            para.dracoCompression = true;
+            para.optimizeVertices = true;
 
             BabylonMesh rootNode = new BabylonMesh { name = "root",id = "rootTrans"};
             rootNode.isDummy = true;
