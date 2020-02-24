@@ -47,8 +47,8 @@
 - [ ]族实例属性数据库
 
 ## 使用方法
-![User](Doc/Image/User.jpg)
+![User](Doc/Image/user.jpg)
 
 ## 现有进展
-![Scene1](Doc/Image/Scene1.jpg)
-![Scene2](Doc/Image/Scene2.jpg)
+![Scene1](Doc/Image/scene1.jpg)
+![Scene2](Doc/Image/scene2.jpg)
