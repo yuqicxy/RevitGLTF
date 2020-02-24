@@ -7,4 +7,8 @@
     <StartAction>Program</StartAction>
     <StartProgram>D:\AutoDesk\Revit2020\Revit 2020\Revit.exe</StartProgram>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartAction>Program</StartAction>
+    <StartProgram>D:\AutoDesk\Revit2020\Revit 2020\Revit.exe</StartProgram>
+  </PropertyGroup>
 </Project>
