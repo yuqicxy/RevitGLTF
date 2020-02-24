@@ -93,6 +93,8 @@ namespace RevitGLTF
         {
             GLTFExporter gltfExporter = new GLTFExporter();
             ExportParameters para = new ExportParameters();
+            para.dracoCompression = true;
+            para.optimizeVertices = true;
 
             BabylonMesh rootNode = new BabylonMesh { name = "root",id = "rootTrans"};
             rootNode.isDummy = true;
@@ -140,39 +142,37 @@ namespace RevitGLTF
 
         public RenderNodeAction OnElementBegin(ElementId elementId)
         {
-            mVertices = new List<GlobalVertex>();
-            mIndices = new List<int>();
-            mCurrentMesh = new BabylonMesh
-            {
-                id = elementId.ToString(),
-                name = elementId.ToString()
-            };
+            Element e = mRevitDocument.GetElement(elementId);
+            string name = string.Format("OnElementStart: id {0} category {1} name {2}",
+    elementId.IntegerValue, e.Category.Name, e.Name);
+            log.Info(name);
+
+            mCurrentMesh = new RevitGLTF.MyMesh();
+            mCurrentMesh.ID = elementId.ToString();
+            mCurrentMesh.Name = e.Name;
+            mCurrentMesh.TransformMatrix = mTransformationStack.Peek();
+
+            mMaterialSubMeshMap = new Dictionary<int, MySubMesh>();
 
             mCurrentMutiMaterial = new BabylonMultiMaterial();
             mCurrentMutiMaterial.id = elementId.ToString();
-
-            GLTFUtil.ExportTransform(mCurrentMesh, mTransformationStack.Peek());
+            
+            mCurrentMaterialID = -1;
 
             var id = elementId.IntegerValue;
 
            /*Wood Type Material*/ 
-            List<int> table = new List<int> {21366, 19573, 19674, 19735, 19782, 19912, 19861, 34424 };
+           // List<int> table = new List<int> {20621/*, 20860, 21366, 19735, 19782, 19912, 19861, 34424 */};
            /* Stone Type Material*/ 
            //List<int> table = new List<int> {20621,11856, 19020 ,19099,19036,19177,19218};
 
-            if (!table.Contains(id))
-            {
-               return RenderNodeAction.Skip;
-            }
-
-            Element e = mRevitDocument.GetElement(elementId);
+           //if (!table.Contains(id))
+           //{
+           //   return RenderNodeAction.Skip;
+           //}
 
             //if (e.Category.Name != "楼板")
             //    return RenderNodeAction.Skip;
-
-            string name = string.Format("OnElementStart: id {0} category {1} name {2}",
-                elementId.IntegerValue, e.Category.Name, e.Name);
-            log.Info(name);
 
             return RenderNodeAction.Proceed;
         }
@@ -184,49 +184,24 @@ namespace RevitGLTF
                 elementId.IntegerValue, e.Category.Name, e.Name);
             log.Info(name);
 
-            if (mIndices.Count() > 0 && mVertices.Count > 0)
+            if (mMaterialSubMeshMap.Count > 0)
             {
-                if(mCurrentMesh.subMeshes == null)
+                foreach (var submesh in mMaterialSubMeshMap)
                 {
-                    var subMesh = new BabylonSubMesh();
-                    subMesh.indexStart = 0;
-                    subMesh.verticesStart = 0;
-                    subMesh.indexCount = mIndices.Count();
-                    subMesh.verticesCount = mVertices.Count();
-                    var subMeshes = new List<BabylonSubMesh>();
-                    subMeshes.Add(subMesh);
-                    mCurrentMesh.subMeshes = subMeshes.ToArray();
+                    mCurrentMesh.AddSubMesh(submesh.Value);
                 }
-
-
-                mCurrentMesh.indices = mIndices.ToArray();
-                // Buffers
-                mCurrentMesh.positions = mVertices.SelectMany(v => v.Position).ToArray();
-                mCurrentMesh.normals = mVertices.SelectMany(v => v.Normal).ToArray();
-                float[] firstPosition = mVertices[0].Position;
-                bool allEqual = mVertices.All(v => v.Position.IsEqualTo(firstPosition, 0.001f));
-                if (allEqual)
+                mCurrentMesh.MaterialID = elementId.ToString();
+                var babylonMesh = mCurrentMesh.GenerateMesh();
+                if (babylonMesh != null)
                 {
-                    RaiseWarning("All the vertices share the same position. Is the mesh invisible? The result may not be as expected.", 2);
+                    mScene.MeshesList.Add(babylonMesh);
+                    mScene.MultiMaterialsList.Add(mCurrentMutiMaterial);
                 }
-                mCurrentMesh.uvs = mVertices.SelectMany(v => v.UV).ToArray();
-
-                mScene.MultiMaterialsList.Add(mCurrentMutiMaterial);
-                mCurrentMesh.materialId = elementId.ToString();
-
-                mScene.MeshesList.Add(mCurrentMesh);
             }
 
-            mVertices = null;
-            mIndices = null;
             mCurrentMesh = null;
+            mMaterialSubMeshMap = null;
             mCurrentMutiMaterial = null;
-
-            //GLTFExporter gltfExporter = new GLTFExporter();
-            //ExportParameters para = new ExportParameters();
-            //mScene.Prepare(false, false);
-            //gltfExporter.ExportGltf(para, mScene, "E:\\RevitPlugin\\RevitGLTF\\RevitGLTF\\bin\\x64\\Log", "1.gltf", false, this);
-            //mIsCancel = true;
         }
 
         public void OnLight(LightNode node)

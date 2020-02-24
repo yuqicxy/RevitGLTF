@@ -307,6 +307,9 @@ namespace RevitGLTF
             if (GlazingTransmittanceMapTexture != null)
                 babylonMaterial.diffuseTexture = GlazingTransmittanceMapTexture;
 
+            babylonMaterial.alpha = 0.5f;
+            babylonMaterial.transparencyMode = (int)BabylonPBRMetallicRoughnessMaterial.TransparencyMode.ALPHABLEND;
+
             return babylonMaterial;
         }
 
@@ -366,12 +369,14 @@ namespace RevitGLTF
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
             List<float> defaultVal = new List<float> { defaultColor.Red / 255.0f, defaultColor.Green / 255.0f, defaultColor.Blue / 255.0f };
-            BabylonStandardMaterial babylonMaterial = new BabylonStandardMaterial(material.Id.ToString());
-            babylonMaterial.diffuse = GetColorPropertyValue(asset, Metal.MetalColor, defaultVal).ToArray();
+            BabylonPBRMetallicRoughnessMaterial babylonMaterial = new BabylonPBRMetallicRoughnessMaterial(material.Id.ToString());
+            babylonMaterial.baseColor = GetColorPropertyValue(asset, Metal.MetalColor, defaultVal).ToArray();
 
             var MetalColorTexture = CreateUnifiedBitmapTexture(asset, material, Metal.MetalColor);
             if (MetalColorTexture != null)
-                babylonMaterial.diffuseTexture = MetalColorTexture;
+                babylonMaterial.baseTexture = MetalColorTexture;
+
+            babylonMaterial.metallic = 1.0f;
 
             return babylonMaterial;
         }
@@ -511,13 +516,29 @@ namespace RevitGLTF
         private int mCurrentMaterialIndex = -1;
         
         private Dictionary<ElementId, int> mMaterialTable = new Dictionary<ElementId, int>();
+
+        private int mCurrentMaterialID = -1;
         public void OnMaterial(MaterialNode node)
         {
             string name = node.NodeName + "\tid:" + node.MaterialId.ToString() + "\tmaterial:" + node.ToString();
             log.Info("MaterialNode\t" + name);
 
+            CreateMaterial(node);
+
+            if(mCurrentMaterialID != node.MaterialId.IntegerValue)
+            {
+                mCurrentMaterialID = node.MaterialId.IntegerValue;
+                if (mCurrentSubMesh != null)
+                    OnSubmeshEnd();
+                OnSubmeshStart(mCurrentMaterialID);
+                mCurrentMaterialID = node.MaterialId.IntegerValue;
+            }
+        }
+
+        public void CreateMaterial(MaterialNode node)
+        {
             Asset asset = null;
-            if(node.HasOverriddenAppearance)
+            if (node.HasOverriddenAppearance)
             {
                 asset = node.GetAppearanceOverride();
             }
@@ -529,50 +550,26 @@ namespace RevitGLTF
             if (!mMaterialTable.ContainsKey(node.MaterialId))
             {
                 var revitMaterial = mRevitDocument.GetElement(node.MaterialId) as Material;
-                try 
+                try
                 {
                     var material = MaterialFactory.CreateMaterial(asset, revitMaterial);
 
                     if (material == null)
-                        return;
+                    {
+                        material = new BabylonStandardMaterial(node.MaterialId.ToString());
+                        material.name = node.NodeName;
+                    }
 
                     mScene.MaterialsList.Add(material);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     log.Error(e.Message);
                     log.Error(e.StackTrace);
                     return;
                 }
 
-                //mCurrentMaterialIndex = mScene.MaterialsList.Count - 1;
-                //mMaterialTable.Add(node.MaterialId, mCurrentMaterialIndex);
                 mMaterialTable.Add(node.MaterialId, -1);
-                if (mCurrentMutiMaterial.materials == null)
-                {
-                    List<String> materials = new List<String>();
-                    materials.Add(node.MaterialId.ToString());
-                    mCurrentMaterialIndex = materials.Count() - 1;
-                    mCurrentMutiMaterial.materials = materials.ToArray();
-                }
-                else 
-                {
-                    var materials = mCurrentMutiMaterial.materials.ToList();
-                    if (!materials.Contains(node.MaterialId.ToString()))
-                    {
-                        materials.Add(node.MaterialId.ToString());
-                        mCurrentMaterialIndex = materials.Count() - 1;
-                        mCurrentMutiMaterial.materials = materials.ToArray();
-                    }
-                    else 
-                    {
-                        mCurrentMaterialIndex = materials.FindIndex(_str => _str == node.MaterialId.ToString());
-                    }
-                }
-            }
-            else
-            {
-                //mCurrentMaterialIndex = mMaterialTable[node.MaterialId];
                 if (mCurrentMutiMaterial.materials == null)
                 {
                     List<String> materials = new List<String>();
@@ -589,7 +586,31 @@ namespace RevitGLTF
                         mCurrentMaterialIndex = materials.Count() - 1;
                         mCurrentMutiMaterial.materials = materials.ToArray();
                     }
-                    else 
+                    else
+                    {
+                        mCurrentMaterialIndex = materials.FindIndex(_str => _str == node.MaterialId.ToString());
+                    }
+                }
+            }
+            else
+            {
+                if (mCurrentMutiMaterial.materials == null)
+                {
+                    List<String> materials = new List<String>();
+                    materials.Add(node.MaterialId.ToString());
+                    mCurrentMaterialIndex = materials.Count() - 1;
+                    mCurrentMutiMaterial.materials = materials.ToArray();
+                }
+                else
+                {
+                    var materials = mCurrentMutiMaterial.materials.ToList();
+                    if (!materials.Contains(node.MaterialId.ToString()))
+                    {
+                        materials.Add(node.MaterialId.ToString());
+                        mCurrentMaterialIndex = materials.Count() - 1;
+                        mCurrentMutiMaterial.materials = materials.ToArray();
+                    }
+                    else
                     {
                         mCurrentMaterialIndex = materials.FindIndex(_str => _str == node.MaterialId.ToString());
                     }

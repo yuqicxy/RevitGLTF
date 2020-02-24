@@ -80,6 +80,7 @@
     <Compile Include="GLTF\GLTFExportContext.PointLine.cs" />
     <Compile Include="GLTF\GLTFUtil.cs" />
     <Compile Include="ExportManager\App.cs" />
+    <Compile Include="GLTF\MyMesh.cs" />
     <Compile Include="UI\ExportConfig.cs" />
     <Compile Include="ExportManager\Command.cs" />
     <Compile Include="UI\ExportDialog.cs">
