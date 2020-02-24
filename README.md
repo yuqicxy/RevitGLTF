@@ -16,13 +16,13 @@
 * TQ.Texture
 
 ### 引用配置
-  ![Reference](Doc\Image\reference.jpg)
+  ![Reference](Doc/Image/reference.jpg)
 * 添加引用目录<Revit安装目录>,添加RevitAPI.dll,RevitAPIUI.dll
 * 添加引用目录RevitGLTF\Refs，添加缺失dll
 
 ### 日志配置
 * 在RevitGLTF/revitGLTF.config文件中修改两处log输出目录
-  ![Image of log](Doc\Image\log.jpg)
+  ![Image of log](Doc/Image/log.jpg)
 * 拷贝该文件至Revit安装目录(与Revit.exe同级)
 
 ### Revit插件位置
@@ -30,7 +30,7 @@
 
 ### 调试技巧
 * 修改项目属性-调试-启动外部程序
-  ![debug](Doc\Image\debug.jpg)
+  ![debug](Doc/Image/debug.jpg)
 * 运行Revit后，“调试-附加到进程”，选择Revit.exe
 
 ## 开发计划
@@ -47,8 +47,8 @@
 - [ ]族实例属性数据库
 
 ## 使用方法
-![User](Doc\Image\User.jpg)
+![User](Doc/Image/User.jpg)
 
 ## 现有进展
-![Scene1](Doc\Image\Scene1.jpg)
-![Scene2](Doc\Image\Scene2.jpg)
+![Scene1](Doc/Image/Scene1.jpg)
+![Scene2](Doc/Image/Scene2.jpg)
