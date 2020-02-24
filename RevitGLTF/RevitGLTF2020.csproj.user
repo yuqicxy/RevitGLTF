@@ -3,7 +3,10 @@
   <PropertyGroup>
     <ReferencePath>D:\AutoDesk\Revit2020\Revit 2020\;E:\RevitPlugin\RevitGLTF\RevitGLTF\Refs\</ReferencePath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
     <StartProgram>D:\AutoDesk\Revit2020\Revit 2020\Revit.exe</StartProgram>
   </PropertyGroup>
