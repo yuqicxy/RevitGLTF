@@ -32,6 +32,8 @@ namespace BabylonExport.Entities
 
         public bool isUnlit = false;
 
+        public bool hasTexture = false;
+
         public BabylonMaterial(string id)
         {
             this.id = id;

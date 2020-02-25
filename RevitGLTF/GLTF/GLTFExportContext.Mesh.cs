@@ -64,6 +64,14 @@ namespace RevitGLTF
 
         public void OnPolymesh(PolymeshTopology node)
         {
+            //BabylonMaterial material = null;
+            //mMaterialTable.TryGetValue(mCurrentMaterialID, out material);
+            //bool needTextureCoord = false;
+            //if(material != null)
+            //{
+            //    needTextureCoord = material.hasTexture;
+            //}
+
             var lengthPoints = node.NumberOfPoints;
             var lengthNormals = node.NumberOfNormals;
             var lengthUVS = node.NumberOfUVs;
@@ -83,10 +91,13 @@ namespace RevitGLTF
                 v1.Position = GLTFUtil.ToArray(mTransformationStack.Peek().OfPoint(node.GetPoint(triangle.V1)));
                 v2.Position = GLTFUtil.ToArray(mTransformationStack.Peek().OfPoint(node.GetPoint(triangle.V2)));
                 v3.Position = GLTFUtil.ToArray(mTransformationStack.Peek().OfPoint(node.GetPoint(triangle.V3)));
-                
-                v1.UV = GLTFUtil.ToArray(node.GetUV(triangle.V1));
-                v2.UV = GLTFUtil.ToArray(node.GetUV(triangle.V2));
-                v3.UV = GLTFUtil.ToArray(node.GetUV(triangle.V3));
+
+                //if (needTextureCoord)
+                {
+                    v1.UV = GLTFUtil.ToArray(node.GetUV(triangle.V1));
+                    v2.UV = GLTFUtil.ToArray(node.GetUV(triangle.V2));
+                    v3.UV = GLTFUtil.ToArray(node.GetUV(triangle.V3));
+                }
 
                 XYZ normal;
                 if (DistributionOfNormals.OnePerFace == distrib)

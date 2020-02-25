@@ -1,6 +1,8 @@
-﻿namespace RevitGLTF
+﻿using System.Collections.Generic;
+
+namespace RevitGLTF
 {
-    public struct GlobalVertex
+    public struct GlobalVertex: System.IComparable<GlobalVertex>
     {
         public int BaseIndex { get; set; }
         public int CurrentIndex { get; set; }
@@ -86,6 +88,65 @@
             }
 
             return other.BonesIndices == BonesIndices;
+        }
+
+        public int CompareTo(GlobalVertex other)
+        {
+            if (Equals(other))
+                return 0;
+
+            if (other.Position != null && Position != null)
+            {
+                if (Position.Length > other.Position.Length)
+                    return 1;
+                for (int i = 0; i < Position.Length; i++)
+                {
+                    if (Position[i] > other.Position[i])
+                        return 1;
+                }
+            }
+
+            if (other.Normal != null && Normal != null)
+            {
+                if (Normal.Length > other.Normal.Length)
+                    return 1;
+                for (int i = 0; i < Normal.Length; i++)
+                {
+                    if (Normal[i] > other.Normal[i])
+                        return 1;
+                }
+            }
+
+            return -1;
+        }
+    }
+
+    class GlobalVertexLookup : Dictionary<GlobalVertex, int>
+    {
+        class GlobalVertexEqualityComparer : IEqualityComparer<GlobalVertex>
+        {
+            public bool Equals(GlobalVertex x, GlobalVertex y)
+            {
+                return x.Equals(y);
+            }
+
+            public int GetHashCode(GlobalVertex obj)
+            {
+                string str = "";
+                for(int i = 0;i < obj.Position.Length; i++)
+                {
+                    str += obj.Position[i].ToString();
+                }
+                for (int i = 0; i < obj.Normal.Length; i++)
+                {
+                    str += obj.Normal[i].ToString();
+                }
+                return str.GetHashCode();
+            }
+        }
+
+        public GlobalVertexLookup():base(new GlobalVertexEqualityComparer())
+        {
         }
     }
 }

@@ -251,7 +251,10 @@ namespace RevitGLTF
 
             var GenericDiffuseTexture = CreateUnifiedBitmapTexture(asset, material, Generic.GenericDiffuse);
             if (GenericDiffuseTexture != null)
+            {
                 babylonMaterial.diffuseTexture = GenericDiffuseTexture;
+                babylonMaterial.hasTexture = true;
+            }
 
             return babylonMaterial;
         }
@@ -269,7 +272,10 @@ namespace RevitGLTF
 
             var CeramicColorTexture = CreateUnifiedBitmapTexture(asset, material, Ceramic.CeramicColor);
             if (CeramicColorTexture != null)
+            {
                 babylonMaterial.diffuseTexture = CeramicColorTexture;
+                babylonMaterial.hasTexture = true;
+            }
 
             return babylonMaterial;
         }
@@ -287,7 +293,10 @@ namespace RevitGLTF
 
             var ConcreteColorTexture = CreateUnifiedBitmapTexture(asset, material, Concrete.ConcreteColor);
             if (ConcreteColorTexture != null)
+            {
                 babylonMaterial.diffuseTexture = ConcreteColorTexture;
+                babylonMaterial.hasTexture = true;
+            }
 
             return babylonMaterial;
         }
@@ -305,7 +314,10 @@ namespace RevitGLTF
 
             var GlazingTransmittanceMapTexture = CreateUnifiedBitmapTexture(asset, material, Glazing.GlazingTransmittanceMap);
             if (GlazingTransmittanceMapTexture != null)
+            {
                 babylonMaterial.diffuseTexture = GlazingTransmittanceMapTexture;
+                babylonMaterial.hasTexture = true;
+            }
 
             babylonMaterial.alpha = 0.5f;
             babylonMaterial.transparencyMode = (int)BabylonPBRMetallicRoughnessMaterial.TransparencyMode.ALPHABLEND;
@@ -326,7 +338,10 @@ namespace RevitGLTF
 
             var HardwoodColorTexture = CreateUnifiedBitmapTexture(asset, material, Hardwood.HardwoodColor);
             if (HardwoodColorTexture != null)
+            {
                 babylonMaterial.diffuseTexture = HardwoodColorTexture;
+                babylonMaterial.hasTexture = true;
+            }
 
             //int tintEnable = GetIntegerPropertyValue(asset, Hardwood.HardwoodTintEnabled, 0);
             //if(tintEnable > 0)
@@ -356,7 +371,10 @@ namespace RevitGLTF
 
             var MasonryCMUColorTexture = CreateUnifiedBitmapTexture(asset, material, MasonryCMU.MasonryCMUColor);
             if (MasonryCMUColorTexture != null)
+            {
                 babylonMaterial.diffuseTexture = MasonryCMUColorTexture;
+                babylonMaterial.hasTexture = true;
+            }
 
             return babylonMaterial;
         }
@@ -374,7 +392,10 @@ namespace RevitGLTF
 
             var MetalColorTexture = CreateUnifiedBitmapTexture(asset, material, Metal.MetalColor);
             if (MetalColorTexture != null)
+            {
                 babylonMaterial.baseTexture = MetalColorTexture;
+                babylonMaterial.hasTexture = true;
+            }
 
             babylonMaterial.metallic = 1.0f;
 
@@ -394,7 +415,10 @@ namespace RevitGLTF
 
             var MetallicpaintBaseColorTexture = CreateUnifiedBitmapTexture(asset, material, MetallicPaint.MetallicpaintBaseColor);
             if (MetallicpaintBaseColorTexture != null)
+            {
                 babylonMaterial.diffuseTexture = MetallicpaintBaseColorTexture;
+                babylonMaterial.hasTexture = true;
+            }
 
             return babylonMaterial;
         }
@@ -412,8 +436,10 @@ namespace RevitGLTF
 
             var MirrorTintcolorTexture = CreateUnifiedBitmapTexture(asset, material, Mirror.MirrorTintcolor);
             if (MirrorTintcolorTexture != null)
+            {
                 babylonMaterial.diffuseTexture = MirrorTintcolorTexture;
-
+                babylonMaterial.hasTexture = true;
+            }
             return babylonMaterial;
         }
 
@@ -430,7 +456,10 @@ namespace RevitGLTF
 
             var PlasticvinylColorTexture = CreateUnifiedBitmapTexture(asset, material, PlasticVinyl.PlasticvinylColor);
             if (PlasticvinylColorTexture != null)
+            {
                 babylonMaterial.diffuseTexture = PlasticvinylColorTexture;
+                babylonMaterial.hasTexture = true;
+            }
 
             return babylonMaterial;
         }
@@ -451,7 +480,10 @@ namespace RevitGLTF
             
             var SolidglassTransmittanceCustomColorTexture = CreateUnifiedBitmapTexture(asset, material, SolidGlass.SolidglassTransmittanceCustomColor);
             if (SolidglassTransmittanceCustomColorTexture != null)
+            {
                 babylonMaterial.diffuseTexture = SolidglassTransmittanceCustomColorTexture;
+                babylonMaterial.hasTexture = true;
+            }
 
             return babylonMaterial;
         }
@@ -469,8 +501,10 @@ namespace RevitGLTF
 
             var WallpaintColorTexture = CreateUnifiedBitmapTexture(asset, material, WallPaint.WallpaintColor);
             if (WallpaintColorTexture != null)
+            {
                 babylonMaterial.diffuseTexture = WallpaintColorTexture;
-
+                babylonMaterial.hasTexture = true;
+            }
             return babylonMaterial;
         }
         
@@ -487,7 +521,10 @@ namespace RevitGLTF
 
             var WaterTintColorTexture = CreateUnifiedBitmapTexture(asset, material, Water.WaterTintColor);
             if (WaterTintColorTexture != null)
+            {
                 babylonMaterial.diffuseTexture = WaterTintColorTexture;
+                babylonMaterial.hasTexture = true;
+            }
 
             return babylonMaterial;
         }
@@ -504,9 +541,11 @@ namespace RevitGLTF
             babylonMaterial.diffuse = GetColorPropertyValue(asset, Stone.StoneColor, defaultVal).ToArray();
 
             var StoneColorTexture = CreateUnifiedBitmapTexture(asset, material, Stone.StoneColor);
-            if(StoneColorTexture!=null)
+            if (StoneColorTexture != null)
+            {
                 babylonMaterial.diffuseTexture = StoneColorTexture;
-
+                babylonMaterial.hasTexture = true;
+            }
             return babylonMaterial;
         }
     }
@@ -515,12 +554,13 @@ namespace RevitGLTF
     {
         private int mCurrentMaterialIndex = -1;
         
-        private Dictionary<ElementId, int> mMaterialTable = new Dictionary<ElementId, int>();
+        private Dictionary<int, BabylonMaterial> mMaterialTable = new Dictionary<int, BabylonMaterial>();
 
         private int mCurrentMaterialID = -1;
+
         public void OnMaterial(MaterialNode node)
         {
-            string name = node.NodeName + "\tid:" + node.MaterialId.ToString() + "\tmaterial:" + node.ToString();
+            string name = node.NodeName +"\t" + node.GetAppearance().Name  + "\tid:" + node.MaterialId.ToString() + "\tmaterial:" + node.ToString();
             log.Info("MaterialNode\t" + name);
 
             CreateMaterial(node);
@@ -547,7 +587,7 @@ namespace RevitGLTF
                 asset = node.GetAppearance();
             }
 
-            if (!mMaterialTable.ContainsKey(node.MaterialId))
+            if (!mMaterialTable.ContainsKey(node.MaterialId.IntegerValue))
             {
                 var revitMaterial = mRevitDocument.GetElement(node.MaterialId) as Material;
                 try
@@ -561,6 +601,7 @@ namespace RevitGLTF
                     }
 
                     mScene.MaterialsList.Add(material);
+                    mMaterialTable.Add(node.MaterialId.IntegerValue, material);
                 }
                 catch (Exception e)
                 {
@@ -569,7 +610,6 @@ namespace RevitGLTF
                     return;
                 }
 
-                mMaterialTable.Add(node.MaterialId, -1);
                 if (mCurrentMutiMaterial.materials == null)
                 {
                     List<String> materials = new List<String>();
@@ -580,16 +620,16 @@ namespace RevitGLTF
                 else
                 {
                     var materials = mCurrentMutiMaterial.materials.ToList();
-                    if (!materials.Contains(node.MaterialId.ToString()))
-                    {
+                    //if (!materials.Contains(node.MaterialId.ToString()))
+                    //{
                         materials.Add(node.MaterialId.ToString());
                         mCurrentMaterialIndex = materials.Count() - 1;
                         mCurrentMutiMaterial.materials = materials.ToArray();
-                    }
-                    else
-                    {
-                        mCurrentMaterialIndex = materials.FindIndex(_str => _str == node.MaterialId.ToString());
-                    }
+                    //}
+                    //else
+                    //{
+                    //    mCurrentMaterialIndex = materials.FindIndex(_str => _str == node.MaterialId.ToString());
+                    //}
                 }
             }
             else
@@ -602,7 +642,7 @@ namespace RevitGLTF
                     mCurrentMutiMaterial.materials = materials.ToArray();
                 }
                 else
-                {
+                {                    
                     var materials = mCurrentMutiMaterial.materials.ToList();
                     if (!materials.Contains(node.MaterialId.ToString()))
                     {

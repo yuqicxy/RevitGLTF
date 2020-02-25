@@ -12,6 +12,7 @@ namespace RevitGLTF
     class MySubMesh
     {
         private List<GlobalVertex> mVertices = null;
+        private GlobalVertexLookup mLookupTable = null;
 
         private List<int> mIndices = null;
        
@@ -20,34 +21,46 @@ namespace RevitGLTF
         public MySubMesh()
         {
             mVertices = new List<GlobalVertex>();
+            mLookupTable = new GlobalVertexLookup();
             mIndices = new List<int>();
         }
 
         public void AddVertex(GlobalVertex vertex)
         {
-            int index = mVertices.IndexOf(vertex);
-            if (index == -1)
+            if(!mLookupTable.ContainsKey(vertex))
             {
                 mVertices.Add(vertex);
                 mIndices.Add(mVertices.Count() - 1);
+                mLookupTable.Add(vertex, mVertices.Count() - 1);
             }
-            else
+            else 
             {
+                var index = mLookupTable[vertex];
                 mIndices.Add(index);
             }
+            //int index = mVertices.IndexOf(vertex);
+            //if (index == -1)
+            //{
+            //    mVertices.Add(vertex);
+            //    mIndices.Add(mVertices.Count() - 1);
+            //}
+            //else
+            //{
+            //    mIndices.Add(index);
+            //}
         }
 
-        public void AddVertexNoIndice(GlobalVertex vertex)
-        {
-            mVertices.Add(vertex);
-        }
+        //public void AddVertexNoIndice(GlobalVertex vertex)
+        //{
+        //    mVertices.Add(vertex);
+        //}
 
-        public void AddIndice(int v1,int v2,int v3)
-        {
-            mIndices.Add(v1);
-            mIndices.Add(v2);
-            mIndices.Add(v3);
-        }
+        //public void AddIndice(int v1,int v2,int v3)
+        //{
+        //    mIndices.Add(v1);
+        //    mIndices.Add(v2);
+        //    mIndices.Add(v3);
+        //}
 
         internal BabylonSubMesh Arrange(List<int> indices, List<GlobalVertex> vertexs)
         {
@@ -141,7 +154,8 @@ namespace RevitGLTF
                 log.Warn("All the vertices share the same position." +
                     " Is the mesh invisible? The result may not be as expected.");
             }
-            mesh.uvs = vertexs.SelectMany(v => v.UV).ToArray();
+            if(vertexs.First().UV != null)
+                mesh.uvs = vertexs.SelectMany(v => v.UV).ToArray();
 
             mesh.materialId = MaterialID;
 
