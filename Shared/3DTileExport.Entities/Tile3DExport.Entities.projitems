@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>ba005ae3-b945-4731-a63f-8d5b37879a38</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Tile3DExport.Entities</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Asset.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BoundingVolume.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Property.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tile3DExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TileContent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tileset.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)i3dm\" />
+    <Folder Include="$(MSBuildThisFileDirectory)b3dm\" />
+    <Folder Include="$(MSBuildThisFileDirectory)cmpt\" />
+  </ItemGroup>
+</Project>
