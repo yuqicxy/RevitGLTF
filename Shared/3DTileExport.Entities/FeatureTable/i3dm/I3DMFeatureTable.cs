@@ -4,7 +4,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
-namespace Tile3DExport.Entities
+namespace Tile3DExport.Entities.FeatureTable
 {
     [DataContract]
     class I3DMFeatureTable : Property

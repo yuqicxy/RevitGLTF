@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 using Tile3DExport.Entities;
 
-namespace Tile3DExport.Entities
+namespace Tile3DExport.Entities.FeatureTable
 {
     [DataContract]
     public class B3DMFeatureTable : Property

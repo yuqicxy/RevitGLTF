@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Tile3DExport.Entities
+namespace Tile3DExport.Entities.FeatureTable
 {
     [JsonConverter(typeof(Converter.GlobalPropertyCartesian3Converter))]
     public class GlobalPropertyCartesian3

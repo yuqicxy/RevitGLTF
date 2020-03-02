@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Tile3DExport.Entities
+namespace Tile3DExport.Entities.FeatureTable
 {
     public class BinaryBodyReference
     {

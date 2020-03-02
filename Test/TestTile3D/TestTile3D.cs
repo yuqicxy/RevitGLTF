@@ -65,56 +65,6 @@ namespace TestTile3D
             String str = ToJson(tileset);
             Console.WriteLine(str);
             #endregion
-
-            Tile3DExport.Entities.GlobalPropertyCartesian3 vector3 = new Tile3DExport.Entities.GlobalPropertyCartesian3();
-            List<float> val = new List<float>();
-            val.Add(1.0f);
-            val.Add(1.0f);
-            val.Add(1.0f);
-            vector3.array = val.ToArray();
-            //vector3.offset = 1000;
-
-            Tile3DExport.Entities.GlobalPropertyScalar scalar = new Tile3DExport.Entities.GlobalPropertyScalar();
-            //scalar.offset = 10;
-            //scalar.array = val.ToArray();
-            scalar.number = 10;
-
-            #region B3dmFeatureTable
-            Tile3DExport.Entities.B3DMFeatureTable table = new Tile3DExport.Entities.B3DMFeatureTable();
-            table.RTC_CENTER = vector3;
-            table.BATCH_LENGTH = scalar;
-            string tableStr = ToJson(table);
-            Console.WriteLine(tableStr);
-            #endregion
-
-            #region BinaryBodyReference
-            Tile3DExport.Entities.BinaryBodyReference refer = new Tile3DExport.Entities.BinaryBodyReference();
-            refer.byteOffset = 10;
-            //refer.componentType = Tile3DExport.Entities.BinaryBodyReference.ComponentType.FLOAT;
-            var binaryBodyReferencestr = ToJson(refer);
-            Console.WriteLine(binaryBodyReferencestr);
-            #endregion
-
-            #region I3dmFeatureTable
-            Console.WriteLine("\nI3dmFeatureTable:");
-            Tile3DExport.Entities.I3DMFeatureTable i3dmtable = new Tile3DExport.Entities.I3DMFeatureTable();
-            i3dmtable.POSITION = refer;
-            i3dmtable.INSTANCES_LENGTH = scalar;
-            try
-            {
-                string i3dmtableStr = ToJson(i3dmtable);
-                Console.WriteLine(i3dmtableStr);
-            }
-            catch (JsonSerializationException exp)
-            {
-               Console.WriteLine(exp.Message);
-            }
-            catch(Exception exp)
-            {
-                Console.WriteLine(exp.Message);
-            }
-            #endregion
-
         }
     }
 }
