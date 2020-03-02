@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Newtonsoft.Json;
-namespace Tile3DExport.Entities.Definition
+namespace Tile3DExport.Entities
 {
-    [JsonConverter(typeof(GlobalPropertyScalarConverter))]
+    [JsonConverter(typeof(Converter.GlobalPropertyScalarConverter))]
     public class GlobalPropertyScalar
     {
         public int? offset { get; set; } = null;
@@ -15,34 +15,37 @@ namespace Tile3DExport.Entities.Definition
         public int number { get; set; } = 0;
     }
 
-    public class GlobalPropertyScalarConverter : JsonConverter<GlobalPropertyScalar>
+    namespace Converter
     {
-        public override GlobalPropertyScalar ReadJson(JsonReader reader, Type objectType, [AllowNull] GlobalPropertyScalar existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public class GlobalPropertyScalarConverter : JsonConverter<GlobalPropertyScalar>
         {
-            throw new NotImplementedException("don't support read GlobalPropertyScalar");
-        }
+            public override GlobalPropertyScalar ReadJson(JsonReader reader, Type objectType, [AllowNull] GlobalPropertyScalar existingValue, bool hasExistingValue, JsonSerializer serializer)
+            {
+                throw new NotImplementedException("don't support read GlobalPropertyScalar");
+            }
 
-        public override void WriteJson(JsonWriter writer, [AllowNull] GlobalPropertyScalar value, JsonSerializer serializer)
-        {
-            if (value.offset != null)
+            public override void WriteJson(JsonWriter writer, [AllowNull] GlobalPropertyScalar value, JsonSerializer serializer)
             {
-                writer.WriteStartObject();
-                writer.WritePropertyName("byteOffset");
-                writer.WriteValue(value.offset);
-                writer.WriteEndObject();
-            }
-            else if (value.array != null)
-            {
-                writer.WriteStartArray();
-                foreach (int val in value.array)
+                if (value.offset != null)
                 {
-                    writer.WriteValue(val);
+                    writer.WriteStartObject();
+                    writer.WritePropertyName("byteOffset");
+                    writer.WriteValue(value.offset);
+                    writer.WriteEndObject();
                 }
-                writer.WriteEndArray();
-            }
-            else
-            {
-                writer.WriteValue(value.number);
+                else if (value.array != null)
+                {
+                    writer.WriteStartArray();
+                    foreach (int val in value.array)
+                    {
+                        writer.WriteValue(val);
+                    }
+                    writer.WriteEndArray();
+                }
+                else
+                {
+                    writer.WriteValue(value.number);
+                }
             }
         }
     }
