@@ -17,7 +17,6 @@ namespace Babylon2GLTF
             logger.RaiseMessage("GLTFExporter.Material | Export material named: " + name, 1);
 
             GLTFMaterial gltfMaterial = null;
-            string message = null;
             IGLTFMaterialExporter customMaterialExporter = exportParameters.customGLTFMaterialExporter;
             if (customMaterialExporter != null && customMaterialExporter.GetGltfMaterial(babylonMaterial, gltf, logger, out gltfMaterial))
             {

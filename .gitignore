@@ -53,3 +53,11 @@
 ##TestTile3D
 /Test/TestTile3D/bin/*
 /Test/TestTile3D/obj/*
+
+##TestFeatureTable
+/Test/TestFeatureTable/bin/*
+/Test/TestFeatureTable/obj/*
+
+##TestBatchTable
+/Test/TestBatchTable/bin/*
+/Test/TestBatchTable/obj/*
