@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Numerics;
 using System.Collections.Generic;
-using Tile3DExport.Entities;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.IO;
 using System.Text;
+
+using Newtonsoft.Json;
+
+using Tile3DExport.Entities;
 
 namespace TestTile3D
 {
@@ -30,8 +33,10 @@ namespace TestTile3D
             }
             return sb.ToString();
         }
+
         static void Main(string[] args)
         {
+            #region Tile3D
             BoundingVolume vol = new BoundingVolume();
             var sphere = new BoundingSphere();
             sphere.Center = new Vector3(0, 0, 0);
@@ -61,6 +66,27 @@ namespace TestTile3D
 
             String str = ToJson(tileset);
             Console.WriteLine(str);
+            #endregion
+
+            #region FeatureTable
+            Tile3DExport.Entities.Definition.GlobalPropertyCartesian3 vector3 = new Tile3DExport.Entities.Definition.GlobalPropertyCartesian3();
+            List<float> val = new List<float>();
+            val.Add(1.0f);
+            val.Add(1.0f);
+            val.Add(1.0f);
+            vector3.array = val.ToArray();
+            //vector3.offset = 1000;
+
+            Tile3DExport.Entities.Definition.GlobalPropertyScalar scalar = new Tile3DExport.Entities.Definition.GlobalPropertyScalar();
+            scalar.offset = 10;
+            scalar.array = val.ToArray();
+
+            Tile3DExport.Entities.b3dm.Featuretable table = new Tile3DExport.Entities.b3dm.Featuretable();
+            table.RTC_CENTER = vector3;
+            table.BATCH_LENGTH = scalar;
+            string tableStr = ToJson(table);
+            Console.WriteLine(tableStr);
+            #endregion
         }
     }
 }

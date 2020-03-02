@@ -10,8 +10,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Asset.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)b3dm\Featuretable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingVolume.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Definition\BinaryBodyReference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Definition\GlobalPropertyCartesian3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Definition\FeatureTable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Definition\GlobalPropertyScalar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Property.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tile3DExporter.cs" />
@@ -21,7 +26,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)i3dm\" />
-    <Folder Include="$(MSBuildThisFileDirectory)b3dm\" />
     <Folder Include="$(MSBuildThisFileDirectory)cmpt\" />
   </ItemGroup>
 </Project>
