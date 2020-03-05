@@ -8,8 +8,9 @@ namespace RevitGLTF
 {
     public class ExportConfig
     {
-        public string mOutPutPath    = "";
-        public string mOutputFormat  = "";
+        public string mOutputFilename = "defaultName";
+        public string mOutPutPath    = "E:\\RevitPlugin\\RevitGLTF\\RevitGLTF\\bin\\x64\\Log";
+        public string mOutputFormat  = ".gltf";
         public string mTextureFolder = "";
         public float mScaleFactor = 1.0f;
         public bool  mOptimizeVertices = true;

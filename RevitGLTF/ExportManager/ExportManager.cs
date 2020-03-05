@@ -21,7 +21,7 @@ namespace RevitGLTF
             mExportConfig = config;
         }
 
-        public void Export(Autodesk.Revit.DB.View3D exportableView)
+        public void Export(Autodesk.Revit.DB.View exportableView)
         {
             IModelExportContext context = (IModelExportContext)new GLTFExportContext(mExportConfig,exportableView.Document);
             CustomExporter exporter = new CustomExporter(exportableView.Document, context);

@@ -124,7 +124,8 @@ namespace RevitGLTF
 
             try 
             {
-                gltfExporter.ExportGltf(para, mScene, "E:\\RevitPlugin\\RevitGLTF\\RevitGLTF\\bin\\x64\\Log", "1.gltf", false, this);
+                gltfExporter.ExportGltf(para, mScene, mConfig.mOutPutPath,
+                    mConfig.mOutputFilename + mConfig.mOutputFormat, false, this);
             }
             catch(Exception e)
             {

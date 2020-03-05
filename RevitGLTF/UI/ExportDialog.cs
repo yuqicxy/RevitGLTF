@@ -15,7 +15,7 @@ namespace RevitGLTF
     {
         private Autodesk.Revit.DB.Document mRevitDocument;
         private Autodesk.Revit.DB.ViewSet mAllViews = new Autodesk.Revit.DB.ViewSet();
-        private Autodesk.Revit.DB.View3D mSelectView;
+        private Autodesk.Revit.DB.View mSelectView;
         private ExportConfig mConfig = new ExportConfig();
         public ExportConfig Config
         {
@@ -56,6 +56,8 @@ namespace RevitGLTF
             uint index = 0;
             foreach (Autodesk.Revit.DB.View view in mAllViews)
             {
+                if (mSelectView == null)
+                    mSelectView = view;
                 dt.Rows.Add(view.Name,index);
                 ++index;
             }
@@ -92,6 +94,9 @@ namespace RevitGLTF
             if (mSelectView != null)
             {
                 this.Hide();
+                if(mSelectView.Name != "")
+                    mConfig.mOutputFilename = mSelectView.Name;
+
                 manager.Export(mSelectView);
                 this.Show();
             }
