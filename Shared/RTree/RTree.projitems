@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>5d79335b-fb43-4c8c-9cfd-335c46510715</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>RTree</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Envelope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ISpatialData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ISpatialDatabase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ISpatialIndex.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectionComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RTree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RTree.Node.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RTree.Utilities.cs" />
+  </ItemGroup>
+</Project>

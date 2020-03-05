@@ -27,14 +27,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{37D1B271-3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestTile3D", "Test\TestTile3D\TestTile3D.csproj", "{845F6C3C-63DF-4CE8-B861-87CFF22F7B2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBatchTable", "Test\TestBatchTable\TestBatchTable.csproj", "{0764DDD4-02CB-4D56-B881-17CE728A4D26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBatchTable", "Test\TestBatchTable\TestBatchTable.csproj", "{0764DDD4-02CB-4D56-B881-17CE728A4D26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFeatureTable", "Test\TestFeatureTable\TestFeatureTable.csproj", "{592A27D0-8FC8-4A0E-AB5B-1F1E40FCF1BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFeatureTable", "Test\TestFeatureTable\TestFeatureTable.csproj", "{592A27D0-8FC8-4A0E-AB5B-1F1E40FCF1BB}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RTree", "Shared\RTree\RTree.shproj", "{5D79335B-FB43-4C8C-9CFD-335C46510715}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\GltfExport.Entities\GltfExport.Entities.projitems*{2b248fe6-acca-426b-9fe8-c47ecc0673a0}*SharedItemsImports = 13
 		Shared\Babylon2GLTF\Babylon2GLTF.projitems*{4b6dadf1-6dce-4134-a856-f8ebbd3e2f3f}*SharedItemsImports = 13
+		Shared\RTree\RTree.projitems*{5d79335b-fb43-4c8c-9cfd-335c46510715}*SharedItemsImports = 13
 		Shared\Utilities\Utilities.projitems*{af8ed8e5-a184-4353-90d6-8c78e69d99f3}*SharedItemsImports = 13
 		Shared\3DTileExport.Entities\Tile3DExport.Entities.projitems*{ba005ae3-b945-4731-a63f-8d5b37879a38}*SharedItemsImports = 13
 		Shared\BabylonExport.Entities\BabylonExport.Entities.projitems*{c804c11b-2dff-4eae-ac7a-14d0a1ce5009}*SharedItemsImports = 13
@@ -86,6 +89,7 @@ Global
 		{845F6C3C-63DF-4CE8-B861-87CFF22F7B2E} = {37D1B271-3899-4669-9FFC-956E4E320C46}
 		{0764DDD4-02CB-4D56-B881-17CE728A4D26} = {37D1B271-3899-4669-9FFC-956E4E320C46}
 		{592A27D0-8FC8-4A0E-AB5B-1F1E40FCF1BB} = {37D1B271-3899-4669-9FFC-956E4E320C46}
+		{5D79335B-FB43-4C8C-9CFD-335C46510715} = {2ED57392-50E5-46D8-8A77-543E0BE3B83A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5C8DB1F-010F-4043-8EA2-111DA485583E}
