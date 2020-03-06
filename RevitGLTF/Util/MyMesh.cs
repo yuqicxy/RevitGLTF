@@ -25,6 +25,15 @@ namespace RevitGLTF
             mIndices = new List<int>();
         }
 
+        //为Intsance复制使用
+        public MySubMesh(MySubMesh other,int tmpMaterialID)
+        {
+            this.mVertices = other.mVertices;
+            this.mLookupTable = other.mLookupTable;
+            this.mIndices = other.mIndices;
+            this.MaterialID = tmpMaterialID;
+        }
+
         public void AddVertex(GlobalVertex vertex)
         {
             if(!mLookupTable.ContainsKey(vertex))
@@ -38,29 +47,7 @@ namespace RevitGLTF
                 var index = mLookupTable[vertex];
                 mIndices.Add(index);
             }
-            //int index = mVertices.IndexOf(vertex);
-            //if (index == -1)
-            //{
-            //    mVertices.Add(vertex);
-            //    mIndices.Add(mVertices.Count() - 1);
-            //}
-            //else
-            //{
-            //    mIndices.Add(index);
-            //}
         }
-
-        //public void AddVertexNoIndice(GlobalVertex vertex)
-        //{
-        //    mVertices.Add(vertex);
-        //}
-
-        //public void AddIndice(int v1,int v2,int v3)
-        //{
-        //    mIndices.Add(v1);
-        //    mIndices.Add(v2);
-        //    mIndices.Add(v3);
-        //}
 
         internal BabylonSubMesh Arrange(List<int> indices, List<GlobalVertex> vertexs)
         {

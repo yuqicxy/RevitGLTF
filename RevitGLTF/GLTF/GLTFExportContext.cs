@@ -84,6 +84,7 @@ namespace RevitGLTF
             //初始化Scene
             mScene = new BabylonScene(mConfig.mOutPutPath);
             mScene.producer = new BabylonProducer { name = "Revit", version = "2020" };
+
             mInstanceDictionary = new Dictionary<ElementId, BabylonMesh>();
 
             return RenderNodeAction.Proceed;

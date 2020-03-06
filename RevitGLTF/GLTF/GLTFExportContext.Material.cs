@@ -238,8 +238,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreateGenericMaterial(Asset asset,Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material Generic start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material Generic start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -261,8 +261,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreateCeramicMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material Ceramic start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material Ceramic start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -282,8 +282,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreateConcreteMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material Concrete start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material Concrete start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -303,8 +303,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreateGlazingMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material Glazing start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material Glazing start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -327,8 +327,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreateHardwoodMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material Hardwood start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material Hardwood start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -360,8 +360,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreateMansoryCMUMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material MansoryCMU start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material MansoryCMU start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -381,8 +381,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreateMetalMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material Metal start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material Metal start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -404,8 +404,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreateMetallicPaintMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material MetallicPaint start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material MetallicPaint start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                     new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -425,8 +425,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreateMirrorMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material Mirror start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material Mirror start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                     new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -445,8 +445,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreatePlasticVinylMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material PlasticVinyl start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material PlasticVinyl start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                     new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -466,8 +466,8 @@ namespace RevitGLTF
         
         private static BabylonMaterial CreateSolidGlassMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material SolidGlass start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material SolidGlass start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                     new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -490,8 +490,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreateWallPaintMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material WallPaint start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material WallPaint start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -510,8 +510,8 @@ namespace RevitGLTF
         
         private static BabylonMaterial CreateWaterMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material Water start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material Water start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -531,8 +531,8 @@ namespace RevitGLTF
 
         private static BabylonMaterial CreateStoneMaterial(Asset asset, Material material)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("Material Stone start export");
+            //log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            //log.Info("Material Stone start export");
 
             Color defaultColor = material.Color.IsValid ? material.Color :
                 new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue);
@@ -560,8 +560,8 @@ namespace RevitGLTF
 
         public void OnMaterial(MaterialNode node)
         {
-            string name = node.NodeName +"\t" + node.GetAppearance().Name  + "\tid:" + node.MaterialId.ToString() + "\tmaterial:" + node.ToString();
-            log.Info("MaterialNode\t" + name);
+            //string name = node.NodeName +"\t" + node.GetAppearance().Name  + "\tid:" + node.MaterialId.ToString() + "\tmaterial:" + node.ToString();
+            //log.Info("MaterialNode\t" + name);
 
             CreateMaterial(node);
 
