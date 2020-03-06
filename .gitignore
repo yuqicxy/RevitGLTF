@@ -61,3 +61,7 @@
 ##TestBatchTable
 /Test/TestBatchTable/bin/*
 /Test/TestBatchTable/obj/*
+
+##TestRTree
+/Test/TestRTree/bin/*
+/Test/TestRTree/obj/*

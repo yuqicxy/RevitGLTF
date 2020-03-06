@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFeatureTable", "Test\Te
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RTree", "Shared\RTree\RTree.shproj", "{5D79335B-FB43-4C8C-9CFD-335C46510715}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRTree", "Test\TestRTree\TestRTree.csproj", "{9E6833D9-E5F3-48D1-9A2E-3CBE87EFE4B4}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\GltfExport.Entities\GltfExport.Entities.projitems*{2b248fe6-acca-426b-9fe8-c47ecc0673a0}*SharedItemsImports = 13
@@ -73,6 +75,10 @@ Global
 		{592A27D0-8FC8-4A0E-AB5B-1F1E40FCF1BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{592A27D0-8FC8-4A0E-AB5B-1F1E40FCF1BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{592A27D0-8FC8-4A0E-AB5B-1F1E40FCF1BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E6833D9-E5F3-48D1-9A2E-3CBE87EFE4B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E6833D9-E5F3-48D1-9A2E-3CBE87EFE4B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E6833D9-E5F3-48D1-9A2E-3CBE87EFE4B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E6833D9-E5F3-48D1-9A2E-3CBE87EFE4B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 		{0764DDD4-02CB-4D56-B881-17CE728A4D26} = {37D1B271-3899-4669-9FFC-956E4E320C46}
 		{592A27D0-8FC8-4A0E-AB5B-1F1E40FCF1BB} = {37D1B271-3899-4669-9FFC-956E4E320C46}
 		{5D79335B-FB43-4C8C-9CFD-335C46510715} = {2ED57392-50E5-46D8-8A77-543E0BE3B83A}
+		{9E6833D9-E5F3-48D1-9A2E-3CBE87EFE4B4} = {37D1B271-3899-4669-9FFC-956E4E320C46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5C8DB1F-010F-4043-8EA2-111DA485583E}
