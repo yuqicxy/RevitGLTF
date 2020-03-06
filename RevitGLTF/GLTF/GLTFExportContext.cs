@@ -215,7 +215,6 @@ namespace RevitGLTF
                 name += "asset:" + asset.Name;
 
             log.Info("Light\t" + name + "\t");
-            //throw new NotImplementedException();
         }
 
         public RenderNodeAction OnLinkBegin(LinkNode node)
