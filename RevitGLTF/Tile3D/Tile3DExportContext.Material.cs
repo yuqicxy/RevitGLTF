@@ -16,7 +16,10 @@ namespace RevitGLTF.Tile3D
     {
         public void OnMaterial(MaterialNode node)
         {
-            throw new NotImplementedException();
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            string name = node.NodeName +"\t" + node.GetAppearance().Name  + "\tid:" + node.MaterialId.ToString() + "\tmaterial:" + node.ToString();
+            log.Info("MaterialNode\t" + name);
+            return;
         }
     }
 }

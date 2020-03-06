@@ -16,12 +16,25 @@ namespace RevitGLTF.Tile3D
     {
         public RenderNodeAction OnInstanceBegin(InstanceNode node)
         {
-            throw new NotImplementedException();
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var id = node.GetSymbolId();
+            var familySymbol = mRevitDocument.GetElement(id) as FamilySymbol;
+            log.Info(String.Format("Instance FamyliySysmbol:{0} FamilyName:{1} Transform:{2} => Start", 
+                familySymbol.Name,
+                familySymbol.FamilyName,
+                node.GetTransform().Origin.ToString())); 
+            return RenderNodeAction.Skip;
         }
 
         public void OnInstanceEnd(InstanceNode node)
         {
-            throw new NotImplementedException();
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var id = node.GetSymbolId();
+            var familySymbol = mRevitDocument.GetElement(id) as FamilySymbol;
+            log.Info(String.Format("Instance FamyliySysmbol:{0} FamilyName:{1} Transform:{2} => End",
+                familySymbol.Name,
+                familySymbol.FamilyName,
+                node.GetTransform().Origin.ToString()));
         }
     }
 }

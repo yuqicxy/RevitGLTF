@@ -23,7 +23,8 @@ namespace RevitGLTF
 
         public void Export(Autodesk.Revit.DB.View exportableView)
         {
-            IModelExportContext context = (IModelExportContext)new GLTFExportContext(mExportConfig,exportableView.Document);
+            //IModelExportContext context = (IModelExportContext)new GLTFExportContext(mExportConfig,exportableView.Document);
+            IModelExportContext context = (RevitGLTF.Tile3D.Tile3DExportContext)new RevitGLTF.Tile3D.Tile3DExportContext(mExportConfig, exportableView.Document);
             CustomExporter exporter = new CustomExporter(exportableView.Document, context);
             exporter.IncludeGeometricObjects = true;
             exporter.ShouldStopOnError = true;

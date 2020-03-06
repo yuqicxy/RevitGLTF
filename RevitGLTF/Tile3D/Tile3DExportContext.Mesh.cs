@@ -14,18 +14,22 @@ namespace RevitGLTF.Tile3D
     public partial class Tile3DExportContext : IModelExportContext
     {
         public RenderNodeAction OnFaceBegin(FaceNode node)
-        {
-            throw new NotImplementedException();
+        {           
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info(String.Format("FaceNode:{0}  => Start",node.NodeName));
+            return RenderNodeAction.Proceed;
         }
 
         public void OnFaceEnd(FaceNode node)
         {
-            throw new NotImplementedException();
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info(String.Format("FaceNode:{0}  => End", node.NodeName));
         }
 
         public void OnPolymesh(PolymeshTopology node)
-        {
-            throw new NotImplementedException();
+        {            
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info(String.Format("PolymeshTopology =>>>>"));
         }
     }
 }

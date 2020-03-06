@@ -16,36 +16,39 @@ namespace RevitGLTF.Tile3D
     {
         public void OnLight(LightNode node)
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
         public RenderNodeAction OnPoint(PointNode node)
         {
-            throw new NotImplementedException();
+            return RenderNodeAction.Skip;
+           // throw new NotImplementedException();
         }
 
         public RenderNodeAction OnCurve(CurveNode node)
         {
-            throw new NotImplementedException();
+            return RenderNodeAction.Skip;
+//            throw new NotImplementedException();
         }
 
         public void OnLineSegment(LineSegment segment)
         {
-            throw new NotImplementedException();
+         //   throw new NotImplementedException();
         }
 
         public RenderNodeAction OnPolyline(PolylineNode node)
         {
-            throw new NotImplementedException();
+            return RenderNodeAction.Skip;
+            //throw new NotImplementedException();
         }
 
         public void OnText(TextNode node)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void OnPolylineSegments(PolylineSegments segments)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
