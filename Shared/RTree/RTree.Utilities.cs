@@ -12,10 +12,12 @@ namespace RTree
 			ProjectionComparer<ISpatialData>.Create(d => d.Envelope.MinX);
 		private static readonly IComparer<ISpatialData> CompareMinY =
 			ProjectionComparer<ISpatialData>.Create(d => d.Envelope.MinY);
-		#endregion
+        private static readonly IComparer<ISpatialData> CompareMinZ =
+			ProjectionComparer<ISpatialData>.Create(d => d.Envelope.MinZ);
+        #endregion
 
-		#region Search
-		private List<Stack<ISpatialData>> DoSearch(Envelope boundingBox)
+        #region Search
+        private List<Stack<ISpatialData>> DoSearch(Envelope boundingBox)
 		{
 			var node = this.root;
 			if (!node.Envelope.Intersects(boundingBox))//if root node doesnt not intersect return new empty List<stack>
@@ -50,29 +52,48 @@ namespace RTree
 		#endregion
 
 		#region Insert
-		private List<Node> FindCoveringArea(Envelope area, int depth)
-		{
-			var path = new List<Node>();
+		//private List<Node> FindCoveringArea(Envelope area, int depth)
+		//{
+		//	var path = new List<Node>();
+		//	var node = this.root;
+
+		//	while (true)
+		//	{
+		//		path.Add(node);
+		//		if (node.IsLeaf || path.Count == depth) return path;
+
+		//		node = node.Children
+		//			.Select(c => new { EnlargedArea = c.Envelope.Enlargement(area).Area, c.Envelope.Area, Node = c as Node, })
+		//			.OrderBy(x => x.EnlargedArea)
+		//			.ThenBy(x => x.Area)
+		//			.Select(x => x.Node)
+		//			.First();
+		//	}
+		//}
+
+		private List<Node> FindCoveringVolume(Envelope volume,int depth)
+        {
+			var path = new List<node>();
 			var node = this.root;
-
-			while (true)
-			{
+			while(true)
+            {
 				path.Add(node);
-				if (node.IsLeaf || path.Count == depth) return path;
+				if (node.IsLeaf || path.Count = depth) return true;
 
-				node = node.Children
-					.Select(c => new { EnlargedArea = c.Envelope.Enlargement(area).Area, c.Envelope.Area, Node = c as Node, })
+                node = node.Children
+					.Select(c => new { EnlargedArea = c.Envelope.Enlargement(volume).Volume, c.Envelope.Volume, Node = c as Node, })
 					.OrderBy(x => x.EnlargedArea)
-					.ThenBy(x => x.Area)
+					.ThenBy(x => x.Volume)
 					.Select(x => x.Node)
 					.First();
-			}
-		}
+            }
+        }
 
 		private void Insert(ISpatialData data, int depth)
 		{
 			var envelope = data.Envelope;
-			var path = FindCoveringArea(envelope, depth);
+			//var path = FindCoveringArea(envelope, depth);
+			var path = FindCoveringVolume(envelope, depth);
 
 			var insertNode = path.Last();
 			insertNode.Add(data);
@@ -111,9 +132,13 @@ namespace RTree
 			var splitsByX = GetPotentialSplitMargins(node.Children);
 			node.Children.Sort(CompareMinY);
 			var splitsByY = GetPotentialSplitMargins(node.Children);
+			node.Children.Sort(CompareMinZ);
+            var splitsByZ = GetPotentialSplitMargins(node.Children);
 
-			if (splitsByX < splitsByY)
+			if (splitsByX < splitsByY && splitsByX < splitsByZ)
 				node.Children.Sort(CompareMinX);
+			else if (splitsByY < splitsByX && splitsByY < splitsByZ)
+				node.Children.Sort(CompareMinY);
 		}
 
         private double GetPotentialSplitMargins(List<ISpatialData> children) {
@@ -147,12 +172,14 @@ namespace RTree
 					var leftEnvelope = GetEnclosingEnvelope(children.Take(i));
 					var rightEnvelope = GetEnclosingEnvelope(children.Skip(i));
 
-					var overlap = leftEnvelope.Intersection(rightEnvelope).Area;
-					var totalArea = leftEnvelope.Area + rightEnvelope.Area;
-					return new { i, overlap, totalArea };
+					//var overlap = leftEnvelope.Intersection(rightEnvelope).Area;
+					//var totalArea = leftEnvelope.Area + rightEnvelope.Area;
+                    var overlap = leftEnvelope.Intersection(rightEnvelope).Volume;
+                    var totalVolume = leftEnvelope.Volume + rightEnvelope.Volume;
+                    return new { i, overlap, totalVolume };
 				})
 				.OrderBy(x => x.overlap)
-				.ThenBy(x => x.totalArea)
+				.ThenBy(x => x.totalVolume)
 				.Select(x => x.i)
 				.First();
 		}
