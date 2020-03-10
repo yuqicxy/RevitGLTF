@@ -34,6 +34,7 @@ namespace RevitGLTF
             this.MaterialID = tmpMaterialID;
         }
 
+        //添加顶点至Vertex中，并进行顶点去重，以及顶点索引的构建
         public void AddVertex(GlobalVertex vertex)
         {
             if(!mLookupTable.ContainsKey(vertex))
@@ -49,6 +50,7 @@ namespace RevitGLTF
             }
         }
 
+        //构建babylonSubmesh
         internal BabylonSubMesh Arrange(List<int> indices, List<GlobalVertex> vertexs)
         {
             BabylonSubMesh submesh = new BabylonSubMesh();
@@ -76,6 +78,12 @@ namespace RevitGLTF
 
         public string Name{ get; set; }
 
+        //用于合并材质相同的mesh，减少drawcall
+        public Dictionary<ElementId, MySubMesh> MaterialSubMeshMap = null;
+
+        //当前MultiMaterial，与BabylonMesh绑定
+        public BabylonMultiMaterial MultiMaterial = null;
+
         private List<MySubMesh> mSubmeshList;
 
         public string MaterialID { get; set; }
@@ -85,6 +93,24 @@ namespace RevitGLTF
         public MyMesh()
         {
             mSubmeshList = new List<MySubMesh>();
+            MaterialSubMeshMap = new Dictionary<ElementId, MySubMesh>();
+            MultiMaterial = new BabylonMultiMaterial();
+            List<String> materials = new List<String>();
+            MultiMaterial.materials = materials.ToArray();
+        }
+
+        public MyMesh(string id)
+        {
+            ID = id;
+            Name = id;
+            mSubmeshList = new List<MySubMesh>();
+            MaterialSubMeshMap = new Dictionary<ElementId, MySubMesh>();
+
+            MultiMaterial = new BabylonMultiMaterial();
+            MultiMaterial.id = ID;
+
+            List<String> materials = new List<String>();
+            MultiMaterial.materials = materials.ToArray();
         }
 
         public void AddSubMesh(MySubMesh submesh)
@@ -92,6 +118,61 @@ namespace RevitGLTF
             mSubmeshList.Add(submesh);
         }
 
+        public void GenerateMesh(BabylonMesh mesh)
+        {
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+            List<int> indices = new List<int>();
+            List<GlobalVertex> vertexs = new List<GlobalVertex>();
+
+            foreach (var pair in MaterialSubMeshMap)
+            {
+                var submesh = pair.Value;
+                BabylonSubMesh babylonSubmesh = submesh.Arrange(indices, vertexs);
+                if (babylonSubmesh != null)
+                {
+                    if (mesh.subMeshes == null)
+                    {
+                        var subMeshes = new List<BabylonSubMesh>();
+                        subMeshes.Add(babylonSubmesh);
+                        mesh.subMeshes = subMeshes.ToArray();
+                    }
+                    else
+                    {
+                        var submeshes = mesh.subMeshes.ToList();
+                        submeshes.Add(babylonSubmesh);
+                        mesh.subMeshes = submeshes.ToArray();
+                    }
+                }
+            }
+
+            mesh.id = ID;
+            mesh.name = Name;
+            mesh.materialId = MultiMaterial.id;
+
+            if(TransformMatrix == null)
+                TransformMatrix = Transform.Identity;
+
+            GLTFUtil.ExportTransform(mesh, TransformMatrix);
+
+            if (vertexs.Count <= 0)
+                return;
+            mesh.indices = indices.ToArray();
+            // Buffers
+            mesh.positions = vertexs.SelectMany(v => v.Position).ToArray();
+            mesh.normals = vertexs.SelectMany(v => v.Normal).ToArray();
+            //float[] firstPosition = vertexs[0].Position;
+            //bool allEqual = vertexs.All(v => v.Position.IsEqualTo(firstPosition, 0.001f));
+            //if (allEqual)
+            //{
+            //    log.Warn("All the vertices share the same position." +
+            //        " Is the mesh invisible? The result may not be as expected.");
+            //}
+            if (vertexs.First().UV != null)
+                mesh.uvs = vertexs.SelectMany(v => v.UV).ToArray();
+        }
+
+        //构建BabylonMesh
         public BabylonMesh GenerateMesh()
         {
             log4net.ILog log = 
