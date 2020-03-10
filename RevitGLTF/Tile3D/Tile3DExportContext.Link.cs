@@ -14,6 +14,7 @@ namespace RevitGLTF.Tile3D
 {
     public partial class Tile3DExportContext : IModelExportContext
     {
+        //外部链接的Revit文档
         public RenderNodeAction OnLinkBegin(LinkNode node)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -22,13 +23,12 @@ namespace RevitGLTF.Tile3D
                 node.NodeName,
                 node.GetTransform().Origin.ToString()));
 
-            return RenderNodeAction.Proceed;
-        //    throw new NotImplementedException();
+            return RenderNodeAction.Skip;
         }
 
+        //导出外部链接结束
         public void OnLinkEnd(LinkNode node)
         {
-         //   throw new NotImplementedException();
         }
     }
 }

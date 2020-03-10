@@ -14,6 +14,7 @@ namespace RevitGLTF.Tile3D
 {
     public partial class Tile3DExportContext : IModelExportContext
     {
+        //RPCNode在ModelExportContext中不调用，以polymesh形式出现
         public void OnRPC(RPCNode node)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);

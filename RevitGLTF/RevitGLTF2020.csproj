@@ -75,13 +75,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExportManager\GLTFExportManager.cs" />
+    <Compile Include="ExportManager\InstanceFactory.cs" />
+    <Compile Include="ExportManager\MaterialFactory.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.Element.cs" />
     <Compile Include="Util\GlobalVertex.cs" />
     <Compile Include="GLTF\GLTFExportContext.cs" />
     <Compile Include="GLTF\GLTFExportContext.Logger.cs" />
     <Compile Include="GLTF\GLTFExportContext.Material.cs" />
     <Compile Include="GLTF\GLTFExportContext.Mesh.cs" />
     <Compile Include="GLTF\GLTFExportContext.PointLine.cs" />
-    <Compile Include="GLTF\GLTFUtil.cs" />
+    <Compile Include="Util\GLTFUtil.cs" />
     <Compile Include="ExportManager\App.cs" />
     <Compile Include="Util\MyMesh.cs" />
     <Compile Include="Util\InstanceManager.cs" />
