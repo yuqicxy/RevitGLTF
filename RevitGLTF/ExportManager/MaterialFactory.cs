@@ -23,9 +23,12 @@ namespace RevitGLTF
 
         private Dictionary<ElementId, BabylonMaterial> mMaterialTable = null;
 
+        private Dictionary<ElementId, bool> mMaterialNeedUV = null;
+
         private MaterialFactory()
         {
             mMaterialTable = new Dictionary<ElementId, BabylonMaterial>();
+            mMaterialNeedUV = new Dictionary<ElementId, bool>();
         }
 
         public void Clear() { mMaterialTable.Clear(); }
@@ -36,16 +39,21 @@ namespace RevitGLTF
             return mMaterialTable.ContainsKey(MaterialId);
         }
 
+        //检测材质是否有纹理以及是否需要UV坐标
+        public bool NeedUVCoord(ElementId MaterialId)
+        {
+            if(mMaterialNeedUV.ContainsKey(MaterialId))
+                return mMaterialNeedUV[MaterialId];
+            //默认返回True，也即需要UV坐标
+            return true;
+        }
+
         //创建或获取材质
         public BabylonMaterial CreateMaterial(Asset asset, Material revitMaterial, ElementId materialID = null)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            string typeName = "Autodesk.Revit.DB.Visual." + ((AssetProperty)asset).Name.Replace("Schema", "") + ",RevitAPI";
 
             BabylonMaterial material = null;
-
-            ElementId id = materialID;
-
+            ElementId id = null;
             if (revitMaterial != null)
             {
                 id = revitMaterial.Id;
@@ -54,6 +62,7 @@ namespace RevitGLTF
                     return mMaterialTable[id];
                 }
 
+                string typeName = "Autodesk.Revit.DB.Visual." + ((AssetProperty)asset).Name.Replace("Schema", "") + ",RevitAPI";
                 Type type = Type.GetType(typeName);
                 if (type != null)
                 {
@@ -116,19 +125,26 @@ namespace RevitGLTF
                     }
                     else
                     {
+                    #if DEBUG
+                        log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
                         log.Warn(schemaname + " is not handled");
+                    #endif
                     }
                 }
             }
 
             if(material == null)
             {
-                material = new BabylonStandardMaterial(materialID.ToString());
+                id = materialID;
+                material = new BabylonStandardMaterial(id.ToString());
+                //默认材质，关闭背面裁剪
+                material.backFaceCulling = false;
             }
 
             material.name = id.ToString();
+            bool needUV = material.hasTexture;
             mMaterialTable.Add(id, material);
-
+            mMaterialNeedUV.Add(id, needUV);
             return material;
         }
 
