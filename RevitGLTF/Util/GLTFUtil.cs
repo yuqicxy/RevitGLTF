@@ -56,16 +56,10 @@ namespace RevitGLTF
             tm_babylon.decompose(s_babylon, q_babylon, t_babylon);
             
             //rotation
-            //var q = q_babylon;
-            //float q_length = (float)Math.Sqrt(q.X * q.X + q.Y * q.Y + q.Z * q.Z + q.W * q.W);
-            //node.rotationQuaternion = new[] { q_babylon.X / q_length, q_babylon.Y / q_length, q_babylon.Z / q_length, q_babylon.W / q_length };
-            //node.rotationQuaternion = q_babylon.ToArray();
-            node.rotation = q_babylon.toEulerAngles().ToArray();
+            node.rotationQuaternion = q_babylon.ToArray();
             //scale
-            //node.scaling = new[] { s_babylon.X, s_babylon.Y, s_babylon.Z };
             node.scaling = s_babylon.ToArray();
             //translate
-            //node.position = new[] { t_babylon.X, t_babylon.Y, t_babylon.Z };
             node.position = t_babylon.ToArray();
         }
         public static bool IsEqualTo(this float[] value, float[] other, float Epsilon = Epsilon)

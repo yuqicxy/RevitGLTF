@@ -421,14 +421,14 @@ namespace Babylon2GLTF
             nodelist.AddRange(babylonNodes.FindAll(node => node.parentId == babylonNode.id));
             
             //添加该节点的instancesList也作为其子节点，注意的是，instanceMesh并不具有parentID，只是逻辑子节点
-            if(babylonNode.GetType() == typeof(BabylonMesh))
-            {
-                var mesh = babylonNode as BabylonMesh;
-                if(mesh.instances != null)
-                {
-                    nodelist.AddRange(mesh.instances);
-                }
-            }
+            //if(babylonNode.GetType() == typeof(BabylonMesh))
+            //{
+            //    var mesh = babylonNode as BabylonMesh;
+            //    if(mesh.instances != null)
+            //    {
+            //        nodelist.AddRange(mesh.instances);
+            //    }
+            //}
             
             return nodelist;
         }

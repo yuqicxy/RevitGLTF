@@ -27,7 +27,8 @@ namespace RevitGLTF.Tile3D
                 log.Info(String.Format("Element:{0} ID:{1} => Start", element.Name, elementId.ToString()));
             #endregion
 
-            //List<int> table = new List<int> {990620,990621,990645,990646,990647,990648};
+            //List<int> table = new List<int> { 485492, 485493, 485494, 687037, 846332 };
+            //List<int> table = new List<int> {976957,976956,976958,976960,976961,977514,977515};
             //if (!table.Contains(elementId.IntegerValue))
             //{
             //    mElementStack.Push(elementId);
