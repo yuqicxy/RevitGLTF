@@ -14,9 +14,6 @@ namespace RevitGLTF.Tile3D
 {
     public partial class Tile3DExportContext:IModelExportContext
     {
-        //用于相同材质的Mesh合并
-        private Dictionary<ElementId, MySubMesh> mMaterialSubMeshMap = null;
-
         //FamilyInstance开始
         public RenderNodeAction OnInstanceBegin(InstanceNode node)
         {
