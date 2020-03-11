@@ -46,8 +46,8 @@ namespace RevitGLTF.Tile3D
             log.Info(String.Format("Exporting {0} => Start", mRevitDocument.Title));
 
             mExportManager = new GLTFExportManager(mConfig);
-            InstanceFactory.Instance.Clear();
-            MaterialFactory.Instance.Clear();
+            //InstanceFactory.Instance.Clear();
+            //MaterialFactory.Instance.Clear();
 
             //初始化根节点
             mRootNode = new BabylonMesh { name = "root", id = "rootTrans" };
@@ -66,6 +66,9 @@ namespace RevitGLTF.Tile3D
             log.Info(String.Format("Exporting {0} => Finish", mRevitDocument.Title));
 
             mExportManager.Export();
+
+            InstanceFactory.Instance.Clear();
+            MaterialFactory.Instance.Clear();
         }
 
         //导出过程是否取消
