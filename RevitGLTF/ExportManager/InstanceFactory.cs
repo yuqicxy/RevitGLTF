@@ -44,6 +44,7 @@ namespace RevitGLTF
                 BabylonMesh instanceNode = new BabylonMesh();
                 instanceNode.id = symbolId.ToString();
                 instanceNode.name = symbolId.ToString();
+                instanceNode.idGroupInstance = symbolId.IntegerValue;
                 mInstanceTable.Add(symbolId, instanceNode);
                 return instanceNode;
             }
