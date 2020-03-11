@@ -1,76 +1,41 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 using Babylon2GLTF;
 using BabylonExport.Entities;
+using Utilities;
+
 using Autodesk.Revit.DB;
-
-namespace RevitGLTF
+namespace RevitGLTF.GLTF
 {
-    public partial class GLTFExportContext:IModelExportContext
+    public partial class GLTFExportContext : IModelExportContext
     {
-        private RevitGLTF.MyMesh mCurrentMesh;
+        private MySubMesh mCurrentSubMesh = null;
+        private Stack<MyMesh> mMyMeshStack = new Stack<MyMesh>();
 
-        private RevitGLTF.MySubMesh mCurrentSubMesh;
-
-        private Dictionary<int, MySubMesh> mMaterialSubMeshMap;
-
-        //按SymbolID区分是否以导出该实例
-        public RenderNodeAction OnInstanceBegin(InstanceNode node)
-        {
-            string name = node.NodeName + "\tid:" + node.GetSymbolId().ToString() + "\ttype:" + node.GetType().ToString();
-            log.Info("InstanceStart\t" + name);
-
-            this.mTransformationStack.Push(this.mTransformationStack.Peek().Multiply(node.GetTransform()));
-
-            return RenderNodeAction.Proceed;
-        }
-
-        public void OnInstanceEnd(InstanceNode node)
-        {
-            mTransformationStack.Pop();
-
-            string name = node.NodeName + "\tid:" + node.GetSymbolId().ToString();
-            log.Info("InstanceEnd\t" + name);
-        }
-
+        //Face包含一个polymesh
         public RenderNodeAction OnFaceBegin(FaceNode node)
         {
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info(String.Format("FaceNode:{0}  => Start",node.NodeName));
+
             return RenderNodeAction.Proceed;
         }
 
         public void OnFaceEnd(FaceNode node)
-        {          
+        {
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info(String.Format("FaceNode:{0}  => End", node.NodeName));
         }
 
-        private void OnSubmeshStart(int materialID)
-        {
-            if(mMaterialSubMeshMap.ContainsKey(materialID))
-            {
-                mCurrentSubMesh = mMaterialSubMeshMap[materialID];
-            }
-            else 
-            {
-                mCurrentSubMesh = new RevitGLTF.MySubMesh();
-                mCurrentSubMesh.MaterialID = mCurrentMaterialIndex;
-                mMaterialSubMeshMap[materialID] = mCurrentSubMesh;
-            }
-        }
-
-        private void OnSubmeshEnd()
-        {
-            mCurrentSubMesh = null;
-        }     
-
+        //导出顶点 法线 纹理
         public void OnPolymesh(PolymeshTopology node)
-        {
-            //BabylonMaterial material = null;
-            //mMaterialTable.TryGetValue(mCurrentMaterialID, out material);
-            //bool needTextureCoord = false;
-            //if(material != null)
-            //{
-            //    needTextureCoord = material.hasTexture;
-            //}
+        {            
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info(String.Format("PolymeshTopology =>>>>"));
 
             var lengthPoints = node.NumberOfPoints;
             var lengthNormals = node.NumberOfNormals;
@@ -88,44 +53,43 @@ namespace RevitGLTF
                 v2.BaseIndex = triangle.V2;
                 v3.BaseIndex = triangle.V3;
 
-                v1.Position = GLTFUtil.ToArray(mTransformationStack.Peek().OfPoint(node.GetPoint(triangle.V1)));
-                v2.Position = GLTFUtil.ToArray(mTransformationStack.Peek().OfPoint(node.GetPoint(triangle.V2)));
-                v3.Position = GLTFUtil.ToArray(mTransformationStack.Peek().OfPoint(node.GetPoint(triangle.V3)));
-
-                //if (needTextureCoord)
-                {
-                    v1.UV = GLTFUtil.ToArray(node.GetUV(triangle.V1));
-                    v2.UV = GLTFUtil.ToArray(node.GetUV(triangle.V2));
-                    v3.UV = GLTFUtil.ToArray(node.GetUV(triangle.V3));
-                }
+                v1.Position = GLTFUtil.ToArray(node.GetPoint(triangle.V1));
+                v2.Position = GLTFUtil.ToArray(node.GetPoint(triangle.V2));
+                v3.Position = GLTFUtil.ToArray(node.GetPoint(triangle.V3));
 
                 XYZ normal;
                 if (DistributionOfNormals.OnePerFace == distrib)
                 {
-                    normal = mTransformationStack.Peek().OfVector(node.GetNormal(0));
+                    normal = node.GetNormal(0);
                     v1.Normal = GLTFUtil.ToArray(normal);
                     v2.Normal = GLTFUtil.ToArray(normal);
                     v3.Normal = GLTFUtil.ToArray(normal);
                 }
                 else if (DistributionOfNormals.OnEachFacet == distrib)
                 {
-                    normal = mTransformationStack.Peek().OfVector(node.GetNormal(iFacet++));
+                    normal = node.GetNormal(iFacet++);
                     v1.Normal = GLTFUtil.ToArray(normal);
                     v2.Normal = GLTFUtil.ToArray(normal);
                     v3.Normal = GLTFUtil.ToArray(normal);
                 }
                 else
                 {
-                    v1.Normal = GLTFUtil.ToArray(mTransformationStack.Peek().OfVector(node.GetNormal(triangle.V1)));
-                    v2.Normal = GLTFUtil.ToArray(mTransformationStack.Peek().OfVector(node.GetNormal(triangle.V2)));
-                    v3.Normal = GLTFUtil.ToArray(mTransformationStack.Peek().OfVector(node.GetNormal(triangle.V3)));
+                    v1.Normal = GLTFUtil.ToArray(node.GetNormal(triangle.V1));
+                    v2.Normal = GLTFUtil.ToArray(node.GetNormal(triangle.V2));
+                    v3.Normal = GLTFUtil.ToArray(node.GetNormal(triangle.V3));
+                }
+
+                if (mCurrentSubMesh.NeedUV)
+                {
+                    v1.UV = GLTFUtil.ToArray(node.GetUV(triangle.V1));
+                    v2.UV = GLTFUtil.ToArray(node.GetUV(triangle.V2));
+                    v3.UV = GLTFUtil.ToArray(node.GetUV(triangle.V3));
                 }
 
                 mCurrentSubMesh.AddVertex(v1);
                 mCurrentSubMesh.AddVertex(v2);
                 mCurrentSubMesh.AddVertex(v3);
             }
-
         }
     }
 }
