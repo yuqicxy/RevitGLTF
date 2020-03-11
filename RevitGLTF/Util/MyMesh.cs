@@ -13,6 +13,7 @@ namespace RevitGLTF
     {
         private List<GlobalVertex> mVertices = null;
         private GlobalVertexLookup mLookupTable = null;
+        public bool NeedUV { get; set; } = true;
 
         private List<int> mIndices = null;
        
