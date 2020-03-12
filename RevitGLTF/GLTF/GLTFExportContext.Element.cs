@@ -27,7 +27,7 @@ namespace RevitGLTF.GLTF
                 log.Info(String.Format("Element:{0} ID:{1} => Start", element.Name, elementId.ToString()));
         #endif
 
-            //List<int> table = new List<int> {932401};
+            //List<int> table = new List<int> {564479,512173, 512277, 512522,512526,550255};
             //List<int> table = new List<int> {976957,976956,976958,976960,976961,977514,977515};
             //if (!table.Contains(elementId.IntegerValue))
             //{
@@ -54,6 +54,9 @@ namespace RevitGLTF.GLTF
             mMeshStack.Push(elementNode);
             mMyMeshStack.Push(currentMesh);
 
+            //初始化mLastMaterialID
+            mLastMaterialID = null;
+
             return RenderNodeAction.Proceed;
         }
 
@@ -75,6 +78,7 @@ namespace RevitGLTF.GLTF
             {
                 myMesh.GenerateMesh(mesh);
             }
+
 
             //出栈
             mMyMeshStack.Pop();

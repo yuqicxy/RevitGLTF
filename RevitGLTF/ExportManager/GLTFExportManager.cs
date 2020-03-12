@@ -59,32 +59,42 @@ namespace RevitGLTF
 
         public void RaiseError(string error, int rank = 0)
         {
+        #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Error(error);
+        #endif
         }
 
         public void RaiseMessage(string message, int rank = 0, bool emphasis = false)
         {
+        #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(message);
+        #endif
         }
 
         public void RaiseMessage(string message, System.Drawing.Color color, int rank = 0, bool emphasis = false)
         {
+        #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(message);
+        #endif
         }
 
         public void RaiseVerbose(string message, int rank = 0, bool emphasis = false)
         {
+        #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(message);
+        #endif
         }
 
         public void RaiseWarning(string warning, int rank = 0)
         {
+        #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Warn(warning);
+        #endif
         }
 
         public void ReportProgressChanged(int progress)

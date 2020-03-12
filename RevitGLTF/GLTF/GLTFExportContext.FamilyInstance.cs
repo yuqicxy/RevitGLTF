@@ -53,11 +53,19 @@ namespace RevitGLTF.GLTF
             instanceList.Add(instanceNode);
             instanceTransformNode.instances = instanceList.ToArray();
 
+            //初始化mLastMaterialID
+            mLastMaterialID = null;
+
             if (hasCreated)
             {
                 //若以导出该instance，则不继续导出
                 mMeshStack.Push(null);
                 mMyMeshStack.Push(null);
+
+            #if DEBUG
+                log.Info("skip");
+            #endif
+
                 return RenderNodeAction.Skip;
             }
             else
@@ -71,8 +79,6 @@ namespace RevitGLTF.GLTF
                 MyMesh mymesh = new MyMesh(instanceNode.id);
                 mMyMeshStack.Push(mymesh);
 
-                //初始化mLastMaterialID
-                mLastMaterialID = null;
                 return RenderNodeAction.Proceed;
             }
         }
