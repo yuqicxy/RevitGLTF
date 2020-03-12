@@ -22,11 +22,11 @@ namespace RevitGLTF
         {
             mConfig = config;
             mExportParameters = new ExportParameters();
-            mExportParameters.dracoCompression = true;
+            mExportParameters.dracoCompression = config.mDracoCompress;
             mExportParameters.optimizeVertices = true;
-
+            
             Scene = new BabylonScene(mConfig.mOutPutPath);
-            Scene.producer = new BabylonProducer { name = "Revit", version = "2020" };
+            Scene.producer = new BabylonProducer { name = "浙江科澜信息技术有限公司——Revit导出插件", version = "1.0" };
         }
 
         public void Export()
@@ -38,9 +38,10 @@ namespace RevitGLTF
         {
             try 
             {
+                bool generateBinary = mConfig.mOutputFormat == ".glb";
                 scene.Prepare(false, false);
                 GLTFExporter gltfExporter = new GLTFExporter();
-                gltfExporter.ExportGltf(mExportParameters, scene, mConfig.mOutPutPath, mConfig.mOutputFilename + mConfig.mOutputFormat, false, this);
+                gltfExporter.ExportGltf(mExportParameters, scene, mConfig.mOutPutPath, mConfig.mOutputFilename + mConfig.mOutputFormat, generateBinary, this);
             }
             catch(Exception exp)
             {
@@ -50,7 +51,6 @@ namespace RevitGLTF
                 log.Error(exp.Message);
                 log.Error(exp.StackTrace);
             }
-            
         }
 
         public void CheckCancelled()

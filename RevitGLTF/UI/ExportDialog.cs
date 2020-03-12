@@ -16,17 +16,20 @@ namespace RevitGLTF
         private Autodesk.Revit.DB.Document mRevitDocument;
         private Autodesk.Revit.DB.ViewSet mAllViews = new Autodesk.Revit.DB.ViewSet();
         private Autodesk.Revit.DB.View mSelectView;
-        private ExportConfig mConfig = new ExportConfig();
-        public ExportConfig Config
-        {
-            get { return mConfig; }
-            set { mConfig = value; }
-        }
 
+        UI.GLTFConfigUI mGltfConfigWidget;
+        UI.Tile3DConfigUI mTile3dConfigWiget;
         public ExportDialog(Autodesk.Revit.DB.Document document)
         {
             InitializeComponent();
             mRevitDocument = document;
+
+            mGltfConfigWidget = new UI.GLTFConfigUI();
+            this.mGLTFPage.Controls.Add(mGltfConfigWidget);
+
+            mTile3dConfigWiget = new UI.Tile3DConfigUI();
+            this.mTile3DPage.Controls.Add(mTile3dConfigWiget);
+
             GetAllView();
         }
 
@@ -67,36 +70,44 @@ namespace RevitGLTF
             view3dComboBox.ValueMember = "Value";    // Value，即实际的值
         }
 
-        private void OpenPathClick(object sender, EventArgs e)
+        private bool checkConfig(RevitGLTF.ExportConfig config)
         {
-            FolderBrowserDialog fileDialog = new FolderBrowserDialog();
-            System.Windows.Forms.DialogResult result = fileDialog.ShowDialog();
-            if(result == System.Windows.Forms.DialogResult.OK)
+            if (config.mOutPutPath == null || !Directory.Exists(config.mOutPutPath))
             {
-                string dir = fileDialog.SelectedPath;
-                this.pathTextBox.Text = dir;
-                mConfig.mOutPutPath = dir;
+                MessageBox.Show("无效导出路径");
+                return false;
             }
-        }
-        
-        private void pathTextBox_TextChanged(object sender, EventArgs e)
-        {
-            string path = this.pathTextBox.Text;
-            if(!Directory.Exists(path))
+            if(config.mExportMode == ExportConfig.ExportMode.GLTF)
             {
-                mConfig.mOutPutPath = path;
+                if (config.mOutputFormat == null)
+                {
+                    MessageBox.Show("GLTF导出：无效扩展名");
+                    return false;
+                }
+                if (config.mOutputFilename == null)
+                {
+                    MessageBox.Show("GLTF导出：无效文件名");
+                    return false;
+                }
             }
+            return true;
         }
 
         private void exportButton_Click(object sender, EventArgs e)
         {
-            ExportManager manager = new ExportManager(mConfig);
+            RevitGLTF.ExportConfig config = null;
+            if (this.ModeControl.SelectedIndex == 0)
+                config = this.mGltfConfigWidget.Config;
+            else
+                config = this.mTile3dConfigWiget.Config;
+
+            if (!checkConfig(config))
+                return;
+
+            ExportManager manager = new ExportManager(config);
             if (mSelectView != null)
             {
                 this.Hide();
-                if(mSelectView.Name != "")
-                    mConfig.mOutputFilename = mSelectView.Name;
-
                 manager.Export(mSelectView);
                 this.Show();
             }

@@ -28,58 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExportDialog));
-            this.label1 = new System.Windows.Forms.Label();
-            this.pathTextBox = new System.Windows.Forms.TextBox();
-            this.openPathButton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.view3dComboBox = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.exportButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
+            this.ModeControl = new System.Windows.Forms.TabControl();
+            this.mGLTFPage = new System.Windows.Forms.TabPage();
+            this.mTile3DPage = new System.Windows.Forms.TabPage();
+            this.view3dComboBox = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.ModeControl.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // pathTextBox
-            // 
-            resources.ApplyResources(this.pathTextBox, "pathTextBox");
-            this.pathTextBox.Name = "pathTextBox";
-            this.pathTextBox.ReadOnly = true;
-            // 
-            // openPathButton
-            // 
-            resources.ApplyResources(this.openPathButton, "openPathButton");
-            this.openPathButton.Name = "openPathButton";
-            this.openPathButton.UseVisualStyleBackColor = true;
-            this.openPathButton.Click += new System.EventHandler(this.OpenPathClick);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.view3dComboBox);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.pathTextBox);
-            this.groupBox1.Controls.Add(this.openPathButton);
-            this.groupBox1.Controls.Add(this.label1);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
-            // 
-            // view3dComboBox
-            // 
-            this.view3dComboBox.FormattingEnabled = true;
-            resources.ApplyResources(this.view3dComboBox, "view3dComboBox");
-            this.view3dComboBox.Name = "view3dComboBox";
-            this.view3dComboBox.SelectionChangeCommitted += new System.EventHandler(this.ViewComboBoxSelectChanged);
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
             // 
             // exportButton
             // 
@@ -95,31 +55,70 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
+            // ModeControl
+            // 
+            this.ModeControl.Controls.Add(this.mGLTFPage);
+            this.ModeControl.Controls.Add(this.mTile3DPage);
+            this.ModeControl.ImageList = this.imageList1;
+            resources.ApplyResources(this.ModeControl, "ModeControl");
+            this.ModeControl.Name = "ModeControl";
+            this.ModeControl.SelectedIndex = 0;
+            // 
+            // mGLTFPage
+            // 
+            resources.ApplyResources(this.mGLTFPage, "mGLTFPage");
+            this.mGLTFPage.Name = "mGLTFPage";
+            this.mGLTFPage.UseVisualStyleBackColor = true;
+            // 
+            // mTile3DPage
+            // 
+            resources.ApplyResources(this.mTile3DPage, "mTile3DPage");
+            this.mTile3DPage.Name = "mTile3DPage";
+            this.mTile3DPage.UseVisualStyleBackColor = true;
+            // 
+            // view3dComboBox
+            // 
+            this.view3dComboBox.FormattingEnabled = true;
+            resources.ApplyResources(this.view3dComboBox, "view3dComboBox");
+            this.view3dComboBox.Name = "view3dComboBox";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "favicon-32x32.png");
+            this.imageList1.Images.SetKeyName(1, "favicon-32x32.png");
+            // 
             // ExportDialog
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ModeControl);
+            this.Controls.Add(this.view3dComboBox);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.exportButton);
-            this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ExportDialog";
-            this.Click += new System.EventHandler(this.OpenPathClick);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.ModeControl.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox pathTextBox;
-        private System.Windows.Forms.Button openPathButton;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button exportButton;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.TabControl ModeControl;
+        private System.Windows.Forms.TabPage mGLTFPage;
+        private System.Windows.Forms.TabPage mTile3DPage;
         private System.Windows.Forms.ComboBox view3dComboBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }
