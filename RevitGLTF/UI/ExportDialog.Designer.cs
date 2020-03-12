@@ -35,9 +35,9 @@
             this.ModeControl = new System.Windows.Forms.TabControl();
             this.mGLTFPage = new System.Windows.Forms.TabPage();
             this.mTile3DPage = new System.Windows.Forms.TabPage();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.view3dComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.ModeControl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,23 +76,24 @@
             this.mTile3DPage.Name = "mTile3DPage";
             this.mTile3DPage.UseVisualStyleBackColor = true;
             // 
-            // view3dComboBox
-            // 
-            this.view3dComboBox.FormattingEnabled = true;
-            resources.ApplyResources(this.view3dComboBox, "view3dComboBox");
-            this.view3dComboBox.Name = "view3dComboBox";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "favicon-32x32.png");
             this.imageList1.Images.SetKeyName(1, "favicon-32x32.png");
+            // 
+            // view3dComboBox
+            // 
+            this.view3dComboBox.FormattingEnabled = true;
+            resources.ApplyResources(this.view3dComboBox, "view3dComboBox");
+            this.view3dComboBox.Name = "view3dComboBox";
+            this.view3dComboBox.SelectedIndexChanged += new System.EventHandler(this.ViewComboBoxSelectChanged);
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
             // 
             // ExportDialog
             // 

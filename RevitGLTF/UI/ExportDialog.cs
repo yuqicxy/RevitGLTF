@@ -13,9 +13,10 @@ namespace RevitGLTF
 {
     public partial class ExportDialog : Form
     {
-        private Autodesk.Revit.DB.Document mRevitDocument;
-        private Autodesk.Revit.DB.ViewSet mAllViews = new Autodesk.Revit.DB.ViewSet();
-        private Autodesk.Revit.DB.View mSelectView;
+        private Autodesk.Revit.DB.Document mRevitDocument = null;
+        //private Autodesk.Revit.DB.ViewSet mAllViews = null;
+        private Autodesk.Revit.DB.View mSelectView = null;
+        private List<Autodesk.Revit.DB.View3D> mViewList = null;
 
         UI.GLTFConfigUI mGltfConfigWidget;
         UI.Tile3DConfigUI mTile3dConfigWiget;
@@ -30,6 +31,9 @@ namespace RevitGLTF
             mTile3dConfigWiget = new UI.Tile3DConfigUI();
             this.mTile3DPage.Controls.Add(mTile3dConfigWiget);
 
+            //mAllViews = new Autodesk.Revit.DB.ViewSet();
+            mViewList = new List<Autodesk.Revit.DB.View3D>();
+
             GetAllView();
         }
 
@@ -43,8 +47,11 @@ namespace RevitGLTF
             while (itor.MoveNext())
             {
                 Autodesk.Revit.DB.View3D view3d= itor.Current as Autodesk.Revit.DB.View3D;
-                if(view3d != null && !view3d.IsTemplate)
-                    mAllViews.Insert(view3d);
+                if (view3d != null && !view3d.IsTemplate)
+                {
+                    //mAllViews.Insert(view3d);
+                    mViewList.Add(view3d);
+                }
             }
             AddViewToViewCombo();
         }
@@ -57,7 +64,7 @@ namespace RevitGLTF
 
             List<string> list = new List<string>();
             uint index = 0;
-            foreach (Autodesk.Revit.DB.View view in mAllViews)
+            foreach (Autodesk.Revit.DB.View view in mViewList)
             {
                 if (mSelectView == null)
                     mSelectView = view;
@@ -125,12 +132,13 @@ namespace RevitGLTF
         private void ViewComboBoxSelectChanged(object sender,EventArgs e)
         {
             int index = this.view3dComboBox.SelectedIndex;
-            Autodesk.Revit.DB.ViewSetIterator itor = mAllViews.ForwardIterator();
-            for (int i = 0;i <= index;++i)
-            {
-                itor.MoveNext();
-            }
-            mSelectView = itor.Current as Autodesk.Revit.DB.View3D;
+            mSelectView = mViewList[index];
+            //Autodesk.Revit.DB.ViewSetIterator itor = mAllViews.ForwardIterator();
+            //for (int i = 0;i <= index;++i)
+            //{
+            //    itor.MoveNext();
+            //}
+            //mSelectView = itor.Current as Autodesk.Revit.DB.View3D;
         }
     }
 }

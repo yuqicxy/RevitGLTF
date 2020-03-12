@@ -83,9 +83,13 @@ namespace RevitGLTF.GLTF
         //开始导出视图
         public RenderNodeAction OnViewBegin(ViewNode node)
         {
-        #if DEBUG
+#if DEBUG
+            var view = mRevitDocument.GetElement(node.ViewId) as View;
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info(String.Format("View3D {0} => Start", node.NodeName));
+            if (view == null)
+                log.Error(String.Format("View3D:{0} => Start Failed", node.ViewId.ToString()));
+            else
+                log.Info(String.Format("View3D {0} => Start", view.Name));
         #endif
             return RenderNodeAction.Proceed;
         }
