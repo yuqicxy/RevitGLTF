@@ -31,7 +31,7 @@ namespace RevitGLTF
             mMaterialNeedUV = new Dictionary<ElementId, bool>();
         }
 
-        public void Clear() { mMaterialTable.Clear(); }
+        public void Clear() { mMaterialTable.Clear(); mMaterialNeedUV.Clear(); }
 
         //检测材质是否以创建
         public bool HasCreatedMaterial(ElementId MaterialId)

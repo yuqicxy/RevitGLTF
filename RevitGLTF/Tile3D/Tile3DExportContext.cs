@@ -42,9 +42,10 @@ namespace RevitGLTF.Tile3D
         //开始导出
         public bool Start()
         {
+        #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(String.Format("Exporting {0} => Start", mRevitDocument.Title));
-
+        #endif
             mExportManager = new GLTFExportManager(mConfig);
             //InstanceFactory.Instance.Clear();
             //MaterialFactory.Instance.Clear();
@@ -62,9 +63,10 @@ namespace RevitGLTF.Tile3D
         //结束导出
         public void Finish()
         {
+        #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(String.Format("Exporting {0} => Finish", mRevitDocument.Title));
-
+        #endif
             mExportManager.Export();
 
             InstanceFactory.Instance.Clear();

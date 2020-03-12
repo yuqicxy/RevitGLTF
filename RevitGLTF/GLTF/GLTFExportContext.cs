@@ -33,21 +33,21 @@ namespace RevitGLTF.GLTF
         private GLTFExportManager mExportManager;
 
         private BabylonMesh mRootNode = null;
+
         public GLTFExportContext(ExportConfig config, Document document)
         {
             mConfig = config;
             mRevitDocument = document;
+            mExportManager = new GLTFExportManager(mConfig);
         }
 
         //开始导出
         public bool Start()
         {
-
         #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(String.Format("Exporting {0} => Start", mRevitDocument.Title));
         #endif
-            mExportManager = new GLTFExportManager(mConfig);
 
             //初始化根节点
             mRootNode = new BabylonMesh { name = "root", id = "rootTrans" };
