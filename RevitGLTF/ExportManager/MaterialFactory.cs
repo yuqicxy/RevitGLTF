@@ -62,11 +62,9 @@ namespace RevitGLTF
                     return mMaterialTable[id];
                 }
 
-                string typeName = "Autodesk.Revit.DB.Visual." + ((AssetProperty)asset).Name.Replace("Schema", "") + ",RevitAPI";
-                Type type = Type.GetType(typeName);
-                if (type != null)
+                string schemaname = GetAssetSchemaName(asset);
+                if(schemaname != null)
                 {
-                    string schemaname = type.Name.ToLower();
                     if (schemaname == "generic")
                     {
                         material = CreateGenericMaterial(asset, revitMaterial);
@@ -87,7 +85,7 @@ namespace RevitGLTF
                     {
                         material = CreateHardwoodMaterial(asset, revitMaterial);
                     }
-                    else if (schemaname == "mansorycmu")
+                    else if (schemaname == "masonrycmu")
                     {
                         material = CreateMansoryCMUMaterial(asset, revitMaterial);
                     }
@@ -125,10 +123,8 @@ namespace RevitGLTF
                     }
                     else
                     {
-                    #if DEBUG
                         log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                        log.Warn(schemaname + " is not handled");
-                    #endif
+                        log.Error(schemaname + " is not handled");
                     }
                 }
             }
@@ -146,6 +142,58 @@ namespace RevitGLTF
             mMaterialTable.Add(id, material);
             mMaterialNeedUV.Add(id, needUV);
             return material;
+        }
+
+        private static string GetAssetSchemaName(Asset asset)
+        {
+            string typeName = "Autodesk.Revit.DB.Visual." + ((AssetProperty)asset).Name.Replace("Schema", "") + ",RevitAPI";
+            Type type = Type.GetType(typeName);
+            if(type != null)
+            {
+                string schemaname = type.Name.ToLower();
+                return schemaname;
+            }
+
+            //对于Revit老版本生产的bim，存在上述方式分类方式不起效的情况，
+            //此时则需要通过各Schema类型特有字段来识别
+            if (HasProperty(asset, Generic.GenericDiffuse))
+                return "generic";
+            if (HasProperty(asset, Ceramic.CeramicColor))
+                return "ceramic";
+            if(HasProperty(asset, Concrete.ConcreteColor))
+                return "concrete";
+            if (HasProperty(asset, Glazing.GlazingTransmittanceColor))
+                return "glazing";
+            if (HasProperty(asset, Hardwood.HardwoodColor))
+                return "hardwood";
+            if (HasProperty(asset, MasonryCMU.MasonryCMUColor))
+                return "masonrycmu";
+            if (HasProperty(asset, Metal.MetalColor))
+                return "metal";
+            if (HasProperty(asset, MetallicPaint.MetallicpaintBaseColor))
+                return "metallicpaint";
+            if (HasProperty(asset, Mirror.MirrorColorByObject))
+                return "mirror";
+            if (HasProperty(asset, PlasticVinyl.PlasticvinylColor))
+                return "plasticvinyl";
+            if (HasProperty(asset, SolidGlass.SolidglassReflectance))
+                return "solidglass";
+            if (HasProperty(asset, WallPaint.WallpaintColor))
+                return "wallpaint";
+            if (HasProperty(asset, Water.WaterTintColor))
+                return "water";
+            if (HasProperty(asset, Stone.StoneColor))
+                return "stone";
+
+            return null;
+        }
+
+        private static bool HasProperty(Asset in_asset,string in_proprtyName)
+        {
+            AssetProperty byName = in_asset.FindByName(in_proprtyName);
+            if (byName != null)
+                return true;
+            return false;
         }
 
         private static bool GetBooleanPropertyValue(Asset in_asset, string in_propertyName, bool in_defaultValue)
@@ -168,6 +216,14 @@ namespace RevitGLTF
             if (byName == null)
                 return in_defaultValue;
             return byName.Type == AssetPropertyType.Float ? (byName as AssetPropertyFloat).Value : (float)(byName as AssetPropertyDouble).Value;
+        }
+
+        private static string GetStringPropertyValue(Asset in_asset,string in_propertyName,string in_defaultValue = "")
+        {
+            AssetProperty byName = ((AssetProperties)in_asset).FindByName(in_propertyName);
+            if (byName == null)
+                return in_defaultValue;
+            return byName.Type == AssetPropertyType.String ? (byName as AssetPropertyString).Value : (string)(byName as AssetPropertyString).Value;
         }
 
         private static IList<float> GetColorPropertyValue(Asset in_asset, string in_propertyName, IList<float> in_defaultValue)
