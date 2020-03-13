@@ -9,11 +9,12 @@ using BabylonExport.Entities;
 using Utilities;
 
 using Autodesk.Revit.DB;
-namespace RevitGLTF.GLTF
+namespace RevitGLTF.Tile3D
 {
-    public partial class GLTFExportContext : IModelExportContext
+    public partial class Tile3DExportContext : IModelExportContext
     {
         private MySubMesh mCurrentSubMesh = null;
+
         private Stack<MyMesh> mMyMeshStack = new Stack<MyMesh>();
 
         //Face包含一个polymesh
@@ -57,6 +58,12 @@ namespace RevitGLTF.GLTF
                 v2.Position = GLTFUtil.ToArray(node.GetPoint(triangle.V2));
                 v3.Position = GLTFUtil.ToArray(node.GetPoint(triangle.V3));
 
+                {
+                    v1.UV = GLTFUtil.ToArray(node.GetUV(triangle.V1));
+                    v2.UV = GLTFUtil.ToArray(node.GetUV(triangle.V2));
+                    v3.UV = GLTFUtil.ToArray(node.GetUV(triangle.V3));
+                }
+
                 XYZ normal;
                 if (DistributionOfNormals.OnePerFace == distrib)
                 {
@@ -77,13 +84,6 @@ namespace RevitGLTF.GLTF
                     v1.Normal = GLTFUtil.ToArray(node.GetNormal(triangle.V1));
                     v2.Normal = GLTFUtil.ToArray(node.GetNormal(triangle.V2));
                     v3.Normal = GLTFUtil.ToArray(node.GetNormal(triangle.V3));
-                }
-
-                if (mCurrentSubMesh.NeedUV)
-                {
-                    v1.UV = GLTFUtil.ToArray(node.GetUV(triangle.V1));
-                    v2.UV = GLTFUtil.ToArray(node.GetUV(triangle.V2));
-                    v3.UV = GLTFUtil.ToArray(node.GetUV(triangle.V3));
                 }
 
                 mCurrentSubMesh.AddVertex(v1);

@@ -28,16 +28,20 @@ namespace RevitGLTF
 
         public static float[] ToArray(Transform matrix)
         {
-            XYZ basis0 = matrix.get_Basis(0);
-            XYZ basis1 = matrix.get_Basis(1);
-            XYZ basis2 = matrix.get_Basis(2);
+            XYZ b0 = matrix.get_Basis(0);
+            XYZ b1 = matrix.get_Basis(1);
+            XYZ b2 = matrix.get_Basis(2);
             XYZ origin = matrix.Origin;
 
-            return new float[] { (float)basis0.X,(float)basis0.Y,(float)basis0.Z,0.0f,
-                          (float)basis1.X,(float)basis1.Y,(float)basis1.Z,0.0f,
-                          (float)basis2.X,(float)basis2.Y,(float)basis2.Z,0.0f,
-                          (float)origin.X,(float)origin.Y,(float)origin.Z,1.0f};
-            
+            //return new float[] { (float)b0.X,(float)b1.X,(float)b2.X,(float)origin.X,
+            //                     (float)b0.Y,(float)b1.Y,(float)b2.Y,(float)origin.Y,
+            //                     (float)b0.Z,(float)b1.Z,(float)b2.Z,(float)origin.Z,
+            //                     0.0f,0.0f,0.0f,1.0f};
+
+            return new float[] { (float)b0.X,(float)b0.Y,(float)b0.Z,0.0f,
+                                 (float)b1.X,(float)b1.Y,(float)b1.Z,0.0f,
+                                 (float)b2.X,(float)b2.Y,(float)b2.Z,0.0f,
+                                 (float)origin.X,(float)origin.Y,(float)origin.Z,1.0f};
         }
 
         public static void ExportTransform(BabylonNode node, Transform matrix)
@@ -52,13 +56,11 @@ namespace RevitGLTF
             tm_babylon.decompose(s_babylon, q_babylon, t_babylon);
             
             //rotation
-            var q = q_babylon;
-            float q_length = (float)Math.Sqrt(q.X * q.X + q.Y * q.Y + q.Z * q.Z + q.W * q.W);
-            node.rotationQuaternion = new[] { q_babylon.X / q_length, q_babylon.Y / q_length, q_babylon.Z / q_length, q_babylon.W / q_length };
+            node.rotationQuaternion = q_babylon.ToArray();
             //scale
-            node.scaling = new[] { s_babylon.X, s_babylon.Y, s_babylon.Z };
+            node.scaling = s_babylon.ToArray();
             //translate
-            node.position = new[] { t_babylon.X, t_babylon.Y, t_babylon.Z };
+            node.position = t_babylon.ToArray();
         }
         public static bool IsEqualTo(this float[] value, float[] other, float Epsilon = Epsilon)
         {

@@ -116,6 +116,9 @@ namespace BabylonExport.Entities
         public string OutputPath { get; private set; }
 
         public List<BabylonMesh> MeshesList { get; private set; }
+
+        public List<BabylonMesh> InstancesList { get; private set; }
+
         public List<BabylonSound> SoundsList { get; private set; }
         public List<BabylonCamera> CamerasList { get; private set; }
         public List<BabylonLight> LightsList { get; private set; }
@@ -132,6 +135,8 @@ namespace BabylonExport.Entities
             OutputPath = outputPath;
 
             MeshesList = new List<BabylonMesh>();
+            InstancesList = new List<BabylonMesh>();
+
             MaterialsList = new List<BabylonMaterial>();
             CamerasList = new List<BabylonCamera>();
             LightsList = new List<BabylonLight>();

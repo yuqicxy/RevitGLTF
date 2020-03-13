@@ -11,27 +11,27 @@ using Utilities;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Visual;
 
-namespace RevitGLTF.GLTF
+namespace RevitGLTF.Tile3D
 {
-    public partial class GLTFExportContext : IModelExportContext
+    public partial class Tile3DExportContext : IModelExportContext
     {
         //记录上一个材质ID，用于检测材质是否变化
-        private ElementId mLastMaterialID = null;
+        private ElementId mLastMaterialID = new ElementId(-1);
 
         //当前材质发生变化，在OnFaceStart之后调用
         public void OnMaterial(MaterialNode node)
         {
-        #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             string name = node.NodeName +"\t" + node.GetAppearance().Name  + "\tid:" + node.MaterialId.ToString() + "\tmaterial:" + node.ToString();
             log.Info("MaterialNode\t" + name);
-        #endif
-
+            
             var currentmesh = mMeshStack.Peek();
             var currentMyMesh = mMyMeshStack.Peek();
+            var currentMutiMaterial = currentMyMesh.MultiMaterial;
+            var materialSubMeshMap = currentMyMesh.MaterialSubMeshMap;
+
             if (currentmesh.materialId == null)
             {
-                var currentMutiMaterial = currentMyMesh.MultiMaterial;
                 //创建MultiMaterial与BabylonMesh绑定，并将其添加至Scene.MultiMaterial
                 currentMutiMaterial.id = currentmesh.id;
                 mExportManager.Scene.MultiMaterialsList.Add(currentMutiMaterial);
@@ -39,10 +39,10 @@ namespace RevitGLTF.GLTF
             }
 
             var materialId = node.MaterialId;
+
             //材质是否发生变化
-            if (mLastMaterialID != materialId )
+            //if (mLastMaterialID != materialId )
             {
-                var materialSubMeshMap = currentMyMesh.MaterialSubMeshMap;
                 var currentMaterialIndex = CreateMaterial(node);
 
                 //根据当前材质id选择submesh
@@ -55,30 +55,38 @@ namespace RevitGLTF.GLTF
                     //创建submesh,并添加至matrialSubMeshMap
                     mCurrentSubMesh = new MySubMesh();
                     mCurrentSubMesh.MaterialID = currentMaterialIndex;
-                    //mCurrentSubMesh.NeedUV = MaterialFactory.Instance.NeedUVCoord(materialId);
                     materialSubMeshMap.Add(materialId, mCurrentSubMesh);
                 }
-                mLastMaterialID = materialId;
             }
+
+            //mLastMaterialID = materialId;
+            return;
         }
 
         //创建材质，添加至multiMaterial,并更新当前材质ID
         public int CreateMaterial(MaterialNode node)
         {
-            var currentMutiMaterial = mMyMeshStack.Peek().MultiMaterial;
+            Asset asset = null;
+            if (node.HasOverriddenAppearance)
+            {
+                asset = node.GetAppearanceOverride();
+            }
+            else
+            {
+                asset = node.GetAppearance();
+            }
+
+            var revitMaterial = mRevitDocument.GetElement(node.MaterialId) as Material;
+
+            var currentMyMesh = mMyMeshStack.Peek();
+            var currentMutiMaterial = currentMyMesh.MultiMaterial;
+            var materialSubMeshMap = currentMyMesh.MaterialSubMeshMap;
 
             //记录材质在MultiMaterial中的索引
             int currentMaterialIndex = -1;
 
             if (!MaterialFactory.Instance.HasCreatedMaterial(node.MaterialId))
             {
-                Asset asset = null;
-                if (node.HasOverriddenAppearance)
-                    asset = node.GetAppearanceOverride();
-                else
-                    asset = node.GetAppearance();
-
-                var revitMaterial = mRevitDocument.GetElement(node.MaterialId) as Material;
                 //创建材质
                 var babylonmaterial = MaterialFactory.Instance.CreateMaterial(asset, revitMaterial,node.MaterialId);
                 //将材质添加至Scene

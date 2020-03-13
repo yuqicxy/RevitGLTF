@@ -24,6 +24,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <PlatformTarget>x64</PlatformTarget>
@@ -75,15 +76,42 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GLTF\GlobalVertex.cs" />
+    <Compile Include="ExportManager\GLTFExportManager.cs" />
+    <Compile Include="ExportManager\InstanceFactory.cs" />
+    <Compile Include="ExportManager\MaterialFactory.cs" />
     <Compile Include="GLTF\GLTFExportContext.cs" />
-    <Compile Include="GLTF\GLTFExportContext.Logger.cs" />
+    <Compile Include="GLTF\GLTFExportContext.Element.cs" />
+    <Compile Include="GLTF\GLTFExportContext.FamilyInstance.cs" />
+    <Compile Include="GLTF\GLTFExportContext.Link.cs" />
     <Compile Include="GLTF\GLTFExportContext.Material.cs" />
     <Compile Include="GLTF\GLTFExportContext.Mesh.cs" />
-    <Compile Include="GLTF\GLTFExportContext.PointLine.cs" />
-    <Compile Include="GLTF\GLTFUtil.cs" />
+    <Compile Include="GLTF\GLTFExportContext.NotImplement.cs" />
+    <Compile Include="GLTF\GLTFExportContext.RPC.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.Element.cs" />
+    <Compile Include="UI\GLTFConfigUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\GLTFConfigUI.Designer.cs">
+      <DependentUpon>GLTFConfigUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Tile3DConfigUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Tile3DConfigUI.Designer.cs">
+      <DependentUpon>Tile3DConfigUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Util\GlobalVertex.cs" />
+    <Compile Include="Util\GLTFUtil.cs" />
     <Compile Include="ExportManager\App.cs" />
-    <Compile Include="GLTF\MyMesh.cs" />
+    <Compile Include="Util\MyMesh.cs" />
+    <Compile Include="Util\InstanceManager.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.FamilyInstance.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.Link.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.Material.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.Mesh.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.NotImplement.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.RPC.cs" />
     <Compile Include="UI\ExportConfig.cs" />
     <Compile Include="ExportManager\Command.cs" />
     <Compile Include="UI\ExportDialog.cs">
@@ -118,6 +146,12 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\GLTFConfigUI.resx">
+      <DependentUpon>GLTFConfigUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Tile3DConfigUI.resx">
+      <DependentUpon>Tile3DConfigUI.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

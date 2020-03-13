@@ -10,9 +10,9 @@ using Utilities;
 
 using Autodesk.Revit.DB;
 
-namespace RevitGLTF.GLTF
+namespace RevitGLTF.Tile3D
 {
-    public partial class GLTFExportContext : IModelExportContext
+    public partial class Tile3DExportContext : IModelExportContext
     {
         //是否取消
         public bool Cancel { get; set; } = false;
@@ -33,12 +33,10 @@ namespace RevitGLTF.GLTF
         private GLTFExportManager mExportManager;
 
         private BabylonMesh mRootNode = null;
-
-        public GLTFExportContext(ExportConfig config, Document document)
+        public Tile3DExportContext(ExportConfig config, Document document)
         {
             mConfig = config;
             mRevitDocument = document;
-            mExportManager = new GLTFExportManager(mConfig);
         }
 
         //开始导出
@@ -48,6 +46,9 @@ namespace RevitGLTF.GLTF
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(String.Format("Exporting {0} => Start", mRevitDocument.Title));
         #endif
+            mExportManager = new GLTFExportManager(mConfig);
+            //InstanceFactory.Instance.Clear();
+            //MaterialFactory.Instance.Clear();
 
             //初始化根节点
             mRootNode = new BabylonMesh { name = "root", id = "rootTrans" };
@@ -83,28 +84,20 @@ namespace RevitGLTF.GLTF
         //开始导出视图
         public RenderNodeAction OnViewBegin(ViewNode node)
         {
-#if DEBUG
-            var view = mRevitDocument.GetElement(node.ViewId) as View;
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            if (view == null)
-                log.Error(String.Format("View3D:{0} => Start Failed", node.ViewId.ToString()));
-            else
-                log.Info(String.Format("View3D {0} => Start", view.Name));
-        #endif
+            log.Info(String.Format("View3D {0} => Start", node.NodeName));
             return RenderNodeAction.Proceed;
         }
 
         //结束视图
         public void OnViewEnd(ElementId elementId)
         {
-        #if DEBUG
             var view = mRevitDocument.GetElement(elementId) as View;
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             if (view == null)
                 log.Error(String.Format("View3D:{0} => Finish Failed", elementId.ToString()));
             else
                 log.Info(String.Format("View3D {0} => Finish", view.Name));
-        #endif
         }
     }
 }

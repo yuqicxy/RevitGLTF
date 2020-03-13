@@ -20,6 +20,7 @@ namespace Babylon2GLTF
         ExportParameters exportParameters;
 
         private List<BabylonNode> babylonNodes;
+        
         private BabylonScene babylonScene;
 
         ILoggingProvider logger;
@@ -64,7 +65,7 @@ namespace Babylon2GLTF
             var softwareVersion = babylonScene.producer != null ? babylonScene.producer.version : "";
             var exporterVersion = babylonScene.producer != null ? babylonScene.producer.exporter_version : "";
 
-            gltf.asset.generator = $"babylon.js glTF exporter for {softwarePackageName} {softwareVersion} v{exporterVersion}";
+            gltf.asset.generator = $"glTF exporter for {softwarePackageName} {softwareVersion}";// v{exporterVersion}";
 
             // Scene
             gltf.scene = 0;
@@ -105,8 +106,17 @@ namespace Babylon2GLTF
             logger.RaiseMessage("GLTFExporter | Exporting meshes");
             progression = 10.0f;
             logger.ReportProgressChanged((int)progression);
-            progressionStep = 40.0f / babylonScene.meshes.Length;
+            progressionStep = 40.0f / (babylonScene.meshes.Length + babylonScene.InstancesList.Count);
             foreach (var babylonMesh in babylonScene.meshes)
+            {
+                ExportMesh(babylonMesh, gltf, babylonScene);
+                progression += progressionStep;
+                logger.ReportProgressChanged((int)progression);
+                logger.CheckCancelled();
+            }
+
+            //导出实例的Mesh，在Initial函数中以给定GroupInstanceId
+            foreach (var babylonMesh in babylonScene.InstancesList)
             {
                 ExportMesh(babylonMesh, gltf, babylonScene);
                 progression += progressionStep;
@@ -276,25 +286,39 @@ namespace Babylon2GLTF
         private List<BabylonNode> initBabylonNodes(BabylonScene babylonScene,GLTF gltf)
         {
             babylonNodes = new List<BabylonNode>();
+
             if (babylonScene.meshes != null)
             {
                 int idGroupInstance = 0;
+                //并不将InstanceNode添加至babylonNodes,因为其无parentid,也不是根节点
+                foreach (var babylonMesh in babylonScene.InstancesList)
+                {
+                    //标记实例,用于Node与Mesh做对应
+                    babylonMesh.idGroupInstance = idGroupInstance;
+                    idGroupInstance++;
+                }
+
                 foreach (var babylonMesh in babylonScene.meshes)
                 {
                     var babylonAbstractMeshes = new List<BabylonAbstractMesh>();
                     babylonAbstractMeshes.Add(babylonMesh);
-                    if (babylonMesh.instances != null)
+
+                    //if (babylonMesh.instances != null)
+                    //{
+                    //    babylonAbstractMeshes.AddRange(babylonMesh.instances);
+                    //}
+
+                    if(babylonMesh.instances != null && babylonMesh.instances.Length > 0)
+                        babylonMesh.idGroupInstance = babylonMesh.instances[0].idGroupInstance;
+                    else
                     {
-                        babylonAbstractMeshes.AddRange(babylonMesh.instances);
+                        // Tag mesh and instances with an identifier
+                        babylonAbstractMeshes.ForEach(babylonAbstractMesh => babylonAbstractMesh.idGroupInstance = idGroupInstance);
+                        idGroupInstance++;
                     }
 
                     // Add mesh and instances to node list
                     babylonNodes.AddRange(babylonAbstractMeshes);
-
-                    // Tag mesh and instances with an identifier
-                    babylonAbstractMeshes.ForEach(babylonAbstractMesh => babylonAbstractMesh.idGroupInstance = idGroupInstance);
-
-                    idGroupInstance++;
                 }
             }
             if (babylonScene.lights != null)
@@ -393,7 +417,20 @@ namespace Babylon2GLTF
 
         private List<BabylonNode> getDescendants(BabylonNode babylonNode)
         {
-            return babylonNodes.FindAll(node => node.parentId == babylonNode.id);
+            List<BabylonNode> nodelist = new List<BabylonNode>();
+            nodelist.AddRange(babylonNodes.FindAll(node => node.parentId == babylonNode.id));
+            
+            //添加该节点的instancesList也作为其子节点，注意的是，instanceMesh并不具有parentID，只是逻辑子节点
+            //if(babylonNode.GetType() == typeof(BabylonMesh))
+            //{
+            //    var mesh = babylonNode as BabylonMesh;
+            //    if(mesh.instances != null)
+            //    {
+            //        nodelist.AddRange(mesh.instances);
+            //    }
+            //}
+            
+            return nodelist;
         }
 
         /// <summary>
@@ -472,6 +509,7 @@ namespace Babylon2GLTF
             GLTFNode gltfNode = null;
             var type = babylonNode.GetType();
 
+            //此处会过滤掉具有相同id的InstanceNode
             var nodeNodePair = nodeToGltfNodeMap.FirstOrDefault(pair => pair.Key.id.Equals(babylonNode.id));
             if (nodeNodePair.Key != null)
             {
@@ -536,12 +574,12 @@ namespace Babylon2GLTF
                 gltfNode.scale = babylonNode.scaling;
 
                 // Switch coordinate system at object level
-                gltfNode.translation[2] *= -1;
-                gltfNode.translation[0] *= exportParameters.scaleFactor;
-                gltfNode.translation[1] *= exportParameters.scaleFactor;
-                gltfNode.translation[2] *= exportParameters.scaleFactor;
-                gltfNode.rotation[0] *= -1;
-                gltfNode.rotation[1] *= -1;
+                //gltfNode.translation[2] *= -1;
+                //gltfNode.translation[0] *= exportParameters.scaleFactor;
+                //gltfNode.translation[1] *= exportParameters.scaleFactor;
+                //gltfNode.translation[2] *= exportParameters.scaleFactor;
+                //gltfNode.rotation[0] *= -1;
+                //gltfNode.rotation[1] *= -1;
             }
 
             ExportGLTFExtension(babylonNode,ref gltfNode, gltf);
