@@ -45,6 +45,7 @@ namespace RevitGLTF
                 instanceNode.id = symbolId.ToString();
                 instanceNode.name = symbolId.ToString();
                 instanceNode.idGroupInstance = symbolId.IntegerValue;
+                instanceNode.isDummy = true;
                 mInstanceTable.Add(symbolId, instanceNode);
                 return instanceNode;
             }

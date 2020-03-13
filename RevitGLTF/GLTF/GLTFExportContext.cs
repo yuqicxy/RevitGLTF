@@ -44,10 +44,8 @@ namespace RevitGLTF.GLTF
         //开始导出
         public bool Start()
         {
-        #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(String.Format("Exporting {0} => Start", mRevitDocument.Title));
-        #endif
 
             //初始化根节点
             mRootNode = new BabylonMesh { name = "root", id = "rootTrans" };
@@ -62,10 +60,9 @@ namespace RevitGLTF.GLTF
         //结束导出
         public void Finish()
         {
-        #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(String.Format("Exporting {0} => Finish", mRevitDocument.Title));
-        #endif
+            
             mExportManager.Export();
 
             InstanceFactory.Instance.Clear();
@@ -83,7 +80,7 @@ namespace RevitGLTF.GLTF
         //开始导出视图
         public RenderNodeAction OnViewBegin(ViewNode node)
         {
-#if DEBUG
+        #if DEBUG
             var view = mRevitDocument.GetElement(node.ViewId) as View;
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             if (view == null)
