@@ -41,10 +41,8 @@ namespace RevitGLTF.GLTF
             BabylonMesh elementNode = new BabylonMesh();
             elementNode.id = elementId.ToString();
             elementNode.parentId = mRootNode.id;
+            elementNode.isDummy = true;
 
-            //将ElementMesh添加至Scene
-            mExportManager.Scene.MeshesList.Add(elementNode);
-            
             //同OnInstanceStart处操作，保证无instance的Element正常导出
             //用于合并材质相同的mesh，减少drawcall
             var currentMesh = new MyMesh(elementNode.id);
@@ -71,14 +69,19 @@ namespace RevitGLTF.GLTF
             else
                 log.Info(String.Format("Element:{0} ID:{1} => Finish", element.Name, elementId.ToString()));
         #endif
+
             BabylonMesh mesh = mMeshStack.Peek();
             var myMesh = mMyMeshStack.Peek();
 
             if (mesh != null && myMesh != null)
             {
                 myMesh.GenerateMesh(mesh);
+                if(!mesh.isDummy)
+                {
+                    //将ElementMesh添加至Scene
+                    mExportManager.Scene.MeshesList.Add(mesh);
+                }
             }
-
 
             //出栈
             mMyMeshStack.Pop();
