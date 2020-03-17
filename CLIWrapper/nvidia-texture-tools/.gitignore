@@ -1,0 +1,44 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+*.txt
+*.ide
+*.lock
+
+#NVTT
+/project/vc12/.vs
+/project/vc12/**/Debug
+/project/vc12/**/Release
+/project/vc12/Debug.x64/
+/project/vc12/Release.x64/
+/data/
+
