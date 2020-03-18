@@ -80,6 +80,8 @@ namespace BabylonExport.Entities
             _unlit = false;
 
             clearCoat = new BabylonPBRClearCoat();
+
+            roughness = 1.0f;
         }
 
         public BabylonPBRMetallicRoughnessMaterial(BabylonPBRMetallicRoughnessMaterial original) : base(original)

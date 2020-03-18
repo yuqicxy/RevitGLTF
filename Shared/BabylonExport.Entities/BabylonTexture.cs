@@ -121,6 +121,8 @@ namespace BabylonExport.Entities
         public SamplingMode samplingMode { get; set; }
 
         // Used for gltf export
+        public bool IsBump { get; set; } = false;
+        // Used for gltf export
         public string originalPath;
         // Used for gltf export
         public Bitmap bitmap;
