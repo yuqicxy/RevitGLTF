@@ -35,6 +35,18 @@ namespace RevitGLTF
             this.MaterialID = tmpMaterialID;
         }
 
+        public void AddMesh(List<int> indices, List<GlobalVertex> vertexs)
+        {
+            int size = mVertices.Count();
+            mVertices.AddRange(vertexs);
+
+            indices.ForEach(indice => 
+            {
+                indice += size;
+                mIndices.Add(indice);
+            });
+        }
+
         //添加顶点至Vertex中，并进行顶点去重，以及顶点索引的构建
         public void AddVertex(GlobalVertex vertex)
         {
@@ -121,8 +133,6 @@ namespace RevitGLTF
 
         public void GenerateMesh(BabylonMesh mesh)
         {
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
             List<int> indices = new List<int>();
             List<GlobalVertex> vertexs = new List<GlobalVertex>();
 
@@ -158,6 +168,7 @@ namespace RevitGLTF
 
             if (vertexs.Count <= 0)
                 return;
+            
             mesh.indices = indices.ToArray();
             // Buffers
             mesh.positions = vertexs.SelectMany(v => v.Position).ToArray();
@@ -171,6 +182,8 @@ namespace RevitGLTF
             //}
             if (vertexs.First().UV != null)
                 mesh.uvs = vertexs.SelectMany(v => v.UV).ToArray();
+
+            mesh.isDummy = false;
         }
 
         //构建BabylonMesh

@@ -65,3 +65,12 @@
 ##TestRTree
 /Test/TestRTree/bin/*
 /Test/TestRTree/obj/*
+
+##BumpToNormalTest
+/Test/BumpToNormalTest/
+
+##TestNVTT
+/Test/TestNVTT/bin/*
+/Test/TestNVTT/obj/*
+
+/x64/

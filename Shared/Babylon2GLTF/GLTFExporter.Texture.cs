@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using Nvidia.TextureTools;
 
 namespace Babylon2GLTF
 {
@@ -89,9 +90,17 @@ namespace Babylon2GLTF
                 }
 
                 var destPath = Path.Combine(gltf.OutputFolder, name);
-                destPath = Path.ChangeExtension(destPath, validImageFormat);
 
-                name = Path.ChangeExtension(name, validImageFormat);
+                if (babylonTexture.IsBump)
+                {
+                    destPath = Path.ChangeExtension(destPath, ".png");
+                    name = Path.ChangeExtension(name, ".png");
+                }
+                else
+                {
+                    destPath = Path.ChangeExtension(destPath, validImageFormat);
+                    name = Path.ChangeExtension(name, validImageFormat);
+                }
 
                 // --------------------------
                 // -------- Sampler ---------
@@ -167,8 +176,16 @@ namespace Babylon2GLTF
                             }
                             else
                             {
-                                // Copy texture from source to output
-                                TextureUtilities.CopyTexture(sourcePath, destPath, exportParameters.txtQuality, logger);
+                                if (babylonTexture.IsBump)
+                                {
+                                    Compressor nvttCompressor = new Nvidia.TextureTools.Compressor();
+                                    nvttCompressor.BumpMapToNormalMap(sourcePath, destPath);
+                                }
+                                else
+                                {   
+                                    // Copy texture from source to output
+                                    TextureUtilities.CopyTexture(sourcePath, destPath, exportParameters.txtQuality, logger);
+                                }
                             }
                         }
                     }

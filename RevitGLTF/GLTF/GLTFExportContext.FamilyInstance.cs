@@ -14,6 +14,9 @@ namespace RevitGLTF.GLTF
 {
     public partial class GLTFExportContext : IModelExportContext
     {
+        //构建Instancetransform堆栈
+        private Stack<BabylonMesh> mInstanceTransformStack = new Stack<BabylonMesh>();
+
         //FamilyInstance开始
         public RenderNodeAction OnInstanceBegin(InstanceNode node)
         {
@@ -42,16 +45,20 @@ namespace RevitGLTF.GLTF
             instanceTransformNode.name = transformId;
             instanceTransformNode.parentId = elementid.ToString();
             GLTFUtil.ExportTransform(instanceTransformNode, node.GetTransform());
-            mExportManager.Scene.MeshesList.Add(instanceTransformNode);
+            mInstanceTransformStack.Push(instanceTransformNode);
 
             //获取或创建实例节点
             bool hasCreated = InstanceFactory.Instance.HasCreatedIntance(id);
 
             //添加实例至矩阵变换节点
-            List<BabylonAbstractMesh> instanceList = new List<BabylonAbstractMesh>();
             var instanceNode = InstanceFactory.Instance.GetOrCreateInstance(id);
-            instanceList.Add(instanceNode);
-            instanceTransformNode.instances = instanceList.ToArray();
+            if (!instanceNode.isDummy)
+            {
+                List<BabylonAbstractMesh> instanceList = new List<BabylonAbstractMesh>();
+                instanceList.Add(instanceNode);
+                instanceTransformNode.instances = instanceList.ToArray();
+                instanceTransformNode.isDummy = false;
+            }
 
             //初始化mLastMaterialID
             mLastMaterialID = null;
@@ -70,8 +77,6 @@ namespace RevitGLTF.GLTF
             }
             else
             {
-                mExportManager.Scene.InstancesList.Add(instanceNode);
-
                 //添加Mesh至堆栈
                 mMeshStack.Push(instanceNode);
 
@@ -103,15 +108,32 @@ namespace RevitGLTF.GLTF
             //构造BabylonMesh
             BabylonMesh mesh = mMeshStack.Peek();
             var myMesh = mMyMeshStack.Peek();
+            var instanceTransform = mInstanceTransformStack.Peek();
 
             if (mesh != null && myMesh != null)
             {
                 myMesh.GenerateMesh(mesh);
+
+                if(!mesh.isDummy)
+                {
+                    List<BabylonAbstractMesh> instanceList = new List<BabylonAbstractMesh>();
+                    instanceList.Add(mesh);
+                    instanceTransform.instances = instanceList.ToArray();
+                    instanceTransform.isDummy = false;
+                    mExportManager.Scene.InstancesList.Add(mesh);
+                }
             }
 
             //析构，OnInstanceBegin创建
             mMyMeshStack.Pop();
             mMeshStack.Pop();
+
+            if (!instanceTransform.isDummy)
+            {
+                mMeshStack.Peek().isDummy = false;
+                mExportManager.Scene.MeshesList.Add(instanceTransform);
+            }
+            mInstanceTransformStack.Pop();
         }
     }
 }
