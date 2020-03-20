@@ -73,12 +73,12 @@ namespace RTree
 
 		private List<Node> FindCoveringVolume(Envelope volume,int depth)
         {
-			var path = new List<node>();
+			var path = new List<Node>();
 			var node = this.root;
 			while(true)
             {
 				path.Add(node);
-				if (node.IsLeaf || path.Count = depth) return true;
+				if (node.IsLeaf || (path.Count == depth)) return path;
 
                 node = node.Children
 					.Select(c => new { EnlargedArea = c.Envelope.Enlargement(volume).Volume, c.Envelope.Volume, Node = c as Node, })
