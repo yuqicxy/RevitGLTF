@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <Reference Include="Nvidia.TextureTools">
-      <HintPath>..\..\..\..\TextureCompress\NVTT\nvidia-texture-tools\project\vc12\Nvidia.TextureTools\bin\Release\Nvidia.TextureTools.dll</HintPath>
+      <HintPath>..\..\RevitGLTF\Refs\Nvidia.TextureTools.dll</HintPath>
     </Reference>
   </ItemGroup>
 
