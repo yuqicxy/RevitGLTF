@@ -11,9 +11,11 @@ namespace BabylonExport.Entities
 
         [DataMember]
         public string id { get; set; }
-        
+
         [DataMember]
         public string parentId { get; set; }
+
+        public BoundingVolume boundingVolume {get;set;}
 
         [DataMember]
         public float[] position { get; set; }

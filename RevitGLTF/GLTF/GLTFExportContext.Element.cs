@@ -18,14 +18,14 @@ namespace RevitGLTF.GLTF
         //Element开始
         public RenderNodeAction OnElementBegin(ElementId elementId)
         {
-        #if DEBUG
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             var element = mRevitDocument.GetElement(elementId);
+#if DEBUG
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             if (element == null)
                 log.Error(String.Format("Element:{0} =>Start Failed", elementId.ToString()));
             else
                 log.Info(String.Format("Element:{0} ID:{1} => Start", element.Name, elementId.ToString()));
-        #endif
+#endif
 
             //List<int> table = new List<int> {564479,512173, 512277, 512522,512526,550255};
             //List<int> table = new List<int> {976957,976956,976958,976960,976961,977514,977515};
@@ -37,11 +37,14 @@ namespace RevitGLTF.GLTF
             //    return RenderNodeAction.Skip;
             //}
 
+            BoundingBoxXYZ boundBox = element.get_BoundingBox(mExportView);
+
             //创建ElementMesh
             BabylonMesh elementNode = new BabylonMesh();
             elementNode.id = elementId.ToString();
             elementNode.parentId = mRootNode.id;
             elementNode.isDummy = true;
+            elementNode.boundingVolume = GLTFUtil.ToBoundingVolume(boundBox);
 
             //同OnInstanceStart处操作，保证无instance的Element正常导出
             //用于合并材质相同的mesh，减少drawcall

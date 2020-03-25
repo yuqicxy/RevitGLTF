@@ -20,8 +20,7 @@ namespace RevitGLTF.GLTF
         //当前Revit文件
         private Document mRevitDocument = null;
 
-        //导出配置
-        private ExportConfig mConfig = null;
+        private View mExportView = null;
 
         //Element栈,记录Element出栈入栈信息
         private Stack<ElementId> mElementStack = new Stack<ElementId>();
@@ -30,15 +29,15 @@ namespace RevitGLTF.GLTF
         private Stack<BabylonMesh> mMeshStack = new Stack<BabylonMesh>();
 
         //GLTF导出，包含GLTFScene
-        private GLTFExportManager mExportManager;
+        private BabylonExportManager mExportManager;
 
         private BabylonMesh mRootNode = null;
 
-        public GLTFExportContext(ExportConfig config, Document document)
+        public GLTFExportContext(BabylonExportManager exportManager, View view/*Document document*/)
         {
-            mConfig = config;
-            mRevitDocument = document;
-            mExportManager = new GLTFExportManager(mConfig);
+            mExportView = view;
+            mRevitDocument = view.Document;
+            mExportManager = exportManager;
         }
 
         //开始导出
@@ -46,6 +45,10 @@ namespace RevitGLTF.GLTF
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(String.Format("Exporting {0} => Start", mRevitDocument.Title));
+
+            //初始化工厂
+            InstanceFactory.Instance.Clear();
+            MaterialFactory.Instance.Clear();
 
             //初始化根节点
             mRootNode = new BabylonMesh { name = "root", id = "rootTrans" };
@@ -62,11 +65,6 @@ namespace RevitGLTF.GLTF
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(String.Format("Exporting {0} => Finish", mRevitDocument.Title));
-            
-            mExportManager.Export();
-
-            InstanceFactory.Instance.Clear();
-            MaterialFactory.Instance.Clear();
         }
 
         //导出过程是否取消

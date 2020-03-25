@@ -44,6 +44,19 @@ namespace RevitGLTF
                                  (float)origin.X,(float)origin.Y,(float)origin.Z,1.0f};
         }
 
+        public static BoundingVolume ToBoundingVolume(BoundingBoxXYZ boundBox)
+        {
+            Transform trf = boundBox.Transform;
+
+            XYZ max = boundBox.Max;
+            XYZ min = boundBox.Min;
+
+            XYZ maxInModelCoords = trf.OfPoint(max);
+            XYZ minInModelCoords = trf.OfPoint(min);
+            return new BoundingVolume(minInModelCoords.X, minInModelCoords.Y, minInModelCoords.Z,
+                        maxInModelCoords.X, maxInModelCoords.Y, maxInModelCoords.Z);
+        }
+
         public static void ExportTransform(BabylonNode node, Transform matrix)
         {
             var tm_babylon = new BabylonMatrix();
