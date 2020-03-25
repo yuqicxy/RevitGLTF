@@ -107,7 +107,6 @@
     <Compile Include="Util\GLTFUtil.cs" />
     <Compile Include="ExportManager\App.cs" />
     <Compile Include="Util\MyMesh.cs" />
-    <Compile Include="Util\InstanceManager.cs" />
     <Compile Include="UI\ExportConfig.cs" />
     <Compile Include="ExportManager\Command.cs" />
     <Compile Include="UI\ExportDialog.cs">
@@ -159,6 +158,7 @@
   <Import Project="..\Shared\Utilities\Utilities.projitems" Label="Shared" />
   <Import Project="..\Shared\BabylonFileConverter\BabylonFileConverter.projitems" Label="Shared" />
   <Import Project="..\Shared\3DTileExport.Entities\Tile3DExport.Entities.projitems" Label="Shared" />
+  <Import Project="..\Shared\BabylonTo3DTile\BabylonTo3DTile.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if exist "C:\ProgramData\Autodesk\Revit\Addins\2020" copy "$(ProjectDir)*.addin" "C:\ProgramData\Autodesk\Revit\Addins\2020"

@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CPP_CLI_Wrapper", "CPP_CLI_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestNVTT", "Test\TestNVTT\TestNVTT.csproj", "{5F97D1DE-8A34-4284-ABDE-365FFDFBA3B1}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BabylonTo3DTile", "Shared\BabylonTo3DTile\BabylonTo3DTile.shproj", "{B85F6221-D23C-4E34-8A26-EC2A8A4FF8F6}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\GltfExport.Entities\GltfExport.Entities.projitems*{2b248fe6-acca-426b-9fe8-c47ecc0673a0}*SharedItemsImports = 13
@@ -50,12 +52,14 @@ Global
 		Shared\GltfExport.Entities\GltfExport.Entities.projitems*{94c392bf-40e8-4632-b282-c835c411f51e}*SharedItemsImports = 4
 		Shared\Utilities\Utilities.projitems*{94c392bf-40e8-4632-b282-c835c411f51e}*SharedItemsImports = 4
 		Shared\Utilities\Utilities.projitems*{af8ed8e5-a184-4353-90d6-8c78e69d99f3}*SharedItemsImports = 13
+		Shared\BabylonTo3DTile\BabylonTo3DTile.projitems*{b85f6221-d23c-4e34-8a26-ec2a8a4ff8f6}*SharedItemsImports = 13
 		Shared\3DTileExport.Entities\Tile3DExport.Entities.projitems*{ba005ae3-b945-4731-a63f-8d5b37879a38}*SharedItemsImports = 13
 		Shared\BabylonExport.Entities\BabylonExport.Entities.projitems*{c804c11b-2dff-4eae-ac7a-14d0a1ce5009}*SharedItemsImports = 13
 		Shared\3DTileExport.Entities\Tile3DExport.Entities.projitems*{cd654a82-7dd2-4972-b07a-de4888aa8498}*SharedItemsImports = 4
 		Shared\Babylon2GLTF\Babylon2GLTF.projitems*{cd654a82-7dd2-4972-b07a-de4888aa8498}*SharedItemsImports = 4
 		Shared\BabylonExport.Entities\BabylonExport.Entities.projitems*{cd654a82-7dd2-4972-b07a-de4888aa8498}*SharedItemsImports = 4
 		Shared\BabylonFileConverter\BabylonFileConverter.projitems*{cd654a82-7dd2-4972-b07a-de4888aa8498}*SharedItemsImports = 4
+		Shared\BabylonTo3DTile\BabylonTo3DTile.projitems*{cd654a82-7dd2-4972-b07a-de4888aa8498}*SharedItemsImports = 4
 		Shared\GltfExport.Entities\GltfExport.Entities.projitems*{cd654a82-7dd2-4972-b07a-de4888aa8498}*SharedItemsImports = 4
 		Shared\Utilities\Utilities.projitems*{cd654a82-7dd2-4972-b07a-de4888aa8498}*SharedItemsImports = 4
 		Shared\BabylonFileConverter\BabylonFileConverter.projitems*{d6bf3c13-3f68-4cd1-bc12-c4e3c8802dd4}*SharedItemsImports = 13
@@ -172,6 +176,7 @@ Global
 		{5D79335B-FB43-4C8C-9CFD-335C46510715} = {2ED57392-50E5-46D8-8A77-543E0BE3B83A}
 		{9E6833D9-E5F3-48D1-9A2E-3CBE87EFE4B4} = {37D1B271-3899-4669-9FFC-956E4E320C46}
 		{5F97D1DE-8A34-4284-ABDE-365FFDFBA3B1} = {37D1B271-3899-4669-9FFC-956E4E320C46}
+		{B85F6221-D23C-4E34-8A26-EC2A8A4FF8F6} = {2ED57392-50E5-46D8-8A77-543E0BE3B83A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5C8DB1F-010F-4043-8EA2-111DA485583E}
