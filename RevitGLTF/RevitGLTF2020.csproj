@@ -80,7 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExportManager\GLTFExportManager.cs" />
+    <Compile Include="ExportManager\BabylonExportManager.cs" />
     <Compile Include="ExportManager\InstanceFactory.cs" />
     <Compile Include="ExportManager\MaterialFactory.cs" />
     <Compile Include="GLTF\GLTFExportContext.cs" />
@@ -91,7 +91,6 @@
     <Compile Include="GLTF\GLTFExportContext.Mesh.cs" />
     <Compile Include="GLTF\GLTFExportContext.NotImplement.cs" />
     <Compile Include="GLTF\GLTFExportContext.RPC.cs" />
-    <Compile Include="Tile3D\Tile3DExportContext.Element.cs" />
     <Compile Include="UI\GLTFConfigUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -109,13 +108,6 @@
     <Compile Include="ExportManager\App.cs" />
     <Compile Include="Util\MyMesh.cs" />
     <Compile Include="Util\InstanceManager.cs" />
-    <Compile Include="Tile3D\Tile3DExportContext.cs" />
-    <Compile Include="Tile3D\Tile3DExportContext.FamilyInstance.cs" />
-    <Compile Include="Tile3D\Tile3DExportContext.Link.cs" />
-    <Compile Include="Tile3D\Tile3DExportContext.Material.cs" />
-    <Compile Include="Tile3D\Tile3DExportContext.Mesh.cs" />
-    <Compile Include="Tile3D\Tile3DExportContext.NotImplement.cs" />
-    <Compile Include="Tile3D\Tile3DExportContext.RPC.cs" />
     <Compile Include="UI\ExportConfig.cs" />
     <Compile Include="ExportManager\Command.cs" />
     <Compile Include="UI\ExportDialog.cs">
@@ -166,11 +158,12 @@
   <Import Project="..\Shared\GltfExport.Entities\GltfExport.Entities.projitems" Label="Shared" />
   <Import Project="..\Shared\Utilities\Utilities.projitems" Label="Shared" />
   <Import Project="..\Shared\BabylonFileConverter\BabylonFileConverter.projitems" Label="Shared" />
+  <Import Project="..\Shared\3DTileExport.Entities\Tile3DExport.Entities.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if exist "$(AppData)\Autodesk\Revit\Addins\2020" copy "$(ProjectDir)*.addin" "$(AppData)\Autodesk\Revit\Addins\2020"
-if not exist "$(AppData)\Autodesk\Revit\Addins\2020\RevitGLTF" md "$(AppData)\Autodesk\Revit\Addins\2020\RevitGLTF"
-if exist "$(AppData)\Autodesk\Revit\Addins\2020\RevitGLTF" copy "$(ProjectDir)$(OutputPath)*.dll" "$(AppData)\Autodesk\Revit\Addins\2020\RevitGLTF"</PostBuildEvent>
+    <PostBuildEvent>if exist "C:\ProgramData\Autodesk\Revit\Addins\2020" copy "$(ProjectDir)*.addin" "C:\ProgramData\Autodesk\Revit\Addins\2020"
+if not exist "C:\ProgramData\Autodesk\Revit\Addins\2020\RevitGLTF" md "C:\ProgramData\Autodesk\Revit\Addins\2020\RevitGLTF"
+if exist "C:\ProgramData\Autodesk\Revit\Addins\2020\RevitGLTF" copy "$(ProjectDir)$(OutputPath)*.dll" "C:\ProgramData\Autodesk\Revit\Addins\2020\RevitGLTF"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

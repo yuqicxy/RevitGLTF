@@ -38,6 +38,9 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Nvidia.TextureTools">
+      <HintPath>..\RevitGLTF\Refs\Nvidia.TextureTools.dll</HintPath>
+    </Reference>
     <Reference Include="RevitAPI, Version=20.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <Private>False</Private>
     </Reference>
@@ -92,7 +95,8 @@
   <Import Project="..\Shared\Utilities\Utilities.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if exist "$(AppData)\Autodesk\Revit\Addins\2020" copy "$(ProjectDir)*.addin" "$(AppData)\Autodesk\Revit\Addins\2020"
-if exist "$(AppData)\Autodesk\Revit\Addins\2020\MaterialAssetViewer" copy "$(ProjectDir)$(OutputPath)*.dll" "$(AppData)\Autodesk\Revit\Addins\2020\MaterialAssetViewer"</PostBuildEvent>
+    <PostBuildEvent>if exist "C:\ProgramData\Autodesk\Revit\Addins\2020" copy "$(ProjectDir)*.addin" "C:\ProgramData\Autodesk\Revit\Addins\2020"
+if not exist "C:\ProgramData\Autodesk\Revit\Addins\2020\MaterialAssetViewer" md "C:\ProgramData\Autodesk\Revit\Addins\2020\MaterialAssetViewer"
+if exist "C:\ProgramData\Autodesk\Revit\Addins\2020\MaterialAssetViewer" copy "$(ProjectDir)$(OutputPath)*.dll" "C:\ProgramData\Autodesk\Revit\Addins\2020\MaterialAssetViewer"</PostBuildEvent>
   </PropertyGroup>
 </Project>

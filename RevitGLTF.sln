@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestRTree", "Test\TestRTree
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CPP_CLI_Wrapper", "CPP_CLI_Wrapper", "{9270AFE2-0CC8-4050-978B-E12B3B6E4AA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestNVTT", "Test\TestNVTT\TestNVTT.csproj", "{5F97D1DE-8A34-4284-ABDE-365FFDFBA3B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestNVTT", "Test\TestNVTT\TestNVTT.csproj", "{5F97D1DE-8A34-4284-ABDE-365FFDFBA3B1}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -52,6 +52,7 @@ Global
 		Shared\Utilities\Utilities.projitems*{af8ed8e5-a184-4353-90d6-8c78e69d99f3}*SharedItemsImports = 13
 		Shared\3DTileExport.Entities\Tile3DExport.Entities.projitems*{ba005ae3-b945-4731-a63f-8d5b37879a38}*SharedItemsImports = 13
 		Shared\BabylonExport.Entities\BabylonExport.Entities.projitems*{c804c11b-2dff-4eae-ac7a-14d0a1ce5009}*SharedItemsImports = 13
+		Shared\3DTileExport.Entities\Tile3DExport.Entities.projitems*{cd654a82-7dd2-4972-b07a-de4888aa8498}*SharedItemsImports = 4
 		Shared\Babylon2GLTF\Babylon2GLTF.projitems*{cd654a82-7dd2-4972-b07a-de4888aa8498}*SharedItemsImports = 4
 		Shared\BabylonExport.Entities\BabylonExport.Entities.projitems*{cd654a82-7dd2-4972-b07a-de4888aa8498}*SharedItemsImports = 4
 		Shared\BabylonFileConverter\BabylonFileConverter.projitems*{cd654a82-7dd2-4972-b07a-de4888aa8498}*SharedItemsImports = 4
