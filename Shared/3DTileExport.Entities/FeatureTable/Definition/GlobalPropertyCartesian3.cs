@@ -18,12 +18,12 @@ namespace Tile3DExport.Entities.FeatureTable
     {
         class GlobalPropertyCartesian3Converter : JsonConverter<GlobalPropertyCartesian3>
         {
-            public override GlobalPropertyCartesian3 ReadJson(JsonReader reader, Type objectType, [AllowNull] GlobalPropertyCartesian3 existingValue, bool hasExistingValue, JsonSerializer serializer)
+            public override GlobalPropertyCartesian3 ReadJson(JsonReader reader, Type objectType, /*[AllowNull] */GlobalPropertyCartesian3 existingValue, bool hasExistingValue, JsonSerializer serializer)
             {
                 throw new NotImplementedException("don't support read GlobalPropertyCartesian3");
             }
 
-            public override void WriteJson(JsonWriter writer, [AllowNull] GlobalPropertyCartesian3 value, JsonSerializer serializer)
+            public override void WriteJson(JsonWriter writer, /*[AllowNull] */GlobalPropertyCartesian3 value, JsonSerializer serializer)
             {
                 if (value.offset != null)
                 {

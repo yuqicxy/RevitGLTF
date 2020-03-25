@@ -21,7 +21,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)FeatureTable\i3dm\I3DMFeatureTable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Property.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Tile3DExporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TileContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tileset.cs" />

@@ -19,12 +19,12 @@ namespace Tile3DExport.Entities.FeatureTable
     {
         public class GlobalPropertyScalarConverter : JsonConverter<GlobalPropertyScalar>
         {
-            public override GlobalPropertyScalar ReadJson(JsonReader reader, Type objectType, [AllowNull] GlobalPropertyScalar existingValue, bool hasExistingValue, JsonSerializer serializer)
+            public override GlobalPropertyScalar ReadJson(JsonReader reader, Type objectType, /*[AllowNull] */GlobalPropertyScalar existingValue, bool hasExistingValue, JsonSerializer serializer)
             {
                 throw new NotImplementedException("don't support read GlobalPropertyScalar");
             }
 
-            public override void WriteJson(JsonWriter writer, [AllowNull] GlobalPropertyScalar value, JsonSerializer serializer)
+            public override void WriteJson(JsonWriter writer, /*[AllowNull] */GlobalPropertyScalar value, JsonSerializer serializer)
             {
                 if (value.offset != null)
                 {

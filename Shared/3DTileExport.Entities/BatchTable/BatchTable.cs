@@ -49,14 +49,14 @@ namespace Tile3DExport.Entities.BatchTable
 
     namespace Converter
     {
-        class BatchTableConverter : JsonConverter<BatchTable>
+        public class BatchTableConverter : JsonConverter<BatchTable>
         {
-            public override BatchTable ReadJson(JsonReader reader, Type objectType, [AllowNull] BatchTable existingValue, bool hasExistingValue, JsonSerializer serializer)
+            public override BatchTable ReadJson(JsonReader reader, Type objectType, /*[AllowNull]*/ BatchTable existingValue, bool hasExistingValue, JsonSerializer serializer)
             {
                 throw new NotImplementedException();
             }
  
-            public override void WriteJson(JsonWriter writer, [AllowNull] BatchTable value, JsonSerializer serializer)
+            public override void WriteJson(JsonWriter writer,/* [AllowNull] */BatchTable value, JsonSerializer serializer)
             {
                 writer.WriteStartObject();
  
