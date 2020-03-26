@@ -9,6 +9,10 @@
     <Import_RootNamespace>BabylonTo3DTile</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)B3DMWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CMPTWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)I3DMWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tile3DExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TileWriter.cs" />
   </ItemGroup>
 </Project>

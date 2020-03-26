@@ -34,14 +34,10 @@ namespace Tile3DExport.Entities
             float progressionStep;
             var progression = 0.0f;
 
-            BabylonMesh rootNode = babylonScene.MeshesList.Find(mesh => mesh.parentId == null);
-            List<BabylonMesh> elements =  babylonScene.MeshesList.FindAll(mesh => mesh.parentId == rootNode.id);
+            //BabylonMesh rootNode = babylonScene.MeshesList.Find(mesh => mesh.parentId == null);
+            //List<BabylonMesh> elements =  babylonScene.MeshesList.FindAll(mesh => mesh.parentId == rootNode.id);
 
-            //Construct Spatial Structure
-            foreach(var element in elements)
-            {
-                 
-            }
+
 
             logger.ReportProgressChanged((int)progression);
             logger.RaiseMessage("3DTileExporter | Exportation ended");
