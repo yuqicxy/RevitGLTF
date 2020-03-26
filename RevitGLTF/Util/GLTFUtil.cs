@@ -75,6 +75,23 @@ namespace RevitGLTF
             //translate
             node.position = t_babylon.ToArray();
         }
+
+        public static void ExportTransform(InstanceInfo pos, Transform matrix)
+        {
+            var tm_babylon = new BabylonMatrix();
+            tm_babylon.m = ToArray(matrix);
+
+            var s_babylon = new BabylonVector3();
+            var q_babylon = new BabylonQuaternion();
+            var t_babylon = new BabylonVector3();
+
+            tm_babylon.decompose(s_babylon, q_babylon, t_babylon);
+
+            pos.Position = t_babylon;
+            pos.Scale = s_babylon;
+            pos.Rotation = q_babylon;
+        }
+
         public static bool IsEqualTo(this float[] value, float[] other, float Epsilon = Epsilon)
         {
             if (value.Length != other.Length)

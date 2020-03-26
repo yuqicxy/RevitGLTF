@@ -65,6 +65,8 @@ namespace RevitGLTF.Tile3D
         {
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(String.Format("Exporting {0} => Finish", mRevitDocument.Title));
+
+            mExportManager.Scene.mInstanceInfo = InstanceFactory.Instance.GetInstanceInfo();
         }
 
         //导出过程是否取消

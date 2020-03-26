@@ -91,6 +91,14 @@
     <Compile Include="GLTF\GLTFExportContext.Mesh.cs" />
     <Compile Include="GLTF\GLTFExportContext.NotImplement.cs" />
     <Compile Include="GLTF\GLTFExportContext.RPC.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.Element.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.FamilyInstance.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.Link.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.Material.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.Mesh.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.NotImplement.cs" />
+    <Compile Include="Tile3D\Tile3DExportContext.RPC.cs" />
     <Compile Include="UI\GLTFConfigUI.cs">
       <SubType>UserControl</SubType>
     </Compile>

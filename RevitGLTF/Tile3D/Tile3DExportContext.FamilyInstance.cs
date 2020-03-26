@@ -39,26 +39,31 @@ namespace RevitGLTF.Tile3D
             var elementid = mElementStack.Peek();
 
             //创建矩阵变换矩阵节点
-            BabylonMesh instanceTransformNode = new BabylonMesh();
-            string transformId = elementid + "_instance_" + node.GetSymbolId().ToString() + "_HashCode_" +node.GetHashCode();
-            instanceTransformNode.id = transformId;
-            instanceTransformNode.name = transformId;
-            instanceTransformNode.parentId = elementid.ToString();
-            GLTFUtil.ExportTransform(instanceTransformNode, node.GetTransform());
-            mInstanceTransformStack.Push(instanceTransformNode);
+            //BabylonMesh instanceTransformNode = new BabylonMesh();
+            //string transformId = elementid + "_instance_" + node.GetSymbolId().ToString() + "_HashCode_" +node.GetHashCode();
+            //instanceTransformNode.id = transformId;
+            //instanceTransformNode.name = transformId;
+            //instanceTransformNode.parentId = elementid.ToString();
+            //GLTFUtil.ExportTransform(instanceTransformNode, node.GetTransform());
+
+            InstanceInfo instancePos = new InstanceInfo();
+            GLTFUtil.ExportTransform(instancePos, node.GetTransform());
+            InstanceFactory.Instance.AddInstanceInfo(id, instancePos);
+
+            //mInstanceTransformStack.Push(instanceTransformNode);
 
             //获取或创建实例节点
             bool hasCreated = InstanceFactory.Instance.HasCreatedIntance(id);
 
             //添加实例至矩阵变换节点
             var instanceNode = InstanceFactory.Instance.GetOrCreateInstance(id);
-            if (!instanceNode.isDummy)
-            {
-                List<BabylonAbstractMesh> instanceList = new List<BabylonAbstractMesh>();
-                instanceList.Add(instanceNode);
-                instanceTransformNode.instances = instanceList.ToArray();
-                instanceTransformNode.isDummy = false;
-            }
+            //if (!instanceNode.isDummy)
+            //{
+            //    List<BabylonAbstractMesh> instanceList = new List<BabylonAbstractMesh>();
+            //    instanceList.Add(instanceNode);
+            //    instanceTransformNode.instances = instanceList.ToArray();
+            //    instanceTransformNode.isDummy = false;
+            //}
 
             //初始化mLastMaterialID
             mLastMaterialID = null;
@@ -108,32 +113,32 @@ namespace RevitGLTF.Tile3D
             //构造BabylonMesh
             BabylonMesh mesh = mMeshStack.Peek();
             var myMesh = mMyMeshStack.Peek();
-            var instanceTransform = mInstanceTransformStack.Peek();
+            //var instanceTransform = mInstanceTransformStack.Peek();
 
             if (mesh != null && myMesh != null)
             {
                 myMesh.GenerateMesh(mesh);
 
-                if(!mesh.isDummy)
-                {
-                    List<BabylonAbstractMesh> instanceList = new List<BabylonAbstractMesh>();
-                    instanceList.Add(mesh);
-                    instanceTransform.instances = instanceList.ToArray();
-                    instanceTransform.isDummy = false;
-                    mExportManager.Scene.InstancesList.Add(mesh);
-                }
+                //if(!mesh.isDummy)
+                //{
+                    //List<BabylonAbstractMesh> instanceList = new List<BabylonAbstractMesh>();
+                    //instanceList.Add(mesh);
+                    //instanceTransform.instances = instanceList.ToArray();
+                    //instanceTransform.isDummy = false;
+                    //mExportManager.Scene.InstancesList.Add(mesh);
+                //}
             }
 
             //析构，OnInstanceBegin创建
             mMyMeshStack.Pop();
             mMeshStack.Pop();
 
-            if (!instanceTransform.isDummy)
-            {
-                mMeshStack.Peek().isDummy = false;
-                mExportManager.Scene.MeshesList.Add(instanceTransform);
-            }
-            mInstanceTransformStack.Pop();
+            //if (!instanceTransform.isDummy)
+            //{
+            //   mMeshStack.Peek().isDummy = false;
+            //   mExportManager.Scene.MeshesList.Add(instanceTransform);
+            //}
+            //mInstanceTransformStack.Pop();
         }
     }
 }

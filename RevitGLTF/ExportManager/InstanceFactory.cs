@@ -20,10 +20,11 @@ namespace RevitGLTF
         }
 
         private Dictionary<ElementId, BabylonMesh> mInstanceTable = null;
-
+        private Dictionary<int, List<InstanceInfo>> mInstanceInfo = null;
         private InstanceFactory()
         {
             mInstanceTable = new Dictionary<ElementId, BabylonMesh>();
+            mInstanceInfo = new Dictionary<int, List<InstanceInfo>>();
         }
 
         public void Clear() { mInstanceTable.Clear(); }
@@ -51,5 +52,15 @@ namespace RevitGLTF
             }
         }
 
+        public void AddInstanceInfo(ElementId id, InstanceInfo info)
+        {
+            if(!HasCreatedIntance(id))
+            { 
+                mInstanceInfo[id.IntegerValue] = new List<InstanceInfo>();
+            }
+            mInstanceInfo[id.IntegerValue].Add(info); 
+        }
+
+        public Dictionary<int, List<InstanceInfo>> GetInstanceInfo() { return mInstanceInfo; }
     }
 }

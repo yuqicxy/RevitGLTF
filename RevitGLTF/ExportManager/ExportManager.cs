@@ -24,8 +24,12 @@ namespace RevitGLTF
         public void Export(Autodesk.Revit.DB.View exportableView)
         {
             BabylonExportManager babylonExporterManager = new BabylonExportManager(mExportConfig);
+            IModelExportContext context = null;
+            if (mExportConfig.mExportMode == ExportConfig.ExportMode.GLTF)
+                context = new RevitGLTF.GLTF.GLTFExportContext(babylonExporterManager, exportableView/*.Document*/);
+            else
+                context = new RevitGLTF.Tile3D.Tile3DExportContext(babylonExporterManager, exportableView);
 
-            IModelExportContext context = (RevitGLTF.GLTF.GLTFExportContext)new RevitGLTF.GLTF.GLTFExportContext(babylonExporterManager, exportableView/*.Document*/);
             CustomExporter exporter = new CustomExporter(exportableView.Document, context);
             exporter.IncludeGeometricObjects = true;
             exporter.ShouldStopOnError = true;
