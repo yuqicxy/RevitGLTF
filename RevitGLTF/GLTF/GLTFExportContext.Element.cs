@@ -18,8 +18,8 @@ namespace RevitGLTF.GLTF
         //Element开始
         public RenderNodeAction OnElementBegin(ElementId elementId)
         {
-            var element = mRevitDocument.GetElement(elementId);
 #if DEBUG
+            var element = mRevitDocument.GetElement(elementId);
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             if (element == null)
                 log.Error(String.Format("Element:{0} =>Start Failed", elementId.ToString()));
@@ -44,12 +44,12 @@ namespace RevitGLTF.GLTF
             elementNode.parentId = mRootNode.id;
             elementNode.isDummy = true;
 
-            if (element != null)
-            {
-                BoundingBoxXYZ boundBox = element.get_BoundingBox(mExportView);
-                if(boundBox != null)
-                    elementNode.boundingVolume = GLTFUtil.ToBoundingVolume(boundBox);
-            }
+            //if (element != null)
+            //{
+            //    BoundingBoxXYZ boundBox = element.get_BoundingBox(mExportView);
+            //    if(boundBox != null)
+            //        elementNode.boundingVolume = GLTFUtil.ToBoundingVolume(boundBox);
+            //}
 
             //同OnInstanceStart处操作，保证无instance的Element正常导出
             //用于合并材质相同的mesh，减少drawcall

@@ -19,11 +19,11 @@ namespace RevitGLTF
             get { return lazy.Value; }
         }
 
-        private Dictionary<ElementId, BabylonMesh> mInstanceTable = null;
+        private Dictionary<int, BabylonMesh> mInstanceTable = null;
         private Dictionary<int, List<InstanceInfo>> mInstanceInfo = null;
         private InstanceFactory()
         {
-            mInstanceTable = new Dictionary<ElementId, BabylonMesh>();
+            mInstanceTable = new Dictionary<int, BabylonMesh>();
             mInstanceInfo = new Dictionary<int, List<InstanceInfo>>();
         }
 
@@ -31,14 +31,14 @@ namespace RevitGLTF
 
         public bool HasCreatedIntance(ElementId symbolId)
         {
-            return mInstanceTable.ContainsKey(symbolId);
+            return mInstanceTable.ContainsKey(symbolId.IntegerValue);
         }
 
         public BabylonMesh GetOrCreateInstance(ElementId symbolId)
         {
             if (HasCreatedIntance(symbolId))
             {
-                return mInstanceTable[symbolId];
+                return mInstanceTable[symbolId.IntegerValue];
             }
             else 
             {
@@ -47,14 +47,14 @@ namespace RevitGLTF
                 instanceNode.name = symbolId.ToString();
                 instanceNode.idGroupInstance = symbolId.IntegerValue;
                 instanceNode.isDummy = true;
-                mInstanceTable.Add(symbolId, instanceNode);
+                mInstanceTable.Add(symbolId.IntegerValue, instanceNode);
                 return instanceNode;
             }
         }
 
         public void AddInstanceInfo(ElementId id, InstanceInfo info)
         {
-            if(!HasCreatedIntance(id))
+            if(!mInstanceInfo.ContainsKey(id.IntegerValue))
             { 
                 mInstanceInfo[id.IntegerValue] = new List<InstanceInfo>();
             }
@@ -62,5 +62,8 @@ namespace RevitGLTF
         }
 
         public Dictionary<int, List<InstanceInfo>> GetInstanceInfo() { return mInstanceInfo; }
+
+        public Dictionary<int, BabylonMesh> GetInstanceList() { return mInstanceTable; }
+
     }
 }

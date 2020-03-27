@@ -46,9 +46,9 @@ namespace RevitGLTF.Tile3D
             //instanceTransformNode.parentId = elementid.ToString();
             //GLTFUtil.ExportTransform(instanceTransformNode, node.GetTransform());
 
-            InstanceInfo instancePos = new InstanceInfo();
-            GLTFUtil.ExportTransform(instancePos, node.GetTransform());
-            InstanceFactory.Instance.AddInstanceInfo(id, instancePos);
+            //InstanceInfo instancePos = new InstanceInfo();
+            //GLTFUtil.ExportTransform(instancePos, node.GetTransform());
+            //InstanceFactory.Instance.AddInstanceInfo(id, instancePos);
 
             //mInstanceTransformStack.Push(instanceTransformNode);
 
@@ -119,13 +119,20 @@ namespace RevitGLTF.Tile3D
             {
                 myMesh.GenerateMesh(mesh);
 
+                if (!mesh.isDummy)
+                {
+                    InstanceInfo instancePos = new InstanceInfo();
+                    GLTFUtil.ExportTransform(instancePos, node.GetTransform());
+                    InstanceFactory.Instance.AddInstanceInfo(id, instancePos);
+                }
+
                 //if(!mesh.isDummy)
                 //{
-                    //List<BabylonAbstractMesh> instanceList = new List<BabylonAbstractMesh>();
-                    //instanceList.Add(mesh);
-                    //instanceTransform.instances = instanceList.ToArray();
-                    //instanceTransform.isDummy = false;
-                    //mExportManager.Scene.InstancesList.Add(mesh);
+                //List<BabylonAbstractMesh> instanceList = new List<BabylonAbstractMesh>();
+                //instanceList.Add(mesh);
+                //instanceTransform.instances = instanceList.ToArray();
+                //instanceTransform.isDummy = false;
+                //mExportManager.Scene.InstancesList.Add(mesh);
                 //}
             }
 

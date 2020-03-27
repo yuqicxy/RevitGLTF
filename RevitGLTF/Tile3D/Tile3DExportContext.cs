@@ -67,6 +67,7 @@ namespace RevitGLTF.Tile3D
             log.Info(String.Format("Exporting {0} => Finish", mRevitDocument.Title));
 
             mExportManager.Scene.mInstanceInfo = InstanceFactory.Instance.GetInstanceInfo();
+            mExportManager.Scene.mInstanceTable = InstanceFactory.Instance.GetInstanceList();
         }
 
         //导出过程是否取消

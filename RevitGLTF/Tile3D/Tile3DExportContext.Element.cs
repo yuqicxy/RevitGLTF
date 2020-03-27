@@ -37,14 +37,18 @@ namespace RevitGLTF.Tile3D
             //    return RenderNodeAction.Skip;
             //}
 
-            BoundingBoxXYZ boundBox = element.get_BoundingBox(mExportView);
-
             //创建ElementMesh
             BabylonMesh elementNode = new BabylonMesh();
             elementNode.id = elementId.ToString();
             elementNode.parentId = mRootNode.id;
             elementNode.isDummy = true;
-            elementNode.boundingVolume = GLTFUtil.ToBoundingVolume(boundBox);
+
+            if (element != null)
+            {
+                BoundingBoxXYZ boundBox = element.get_BoundingBox(mExportView);
+                if (boundBox != null)
+                    elementNode.boundingVolume = GLTFUtil.ToBoundingVolume(boundBox);
+            }
 
             //同OnInstanceStart处操作，保证无instance的Element正常导出
             //用于合并材质相同的mesh，减少drawcall

@@ -28,6 +28,7 @@ namespace Babylon2GLTF
         // from BabylonNode to GLTFNode
         Dictionary<BabylonNode, GLTFNode> nodeToGltfNodeMap;
 
+        //GLTF正常导出流程
         public void ExportGltf(ExportParameters exportParameters, BabylonScene babylonScene, string outputDirectory, string outputFileName, bool generateBinary, ILoggingProvider logger)
         {
             this.exportParameters = exportParameters;
@@ -283,6 +284,176 @@ namespace Babylon2GLTF
             logger.ReportProgressChanged(100);
         }
 
+        //导出3DTile准备，返回GLTF对象
+        public GLTF ExportGltf(ExportParameters exportParameters, BabylonScene babylonScene, string outputDirectory, string outputFileName, ILoggingProvider logger)
+        {
+            this.exportParameters = exportParameters;
+            this.logger = logger;
+
+            logger.RaiseMessage("GLTFExporter | Exportation started", Color.Blue);
+#if DEBUG
+            var watch = new Stopwatch();
+            watch.Start();
+#endif
+            this.babylonScene = babylonScene;
+
+            // Force output file extension to be gltf
+            outputFileName = Path.ChangeExtension(outputFileName, "gltf");
+
+            // Update path of output .gltf file to include subdirectory
+            var outputFile = Path.Combine(outputDirectory, outputFileName);
+
+            float progressionStep;
+            var progression = 0.0f;
+            logger.ReportProgressChanged((int)progression);
+
+            babylonMaterialsToExport = new List<BabylonMaterial>();
+
+            var gltf = new GLTF(outputFile);
+
+            // Asset
+            gltf.asset = new GLTFAsset
+            {
+                version = "2.0"
+                // no minVersion
+            };
+
+            var softwarePackageName = babylonScene.producer != null ? babylonScene.producer.name : "";
+            var softwareVersion = babylonScene.producer != null ? babylonScene.producer.version : "";
+            var exporterVersion = babylonScene.producer != null ? babylonScene.producer.exporter_version : "";
+
+            gltf.asset.generator = $"glTF exporter for {softwarePackageName} {softwareVersion}";// v{exporterVersion}";
+
+            // Scene
+            gltf.scene = 0;
+
+            // Scenes
+            GLTFScene scene = new GLTFScene();
+            ExportGLTFExtension(babylonScene, ref scene, gltf);
+            GLTFScene[] scenes = { scene };
+            gltf.scenes = scenes;
+
+            // Initialization
+            initBabylonNodes(babylonScene, gltf);
+
+
+            // Root nodes
+            logger.RaiseMessage("GLTFExporter | Exporting nodes");
+            progression = 30.0f;
+            logger.ReportProgressChanged((int)progression);
+            List<BabylonNode> babylonRootNodes = babylonNodes.FindAll(node => node.parentId == null);
+            progressionStep = 30.0f / babylonRootNodes.Count;
+            alreadyExportedSkeletons = new Dictionary<BabylonSkeleton, BabylonSkeletonExportData>();
+            nodeToGltfNodeMap = new Dictionary<BabylonNode, GLTFNode>();
+            NbNodesByName = new Dictionary<string, int>();
+            babylonRootNodes.ForEach(babylonNode =>
+            {
+                exportNodeRec(babylonNode, gltf, babylonScene);
+                progression += progressionStep;
+                logger.ReportProgressChanged((int)progression);
+                logger.CheckCancelled();
+            });
+#if DEBUG
+            var nodesExportTime = watch.ElapsedMilliseconds / 1000.0;
+            logger.RaiseMessage(string.Format("GLTFNodes exported in {0:0.00}s", nodesExportTime), Color.Blue);
+#endif
+
+
+            // Meshes
+            logger.RaiseMessage("GLTFExporter | Exporting meshes");
+            progression = 10.0f;
+            logger.ReportProgressChanged((int)progression);
+            progressionStep = 40.0f / (babylonScene.meshes.Length + babylonScene.InstancesList.Count);
+            foreach (var babylonMesh in babylonScene.meshes)
+            {
+                ExportMesh(babylonMesh, gltf, babylonScene);
+                progression += progressionStep;
+                logger.ReportProgressChanged((int)progression);
+                logger.CheckCancelled();
+            }
+
+            //导出实例的Mesh，在Initial函数中以给定GroupInstanceId
+            foreach (var babylonMesh in babylonScene.InstancesList)
+            {
+                ExportMesh(babylonMesh, gltf, babylonScene);
+                progression += progressionStep;
+                logger.ReportProgressChanged((int)progression);
+                logger.CheckCancelled();
+            }
+#if DEBUG
+            var meshesExportTime = watch.ElapsedMilliseconds / 1000.0 - nodesExportTime;
+            logger.RaiseMessage(string.Format("GLTFMeshes exported in {0:0.00}s", meshesExportTime), Color.Blue);
+#endif
+
+            //Mesh Skins, light and Cameras
+            logger.RaiseMessage("GLTFExporter | Exporting skins, lights and cameras");
+            progression = 50.0f;
+            logger.ReportProgressChanged((int)progression);
+            progressionStep = 50.0f / babylonRootNodes.Count;
+            babylonRootNodes.ForEach(babylonNode =>
+            {
+                exportNodeTypeRec(babylonNode, gltf, babylonScene);
+                progression += progressionStep;
+                logger.ReportProgressChanged((int)progression);
+                logger.CheckCancelled();
+            });
+#if DEBUG
+            var skinLightCameraExportTime = watch.ElapsedMilliseconds / 1000.0 - meshesExportTime;
+            logger.RaiseMessage(string.Format("GLTFSkin GLTFLights GLTFCameras exported in {0:0.00}s", skinLightCameraExportTime), Color.Blue);
+#endif
+            // Materials
+            progression = 70.0f;
+            logger.ReportProgressChanged((int)progression);
+            logger.RaiseMessage("GLTFExporter | Exporting materials");
+            foreach (var babylonMaterial in babylonMaterialsToExport)
+            {
+                ExportMaterial(babylonMaterial, gltf);
+                logger.CheckCancelled();
+            };
+            logger.RaiseMessage(string.Format("GLTFExporter | Nb materials exported: {0}", gltf.MaterialsList.Count), Color.Gray, 1);
+#if DEBUG
+            var materialsExportTime = watch.ElapsedMilliseconds / 1000.0 - nodesExportTime;
+            logger.RaiseMessage(string.Format("GLTFMaterials exported in {0:0.00}s", materialsExportTime), Color.Blue);
+#endif
+            // Animations
+            progression = 90.0f;
+            logger.ReportProgressChanged((int)progression);
+            logger.RaiseMessage("GLTFExporter | Exporting Animations");
+            ExportAnimationGroups(gltf, babylonScene);
+#if DEBUG
+            var animationGroupsExportTime = watch.ElapsedMilliseconds / 1000.0 - materialsExportTime;
+            logger.RaiseMessage(string.Format("GLTFAnimations exported in {0:0.00}s", animationGroupsExportTime), Color.Blue);
+#endif
+            // Prepare buffers
+            gltf.BuffersList.ForEach(buffer =>
+            {
+                buffer.BufferViews.ForEach(bufferView =>
+                {
+                    bufferView.Accessors.ForEach(accessor =>
+                    {
+                        // Chunk must be padded with trailing zeros (0x00) to satisfy alignment requirements
+                        accessor.bytesList = new List<byte>(padChunk(accessor.bytesList.ToArray(), 4, 0x00));
+
+                        // Update byte properties
+                        accessor.byteOffset = bufferView.byteLength;
+                        bufferView.byteLength += accessor.bytesList.Count;
+                        // Merge bytes
+                        bufferView.bytesList.AddRange(accessor.bytesList);
+                    });
+                    // Update byte properties
+                    bufferView.byteOffset = buffer.byteLength;
+                    buffer.byteLength += bufferView.bytesList.Count;
+                    // Merge bytes
+                    buffer.bytesList.AddRange(bufferView.bytesList);
+                });
+            });
+
+            // Cast lists to arrays
+            gltf.Prepare();
+
+            return gltf;
+        }
+
         private List<BabylonNode> initBabylonNodes(BabylonScene babylonScene,GLTF gltf)
         {
             babylonNodes = new List<BabylonNode>();
@@ -372,7 +543,6 @@ namespace Babylon2GLTF
             }
         }
 
-        
         private void exportNodeTypeRec(BabylonNode babylonNode, GLTF gltf, BabylonScene babylonScene, GLTFNode gltfParentNode = null)
         {
             var type = babylonNode.GetType();

@@ -131,6 +131,8 @@ namespace BabylonExport.Entities
         public Dictionary<IBabylonExtensionExporter,Type> BabylonToGLTFExtensions { get; private set; }
 
         public Dictionary<int, List<InstanceInfo>> mInstanceInfo { get;  set; } = null;
+        
+        public Dictionary<int, BabylonMesh> mInstanceTable = null;
 
         public BabylonScene(string outputPath)
         {
