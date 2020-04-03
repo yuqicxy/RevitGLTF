@@ -68,21 +68,21 @@ namespace MaterialAssetViewer
 
                 outString += asset.Stringify();
 
-                outString += "\n\n";
+                //outString += "\n\n";
 
-                outString += "BabylonMaterial";
-                try 
-                {
-                    var babylonMaterial = RevitGLTF.MaterialFactory.Instance.CreateMaterial(asset, material);
-                    if (babylonMaterial != null)
-                        outString += ToJson(babylonMaterial);
-                }
-                catch (Exception exp)
-                {
-                    outString += exp.Source + "\n";
-                    outString += exp.Message + "\n";
-                    outString += exp.StackTrace + "\n";
-                }
+                //outString += "BabylonMaterial";
+                //try 
+                //{
+                //    var babylonMaterial = RevitGLTF.MaterialFactory.Instance.CreateMaterial(asset, material);
+                //    if (babylonMaterial != null)
+                //        outString += ToJson(babylonMaterial);
+                //}
+                //catch (Exception exp)
+                //{
+                //    outString += exp.Source + "\n";
+                //    outString += exp.Message + "\n";
+                //    outString += exp.StackTrace + "\n";
+                //}
                 outString += "\n\n";
             }
             return outString;

@@ -70,7 +70,6 @@
   <ItemGroup>
     <Compile Include="AssetSerilizer.cs" />
     <Compile Include="Command.cs" />
-    <Compile Include="MaterialFactory.cs" />
     <Compile Include="MaterialInfoDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,11 +87,6 @@
       <DependentUpon>MaterialInfoDialog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="..\Shared\BabylonExport.Entities\BabylonExport.Entities.projitems" Label="Shared" />
-  <Import Project="..\Shared\Babylon2GLTF\Babylon2GLTF.projitems" Label="Shared" />
-  <Import Project="..\Shared\GltfExport.Entities\GltfExport.Entities.projitems" Label="Shared" />
-  <Import Project="..\Shared\BabylonFileConverter\BabylonFileConverter.projitems" Label="Shared" />
-  <Import Project="..\Shared\Utilities\Utilities.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if exist "C:\ProgramData\Autodesk\Revit\Addins\2020" copy "$(ProjectDir)*.addin" "C:\ProgramData\Autodesk\Revit\Addins\2020"
