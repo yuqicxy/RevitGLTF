@@ -58,6 +58,7 @@ namespace RevitGLTF.GLTF
                 instanceList.Add(instanceNode);
                 instanceTransformNode.instances = instanceList.ToArray();
                 instanceTransformNode.isDummy = false;
+                //instanceTransformNode.boundingVolume = GLTFUtil.ExportTransform(instanceNode.boundingVolume,node.GetTransform());
             }
 
             //初始化mLastMaterialID
@@ -121,6 +122,10 @@ namespace RevitGLTF.GLTF
                     instanceTransform.instances = instanceList.ToArray();
                     instanceTransform.isDummy = false;
                     mExportManager.Scene.InstancesList.Add(mesh);
+                    //instanceTransform.boundingVolume = GLTFUtil.ExportTransform(mesh.boundingVolume,
+                    //    BabylonVector3.FromArray(instanceTransform.position),
+                    //    BabylonQuaternion.FromArray(instanceTransform.rotationQuaternion),
+                    //    BabylonVector3.FromArray(instanceTransform.scaling));
                 }
             }
 

@@ -69,8 +69,8 @@ namespace RevitGLTF.GLTF
         //导出element结束
         public void OnElementEnd(ElementId elementId)
         {
-        #if DEBUG
             var element = mRevitDocument.GetElement(elementId);
+        #if DEBUG
             log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             if (element == null)
                 log.Error(String.Format("Element:{0} =>Finish Failed", elementId.ToString()));
@@ -86,6 +86,18 @@ namespace RevitGLTF.GLTF
                 myMesh.GenerateMesh(mesh);
                 if(!mesh.isDummy)
                 {
+                    if (element != null)
+                    {
+                        BoundingBoxXYZ boundBox = element.get_BoundingBox(mExportView);
+                        if (boundBox != null)
+                            mesh.boundingVolume = GLTFUtil.ToBoundingVolume(boundBox);
+                        #if DEBUG
+                        else
+                        {
+                            log.Error(String.Format("Element:{0} =>No Bounding Box", elementId.ToString()));
+                        }
+                        #endif
+                    }
                     //将ElementMesh添加至Scene
                     mExportManager.Scene.MeshesList.Add(mesh);
                 }

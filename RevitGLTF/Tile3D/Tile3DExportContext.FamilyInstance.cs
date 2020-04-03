@@ -96,9 +96,9 @@ namespace RevitGLTF.Tile3D
         //FamilyInstance结束
         public void OnInstanceEnd(InstanceNode node)
         {
-        #if DEBUG
-            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             var id = node.GetSymbolId();
+#if DEBUG
+            log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             var familySymbol = mRevitDocument.GetElement(id) as FamilySymbol;
             if (familySymbol == null)
                 log.Error(string.Format("Instance invalid FamilySymbol:{0} => End Failed", node.GetSymbolId()));
@@ -108,7 +108,7 @@ namespace RevitGLTF.Tile3D
                     familySymbol.Name,
                     familySymbol.FamilyName,
                     node.GetTransform().Origin.ToString()));
-        #endif
+#endif
 
             //构造BabylonMesh
             BabylonMesh mesh = mMeshStack.Peek();

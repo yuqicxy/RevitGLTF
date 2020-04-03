@@ -104,6 +104,30 @@ namespace BabylonExport.Entities
 			MaxZ = z;
 		}
 
+		//public bool Equal(BoundingVolume other)
+		//{
+		//	return other.MinX == this.MinX && other.MinY == this.MinY && other.MinZ == this.MinZ
+		//		&& other.MaxX == this.MaxX && other.MaxY == this.MaxY && other.MaxZ == this.MaxZ;
+		//}
+
+		//public int Compare(BoundingVolume other)
+		//{
+		//	if (this.Contains(other))
+		//		return 1;
+
+		//	if (other.Contains(this))
+		//		return -1;
+
+		//	if(Math.Pow(CenterX,2) + Math.Pow(CenterY,2) + Math.Pow(CenterZ,2) 
+		//		< Math.Pow(other.CenterX,2) + Math.Pow(other.CenterY, 2) + Math.Pow(other.CenterZ,2))
+		//		return -1;
+
+		//	if (Equal(other))
+		//		return 0;
+
+		//	return 1;
+		//}
+
 		public void Extend(BoundingVolume other)
 		{
 			this.MinX = Math.Min(this.MinX, other.MinX);

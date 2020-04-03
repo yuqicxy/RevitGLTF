@@ -47,7 +47,6 @@ namespace BabylonTo3DTile
 
         private GLTF gltf;
 
-
         private bool dirty = true;
 
         private String featureTableStr;

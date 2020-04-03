@@ -10,6 +10,8 @@ namespace BabylonExport.Entities
     [DataContract]
     public class BabylonScene
     {
+        public string id { get; set; }
+
         [DataMember]
         public BabylonProducer producer { get; set; }
 
@@ -133,6 +135,8 @@ namespace BabylonExport.Entities
         public Dictionary<int, List<InstanceInfo>> mInstanceInfo { get;  set; } = null;
         
         public Dictionary<int, BabylonMesh> mInstanceTable = null;
+        
+        public BoundingVolume boundingVolume { get; set; }
 
         public BabylonScene(string outputPath)
         {

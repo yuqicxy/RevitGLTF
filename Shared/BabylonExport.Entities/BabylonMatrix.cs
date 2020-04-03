@@ -319,5 +319,12 @@ namespace BabylonExport.Entities
             result.m[14] = initialM43;
             result.m[15] = initialM44;
         }
+
+        public BabylonVector3 multiply(BabylonVector3 right)
+        {
+            return new BabylonVector3(right.X * m[0] + right.Y * m[4] + right.Z * m[8]  + m[12],
+                                      right.X * m[1] + right.Y * m[5] + right.Z * m[9]  + m[13],
+                                      right.X * m[2] + right.Y * m[6] + right.Z * m[10] + m[14]);
+        }
 }
 }

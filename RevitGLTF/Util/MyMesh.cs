@@ -168,7 +168,26 @@ namespace RevitGLTF
 
             if (vertexs.Count <= 0)
                 return;
-            
+
+            //BoundingVolume volume = BoundingVolume.EmptyBounds;
+            //foreach(var v in vertexs)
+            //{
+            //    if (volume.MinX > v.Position[0])
+            //        volume.MinX = v.Position[0];
+            //    if (volume.MaxX < v.Position[0])
+            //        volume.MaxX = v.Position[0];
+            //    if (volume.MinY > v.Position[1])
+            //        volume.MinY = v.Position[1];
+            //    if (volume.MaxY < v.Position[1])
+            //        volume.MaxY = v.Position[1];
+            //    if (volume.MinZ > v.Position[2])
+            //        volume.MinZ = v.Position[2];
+            //    if (volume.MaxZ < v.Position[2])
+            //        volume.MaxZ = v.Position[2];
+            //}
+
+            //mesh.boundingVolume = volume;
+
             mesh.indices = indices.ToArray();
             // Buffers
             mesh.positions = vertexs.SelectMany(v => v.Position).ToArray();

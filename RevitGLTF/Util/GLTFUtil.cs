@@ -92,6 +92,32 @@ namespace RevitGLTF
             pos.Rotation = q_babylon;
         }
 
+        public static BoundingVolume ExportTransform(BoundingVolume volume,Transform matrix)
+        {
+            var tm_babylon = new BabylonMatrix();
+            tm_babylon.m = ToArray(matrix);
+
+            BabylonVector3 min = new BabylonVector3((float)volume.MinX, (float)volume.MinY, (float)volume.MinZ);
+            BabylonVector3 max = new BabylonVector3((float)volume.MaxX, (float)volume.MaxY, (float)volume.MaxZ);
+
+            min = tm_babylon.multiply(min);
+            max = tm_babylon.multiply(max);
+
+            return new BoundingVolume(min.X, min.Y, min.Z, max.X, max.Y, max.Z);
+        }
+
+        public static BoundingVolume ExportTransform(BoundingVolume volume, BabylonVector3 translation, BabylonQuaternion rotate, BabylonVector3 scale)
+        {
+            var tm_babylon = BabylonMatrix.Compose(scale, rotate,translation);
+            BabylonVector3 min = new BabylonVector3((float)volume.MinX, (float)volume.MinY, (float)volume.MinZ);
+            BabylonVector3 max = new BabylonVector3((float)volume.MaxX, (float)volume.MaxY, (float)volume.MaxZ);
+
+            min = tm_babylon.multiply(min);
+            max = tm_babylon.multiply(max);
+
+            return new BoundingVolume(min.X, min.Y, min.Z, max.X, max.Y, max.Z);
+        }
+
         public static bool IsEqualTo(this float[] value, float[] other, float Epsilon = Epsilon)
         {
             if (value.Length != other.Length)

@@ -31,8 +31,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBatchTable", "Test\Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFeatureTable", "Test\TestFeatureTable\TestFeatureTable.csproj", "{592A27D0-8FC8-4A0E-AB5B-1F1E40FCF1BB}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RTree", "Shared\RTree\RTree.shproj", "{5D79335B-FB43-4C8C-9CFD-335C46510715}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestRTree", "Test\TestRTree\TestRTree.csproj", "{9E6833D9-E5F3-48D1-9A2E-3CBE87EFE4B4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CPP_CLI_Wrapper", "CPP_CLI_Wrapper", "{9270AFE2-0CC8-4050-978B-E12B3B6E4AA3}"
@@ -45,12 +43,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\GltfExport.Entities\GltfExport.Entities.projitems*{2b248fe6-acca-426b-9fe8-c47ecc0673a0}*SharedItemsImports = 13
 		Shared\Babylon2GLTF\Babylon2GLTF.projitems*{4b6dadf1-6dce-4134-a856-f8ebbd3e2f3f}*SharedItemsImports = 13
-		Shared\RTree\RTree.projitems*{5d79335b-fb43-4c8c-9cfd-335c46510715}*SharedItemsImports = 13
-		Shared\Babylon2GLTF\Babylon2GLTF.projitems*{94c392bf-40e8-4632-b282-c835c411f51e}*SharedItemsImports = 4
-		Shared\BabylonExport.Entities\BabylonExport.Entities.projitems*{94c392bf-40e8-4632-b282-c835c411f51e}*SharedItemsImports = 4
-		Shared\BabylonFileConverter\BabylonFileConverter.projitems*{94c392bf-40e8-4632-b282-c835c411f51e}*SharedItemsImports = 4
-		Shared\GltfExport.Entities\GltfExport.Entities.projitems*{94c392bf-40e8-4632-b282-c835c411f51e}*SharedItemsImports = 4
-		Shared\Utilities\Utilities.projitems*{94c392bf-40e8-4632-b282-c835c411f51e}*SharedItemsImports = 4
 		Shared\Utilities\Utilities.projitems*{af8ed8e5-a184-4353-90d6-8c78e69d99f3}*SharedItemsImports = 13
 		Shared\BabylonTo3DTile\BabylonTo3DTile.projitems*{b85f6221-d23c-4e34-8a26-ec2a8a4ff8f6}*SharedItemsImports = 13
 		Shared\3DTileExport.Entities\Tile3DExport.Entities.projitems*{ba005ae3-b945-4731-a63f-8d5b37879a38}*SharedItemsImports = 13
@@ -173,7 +165,6 @@ Global
 		{845F6C3C-63DF-4CE8-B861-87CFF22F7B2E} = {37D1B271-3899-4669-9FFC-956E4E320C46}
 		{0764DDD4-02CB-4D56-B881-17CE728A4D26} = {37D1B271-3899-4669-9FFC-956E4E320C46}
 		{592A27D0-8FC8-4A0E-AB5B-1F1E40FCF1BB} = {37D1B271-3899-4669-9FFC-956E4E320C46}
-		{5D79335B-FB43-4C8C-9CFD-335C46510715} = {2ED57392-50E5-46D8-8A77-543E0BE3B83A}
 		{9E6833D9-E5F3-48D1-9A2E-3CBE87EFE4B4} = {37D1B271-3899-4669-9FFC-956E4E320C46}
 		{5F97D1DE-8A34-4284-ABDE-365FFDFBA3B1} = {37D1B271-3899-4669-9FFC-956E4E320C46}
 		{B85F6221-D23C-4E34-8A26-EC2A8A4FF8F6} = {2ED57392-50E5-46D8-8A77-543E0BE3B83A}
